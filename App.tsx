@@ -26,10 +26,7 @@ export default function App() {
           component={Home}
           options={{ title: "Welcome" }}
         />
-        <Stack.Screen
-          name="Explore"
-          component={ExploreLanding}
-        />
+        <Stack.Screen name="Explore" component={ExploreLanding} />
         <Stack.Screen name="Itinerary" component={ItineraryLanding} />
       </Stack.Navigator>
     </NavigationContainer>
