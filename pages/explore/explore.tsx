@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dimensions,
   Image,
@@ -7,20 +7,26 @@ import {
   Text,
   View,
 } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 import COLORS from "../../config/COLORS";
 import CATEGORIES from "../../config/CATEGORIES";
-
-import Ionicons from "@expo/vector-icons/Ionicons";
+import HeartButton from "./components/HeartButton";
+import ItemDesPanel from "./components/ExploreItemPanel";
 
 const width = Dimensions.get("screen").width;
 
-function ExploreLanding() {
-  const [activeCategory, setActiveCategory] = useState(0);
-  return ( 
+interface ExploreProps {
+  navigation: NativeStackNavigationProp<any>;
+}
+
+function Explore({ navigation }: ExploreProps) {
+  const [activeCategory, setActiveCategory] = React.useState(0);
+
+  return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.content}>
+      <View style={styles.container}>
         <ScrollView horizontal>
           {CATEGORIES.map((category, index) => (
             <TouchableOpacity
@@ -33,8 +39,10 @@ function ExploreLanding() {
                   fontSize: 20,
                   color:
                     activeCategory === index ? COLORS.ORANGE : COLORS.BROWN,
-                  fontFamily: 
-                    activeCategory === index ? 'AvenirNext-Bold' : 'Avenir Next',
+                  fontFamily:
+                    activeCategory === index
+                      ? "AvenirNext-Bold"
+                      : "Avenir Next",
                 }}
               >
                 {category.title}
@@ -52,21 +60,25 @@ function ExploreLanding() {
           style={{ marginVertical: 20 }}
         >
           {CATEGORIES[activeCategory].items.map((item, index) => (
-            <TouchableOpacity 
-              style={styles.card} 
+            <TouchableOpacity
+              style={styles.card}
               key={index}
+              onPress={() =>
+                navigation.navigate("Detail", {
+                  test: item,
+                  itemTitle: item.title,
+                  itemPrice: item.price,
+                  itemImage: item.image,
+                  itemDescription: item.description,
+                  navigation: navigation,
+                })
+              }
             >
               <View style={styles.heartButtonContainer}>
-                <TouchableOpacity style={styles.heartButton}>
-                  <Ionicons name="heart" size={40} color={COLORS.WHITE} />
-                </TouchableOpacity>
+                <HeartButton />
               </View>
 
-              <View style={styles.descriptionContainer}>
-                <Text style={styles.description}>
-                  {item.title} {item.price}
-                </Text>
-              </View>
+              <ItemDesPanel itemTitle={item.title} itemPrice={item.price} />
 
               <Image source={item.image} style={styles.image} />
             </TouchableOpacity>
@@ -83,46 +95,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  content: {
+  container: {
     padding: 20,
-  },
-
-  heartButton: {
-    backgroundColor: COLORS.ORANGE,
-    borderRadius: 100,
-    height: 50,
-    width: 50,
-    padding: 5,
-    alignSelf: "flex-end",
-  },
-
-  heartButtonContainer: {
-    position: "absolute",
-    zIndex: 1,
-    padding: 10,
-    width: "100%",
-    justifyContent: "flex-end",
-  },
-
-  description: {
-    textAlign: "justify",
-    padding: 10,
-    fontFamily: 'Avenir',
-    fontSize: 20,
-    color: COLORS.BROWN,
-    
-  },
-
-  descriptionContainer: {
-    position: "absolute",
-    zIndex: 1,
-    width: "100%",
-    height: '15%',
-    backgroundColor: COLORS.WHITE,
-    alignContent: 'center',
-    justifyContent: 'center',
-    bottom: 0,
-    
   },
 
   image: {
@@ -137,6 +111,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 20,
   },
+
+  heartButtonContainer: {
+    position: "absolute",
+    zIndex: 1,
+    padding: 10,
+    width: "100%",
+    justifyContent: "flex-end",
+  },
 });
 
-export default ExploreLanding;
+export default Explore;
