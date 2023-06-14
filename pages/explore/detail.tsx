@@ -4,34 +4,26 @@ import {
   ImageBackground,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 
-import DetailButtonRow from "./components/DetailButtonRow";
 import COLORS from "../../config/COLORS";
+
+import DetailButtonRow from "./components/DetailButtonRow";
+import DetailInfoCard from "./components/DetailInfoCard";
 
 const width = Dimensions.get("screen").width;
 
 function Detail({ route }: any) {
-  const itemTitle = route.params.itemTitle;
-  const itemPrice = route.params.itemPrice;
-  const itemImage = route.params.itemImage;
-  const itemDescription = route.params.itemDescription;
-
+  const item = route.params.item;
   const navigation = route.params.navigation;
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={itemImage} style={styles.image}>
+      <ImageBackground source={item.image} style={styles.image}>
         <ScrollView style={styles.background}>
           <DetailButtonRow navigation={navigation} />
-
-          <View style={{ paddingTop: 10 }}>
-            <Text>{itemTitle}</Text>
-            <Text>{itemPrice}</Text>
-            <Text>{itemDescription}</Text>
-          </View>
+          <DetailInfoCard item={item} />
         </ScrollView>
       </ImageBackground>
     </View>

@@ -13,7 +13,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import COLORS from "../../config/COLORS";
 import CATEGORIES from "../../config/CATEGORIES";
 import HeartButton from "./components/HeartButton";
-import ItemDesPanel from "./components/ExploreItemPanel";
+import ExploreItemPanel from "./components/ExploreItemPanel";
 
 const width = Dimensions.get("screen").width;
 
@@ -37,12 +37,8 @@ function Explore({ navigation }: ExploreProps) {
               <Text
                 style={{
                   fontSize: 20,
-                  color:
-                    activeCategory === index ? COLORS.ORANGE : COLORS.BROWN,
-                  fontFamily:
-                    activeCategory === index
-                      ? "AvenirNext-Bold"
-                      : "Avenir Next",
+                  color: activeCategory === index ? COLORS.ORANGE : COLORS.BROWN,
+                  fontFamily: activeCategory === index ? "AvenirNext-Bold" : "Avenir Next",
                 }}
               >
                 {category.title}
@@ -63,13 +59,8 @@ function Explore({ navigation }: ExploreProps) {
             <TouchableOpacity
               style={styles.card}
               key={index}
-              onPress={() =>
-                navigation.navigate("Detail", {
-                  test: item,
-                  itemTitle: item.title,
-                  itemPrice: item.price,
-                  itemImage: item.image,
-                  itemDescription: item.description,
+              onPress={() => navigation.navigate("Detail", {
+                  item: item,
                   navigation: navigation,
                 })
               }
@@ -78,7 +69,7 @@ function Explore({ navigation }: ExploreProps) {
                 <HeartButton />
               </View>
 
-              <ItemDesPanel itemTitle={item.title} itemPrice={item.price} />
+              <ExploreItemPanel itemTitle={item.title} itemPrice={item.price} />
 
               <Image source={item.image} style={styles.image} />
             </TouchableOpacity>

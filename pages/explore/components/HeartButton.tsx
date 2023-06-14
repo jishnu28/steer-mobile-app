@@ -7,7 +7,9 @@ import COLORS from "../../../config/COLORS";
 
 function HeartButton() {
   return (
-      <TouchableOpacity style={styles.heartButton}>
+      <TouchableOpacity 
+        onPress={() => console.log('Favorited, to be implemented')}
+        style={styles.heartButton}>
         <Ionicons name="heart" size={40} color={COLORS.WHITE} />
       </TouchableOpacity>
   );
@@ -17,7 +19,7 @@ export default HeartButton;
 
 const styles = StyleSheet.create({
   heartButton: {
-    backgroundColor: COLORS.ORANGE,
+    backgroundColor: COLORS.ACCENT,
     borderRadius: 100,
     height: 50,
     width: 50,

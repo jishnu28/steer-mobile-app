@@ -25,7 +25,7 @@ export default ReturnButton;
 
 const styles = StyleSheet.create({
   returnButton: {
-    backgroundColor: COLORS.ORANGE,
+    backgroundColor: COLORS.ACCENT,
     borderRadius: 100,
     height: 50,
     width: 50,

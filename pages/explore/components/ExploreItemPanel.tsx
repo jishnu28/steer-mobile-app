@@ -2,23 +2,20 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import COLORS from "../../../config/COLORS";
 
-interface ItemDesPanelProps {
+interface ExploreItemPanelProps {
   itemTitle: string;
   itemPrice: string;
 }
 
-function ItemDesPanel({ itemTitle, itemPrice }: ItemDesPanelProps) {
+function ExploreItemPanel({ itemTitle, itemPrice }: ExploreItemPanelProps) {
   return (
     <View style={styles.descriptionContainer}>
-      <Text style={styles.description}>
-        {" "}
-        {itemTitle} {itemPrice}{" "}
-      </Text>
+      <Text style={styles.description}>{itemTitle} {itemPrice}</Text>
     </View>
   );
 }
 
-export default ItemDesPanel;
+export default ExploreItemPanel;
 
 const styles = StyleSheet.create({
   description: {

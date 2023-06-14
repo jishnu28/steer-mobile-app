@@ -22,7 +22,7 @@ export default DetailButtonRow;
 
 const styles = StyleSheet.create({
   detailButtonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
