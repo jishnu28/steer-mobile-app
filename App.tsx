@@ -1,6 +1,9 @@
 import * as React from "react";
+
 import Home from "./pages/home";
 import ItineraryLanding from "./pages/itinerary/itineraryLanding";
+import ExploreLanding from "./pages/explore/exploreLanding";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -23,6 +26,7 @@ export default function App() {
           component={Home}
           options={{ title: "Welcome" }}
         />
+        <Stack.Screen name="Explore" component={ExploreLanding} />
         <Stack.Screen name="Itinerary" component={ItineraryLanding} />
       </Stack.Navigator>
     </NavigationContainer>
