@@ -2,7 +2,8 @@ import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react'
 import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { TabView, TabBar, SceneMap, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
 import { Scene, Event } from 'react-native-tab-view/lib/typescript/src/types';
-// import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const {width, height}= Dimensions.get('window'); //retrieves dimensions of the screen
 
@@ -85,13 +86,13 @@ interface SavedContainerProps {
 function SavedContainer({post_title, post_content, saved}: SavedContainerProps) {
     return (
         <View style= {styles.each_post}>
-            <Image source={require('../../assets/profile_icon.png')} style={styles.post_user_icon}/>
+            <FontAwesome name="user-circle" size={50} color="#88838A"/>
             <View style={{width: width*0.65, marginHorizontal: 10}}>
                 <Text style={{fontSize:15, fontWeight: '500', maxWidth: '90%'}}>{post_title}</Text>
                 <Text style={{fontSize:12, fontWeight: '300', maxWidth: '100%'}}>{post_content}</Text>
             </View>
             <View style={{justifyContent:'center'}}>
-                <Image source={require('../../assets/more.png')}/>
+                <MaterialIcons name="more-horiz" size={24} color="black" />
             </View>
         </View>
     )
@@ -133,13 +134,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 5,
     },
-
-    post_user_icon: {
-        width: 50,
-        height: 50,
-        borderWidth: 1,
-        borderRadius: 50/2,
-    }
 })
 
 //Just some filler data. Can remove later
