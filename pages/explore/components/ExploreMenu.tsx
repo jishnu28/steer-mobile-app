@@ -1,0 +1,49 @@
+import React from "react";
+import { StyleSheet, Text } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import CATEGORIES from "../../../config/CATEGORIES";
+import COLORS from "../../../config/COLORS";
+
+interface ExploreMenuProps {
+  updateActiveCategory: any;
+  activeCategory: number;
+}
+
+function ExploreMenu({ updateActiveCategory, activeCategory }: ExploreMenuProps) {
+  return (
+    <ScrollView horizontal>
+      {CATEGORIES.map((category, index) => (
+        <TouchableOpacity
+          onPress={() => updateActiveCategory(index)}
+          style={{ marginRight: 10 }}
+          key={category.id}
+        >
+          <Text
+            style={[
+              activeCategory == index
+                ? styles.activeCategory
+                : styles.inactiveCategory,
+            ]}
+          >
+            {category.title}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+}
+
+export default ExploreMenu;
+const styles = StyleSheet.create({
+  activeCategory: {
+    fontSize: 20,
+    color: COLORS.ORANGE,
+    fontFamily: "AvenirNext-Bold",
+  },
+
+  inactiveCategory: {
+    fontSize: 20,
+    color: COLORS.BROWN,
+    fontFamily: "Avenir Next",
+  },
+});
