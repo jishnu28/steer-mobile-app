@@ -2,8 +2,7 @@ import React from "react";
 import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { FontAwesome } from '@expo/vector-icons'; 
-import { AntDesign } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 type RootStackParamList = {
@@ -31,33 +30,33 @@ const EditProfile = ({ navigation }: Props) => {
         <SafeAreaView style={styles.container}>
             <TouchableOpacity
                 style={{position:'absolute', top:'15%', left:'15%'}}
-                onPress={()=>navigation.navigate('Profile')}>
-                <AntDesign name="leftcircle" size={40} color='#88838A' />
+                onPress={()=>navigation.navigate('Profile')}>   
+                <MaterialCommunityIcons name="arrow-left-circle" size={40} color='#88838A'/>
             </TouchableOpacity>
 
-            <View style={{position:'absolute', top:'22%'}}>
-                {image=='' && <FontAwesome name="user-circle" size={120} color="#88838A"/>}
-                {image!='' && <Image source={{uri: image}} style={styles.profile_pic}/>}
+            <View style={{position:'absolute', top:'22%'}}>               
+                {image=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
+                {image!='' && <Image source={{uri: image}} style={styles.profilePic}/>}
             </View>
 
-            <View style={styles.info_section}>
+            <View style={styles.infoSection}>
                 <TouchableOpacity 
-                    style={styles.info_box}
+                    style={styles.infoBox}
                     onPress={()=>navigation.navigate("EditName")}>
                     <Text style={{position:'absolute', left:'5%', fontSize:18, color:'#88838A' ,fontWeight: 'bold'}}>Name:</Text>
                     <Text style={{position:'absolute', left:'40%', fontSize:18, color:'#88838A'}}>User 1</Text>
-                    <AntDesign name="right" size={20} color='#88838A' style={{position:'absolute', left:'100%'}}/>
+                    <MaterialCommunityIcons name="arrow-right-drop-circle" size={25} color='#88838A' style={{position:'absolute', left:'100%'}}/>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={styles.info_box}
+                    style={styles.infoBox}
                     onPress={()=>navigation.navigate("EditEmail")}>
                     <Text style={{position:'absolute', left:'5%', fontSize:18, color:'#88838A' ,fontWeight: 'bold'}}>Email:</Text>
                     <Text 
                         style={{position:'absolute', left:'40%', fontSize:18, color:'#88838A', width:'60%'}}
                         numberOfLines={2}
                     >test@gmail.com</Text>
-                    <AntDesign name="right" size={20} color='#88838A' style={{position:'absolute', left:'100%'}}/>
+                    <MaterialCommunityIcons name="arrow-right-drop-circle" size={25} color='#88838A' style={{position:'absolute', left:'100%'}}/>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    profile_pic : {
+    profilePic : {
         width: 120, 
         height: 120, 
         borderRadius: 60, 
@@ -81,14 +80,14 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 
-    info_section: {
+    infoSection: {
         width: '100%',
         position:'absolute', 
         top:'45%', 
         alignItems:'center',
     },
 
-    info_box: {
+    infoBox: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal:20,

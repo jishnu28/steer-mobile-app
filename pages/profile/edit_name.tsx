@@ -2,8 +2,7 @@ import React from "react";
 import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, TextInput, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { AntDesign } from '@expo/vector-icons'; 
-
+import { MaterialCommunityIcons} from "@expo/vector-icons";
 
 type RootStackParamList = {
     Edit: undefined;
@@ -29,19 +28,19 @@ const EditName = ({ navigation }: Props) => {
             <View style={styles.header}>
                 <TouchableOpacity
                     onPress={()=>navigation.navigate('Edit')}>
-                    <AntDesign name="leftcircle" size={40} color='#88838A' />
+                    <MaterialCommunityIcons name="arrow-left-circle" size={40} color='#88838A'/>
                 </TouchableOpacity>
 
-                <Text style={styles.header_text}>Name</Text>
+                <Text style={styles.headerText}>Name</Text>
 
                 <TouchableOpacity
                     onPress={()=>navigation.navigate('Edit')}
-                    style={styles.done_button}>
-                    <Text style={styles.header_text}>Done</Text>
+                    style={styles.doneButton}>
+                    <Text style={styles.headerText}>Done</Text>
                 </TouchableOpacity>
             </View>
             <TextInput 
-                style={styles.info_box}
+                style={styles.infoBox}
                 placeholder='Name'
                 value={name}
                 onChangeText={newName => setName(newName)}
@@ -68,13 +67,13 @@ const styles = StyleSheet.create({
         left:'10%'
     },
 
-    header_text: {
+    headerText: {
         fontSize:18, 
         color:'#88838A',
         fontWeight: 'bold'
     },
 
-    done_button:{
+    doneButton:{
         justifyContent:'center',
         alignItems:'center',
         padding: 5,
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#E5E8D9',
     },
 
-    info_box: {
+    infoBox: {
         position:'absolute',
         top:'25%',
         paddingHorizontal:20,

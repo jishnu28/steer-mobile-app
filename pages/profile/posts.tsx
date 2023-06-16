@@ -2,8 +2,7 @@ import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react'
 import { View, FlatList, Text, Image, StyleSheet, Dimensions, TouchableOpacity, PressableAndroidRippleConfig, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { TabView, TabBar, SceneMap, NavigationState, Route, SceneRendererProps, TabBarIndicatorProps, TabBarItemProps } from 'react-native-tab-view';
 import { Scene, Event } from 'react-native-tab-view/lib/typescript/src/types';
-import { FontAwesome } from '@expo/vector-icons'; 
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
 
 const {width, height}= Dimensions.get('window'); //retrieves dimensions of the screen
 
@@ -86,7 +85,7 @@ interface SavedContainerProps {
 function SavedContainer({post_title, post_content, saved}: SavedContainerProps) {
     return (
         <View style= {styles.each_post}>
-            <FontAwesome name="user-circle" size={50} color="#88838A"/>
+            <MaterialCommunityIcons name="account-circle" size={50} color="#88838A"/>
             <View style={{width: width*0.65, marginHorizontal: 10}}>
                 <Text style={{fontSize:15, fontWeight: '500', maxWidth: '90%'}}>{post_title}</Text>
                 <Text style={{fontSize:12, fontWeight: '300', maxWidth: '100%'}}>{post_content}</Text>

@@ -5,8 +5,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import PostsTabView from "./posts";
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type RootStackParamList = {
     Profile: undefined;
@@ -58,21 +57,21 @@ const ProfilePage = ({ navigation }: Props) => {
             <View style={[styles.profile, {flex: 2}]}>
                 {/* Profile Pic */}
                 <View>
-                    {image=='' && <FontAwesome name="user-circle" size={120} color="#88838A"/>}
-                    {image!='' && <Image source={{uri: image}} style={styles.profile_pic}/>}
-                    <TouchableOpacity onPress={addImage} style={styles.edit_profile_pic}>
-                        <Ionicons name="add-circle" size={36} color="#FFAF87"/>
+                    {image=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
+                    {image!='' && <Image source={{uri: image}} style={styles.profilePic}/>}
+                    <TouchableOpacity onPress={addImage} style={styles.editProfilePic}>
+                        <MaterialCommunityIcons name="plus-circle" size={36} color="#FFAF87"/>
                     </TouchableOpacity>
                 </View>
                 {/* Profile Info */}
                 <View style={{marginLeft:10}}>
-                    <Text style={styles.profile_text}>My username</Text>
-                    <Text style={styles.profile_text}>ID: 12345678</Text>
+                    <Text style={styles.profileText}>My username</Text>
+                    <Text style={styles.profileText}>ID: 12345678</Text>
                     <TouchableOpacity
                         onPress={()=>navigation.navigate("Edit")}
                         style= {styles.button}
                     >
-                        <Text style={styles.profile_text}>View Profile</Text>
+                        <Text style={styles.profileText}>View Profile</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
 
     },
 
-    profile_pic : {
+    profilePic : {
         width: 120, 
         height: 120, 
         borderRadius: 60, 
@@ -110,13 +109,13 @@ const styles = StyleSheet.create({
         borderColor: '#88838A',
     },
 
-    edit_profile_pic: {
+    editProfilePic: {
         position:'absolute', 
-        left:'80%', 
-        bottom:'0%'
+        left:'75%', 
+        bottom:'5%'
     },
 
-    profile_text: {
+    profileText: {
         // fontFamily: 'Bitter',
         fontSize: 18,
         fontWeight: '600',
