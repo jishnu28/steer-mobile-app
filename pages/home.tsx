@@ -53,7 +53,6 @@ const Home = ({ navigation }: HomeProps) => {
       <SafeAreaView style={styles.container}>
         <Text>This is our awesome Home screen for now.</Text>
         <Text>Tap on one of the icons in the navbar to open a page.</Text>
-        <Text>Currently only itinerary should work</Text>
         <Image
           source={{
             width: 200,
