@@ -5,7 +5,7 @@ import { NativeBaseProvider, Box } from "native-base";
 import TouristsNavbar from "../custom_components/TouristsNavbar";
 import { StyleSheet, Text, SafeAreaView, Image } from "react-native";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
 };
 

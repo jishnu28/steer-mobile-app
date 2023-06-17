@@ -1,12 +1,16 @@
 import * as React from "react";
+
 import Home from "./pages/home";
 import ItineraryLanding from "./pages/itinerary/itineraryLanding";
 import ProfilePage from "./pages/profile/profile";
 import EditProfile from "./pages/profile/edit_profile";
 import EditName from "./pages/profile/edit_name";
 import EditEmail from "./pages/profile/edit_email";
+import Explore from "./pages/explore/explore";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Detail from "./pages/explore/detail";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +31,8 @@ export default function App() {
           component={Home}
           options={{ title: "Welcome" }}
         />
+        <Stack.Screen name="Explore" component={Explore} />
+        <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="Itinerary" component={ItineraryLanding} />
         <Stack.Screen name="Profile" component={ProfilePage} />
         <Stack.Screen name="Edit" component={EditProfile} />
