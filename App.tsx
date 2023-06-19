@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Home from "./pages/home";
 import ItineraryLanding from "./pages/itinerary/itineraryLanding";
+import Chat from "./pages/chat/messages"
 import ProfilePage from "./pages/profile/profile";
 import EditProfile from "./pages/profile/edit_profile";
 import EditName from "./pages/profile/edit_name";
@@ -40,6 +41,7 @@ export default function App() {
         <Stack.Screen name="Explore" component={Explore} />
         <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="Itinerary" component={ItineraryLanding} />
+        <Stack.Screen name="Messages" component={Chat} />
         <Stack.Screen name="Profile" component={ProfilePage} />
         <Stack.Screen name="Edit" component={EditProfile} />
         <Stack.Screen name="EditName" component={EditName} />
