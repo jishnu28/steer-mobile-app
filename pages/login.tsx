@@ -12,7 +12,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { firebaseAuth } from "../firebaseConfig";
+import { firebaseAuth, firestore } from "../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 interface LoginProps {
   navigation: NativeStackNavigationProp<any>;
@@ -20,7 +21,7 @@ interface LoginProps {
 
 const auth = firebaseAuth;
 
-const LoginScreen = ({ navigation }: LoginProps) => {
+const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,17 +35,17 @@ const LoginScreen = ({ navigation }: LoginProps) => {
     return unsubscribe;
   }, []);
 
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Registered with:", user.email);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("Registered with:", user.email);
+
+      await setDoc(doc(firestore, "userChats", user.uid), {});
+    } catch (error: any) {
+      const errorMessage = error.message;
+      alert(errorMessage);
+    }
   };
 
   const handleLogin = () => {

@@ -1,6 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore, collection, query, orderBy } from "firebase/firestore";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,5 +23,8 @@ const firebaseConfig = {
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
+export const messageCollection = collection(firestore, "messages");
+export const messageQuery = query(messageCollection, orderBy("createdAt", "desc"));
 // for additional services, like analytics and storage, initialise them here and use their exports in other files
 // The alternative way of initialising them in their respective files threw a weird error
