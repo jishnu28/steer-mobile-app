@@ -2,9 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, query, orderBy } from "firebase/firestore";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,8 +20,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
+
+// Initialise Firebase services
 export const firebaseAuth = getAuth(firebaseApp);
 export const firestore = getFirestore(firebaseApp);
+export const firebaseStorage = getStorage(firebaseApp); // this storage is for images and similar media objects
 export const messageCollection = collection(firestore, "messages");
 export const messageQuery = query(messageCollection, orderBy("createdAt", "desc"));
 // for additional services, like analytics and storage, initialise them here and use their exports in other files
