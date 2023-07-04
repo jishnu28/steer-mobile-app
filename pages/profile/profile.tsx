@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -6,6 +6,9 @@ import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import PostsTabView from "./posts";
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { firebaseAuth, firestore } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 type RootStackParamList = {
     Profile: undefined;
@@ -23,6 +26,10 @@ type Props = {
 
 const ProfilePage = ({ navigation }: Props) => {
 
+    const [user, loading, error]= useAuthState(firebaseAuth);
+    const [profileInfo, setProfileInfo]= useState({})
+    // console.log(user?.uid)
+
     //Code for profile pic upload
     const [image, setImage]= React.useState("");
     const checkForCameraRollPermission= async()=>{
@@ -34,8 +41,16 @@ const ProfilePage = ({ navigation }: Props) => {
         }
     }
 
+    const getProfile= async () => {
+        const profileRef= doc(firestore, "users", user?.uid);
+        const userProfile= await getDoc(profileRef);
+        setProfileInfo(userProfile.data());
+    }
+
+
     React.useEffect(() => {
         checkForCameraRollPermission()
+        getProfile()
     }, []);
 
     const addImage= async () => {
@@ -49,7 +64,7 @@ const ProfilePage = ({ navigation }: Props) => {
             setImage(_image.uri);
         }
     }
-    
+
     return (
     <NativeBaseProvider>
         <SafeAreaView style={styles.container}>
@@ -65,7 +80,7 @@ const ProfilePage = ({ navigation }: Props) => {
                 </View>
                 {/* Profile Info */}
                 <View style={{marginLeft:10}}>
-                    <Text style={styles.profileText}>My username</Text>
+                    <Text style={styles.profileText}>{profileInfo['displayName']}</Text>
                     <Text style={styles.profileText}>ID: 12345678</Text>
                     <TouchableOpacity
                         onPress={()=>navigation.navigate("Edit")}

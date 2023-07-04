@@ -3,6 +3,9 @@ import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, TextInput, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MaterialCommunityIcons} from "@expo/vector-icons";
+import { firebaseAuth, firestore } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, updateDoc } from "firebase/firestore";
 
 type RootStackParamList = {
     Edit: undefined;
@@ -20,6 +23,7 @@ type Props = {
 
 const EditName = ({ navigation }: Props) => {
 
+    const [user, loading, error]= useAuthState(firebaseAuth);
     const [name, setName]= React.useState("");
     
     return (
@@ -34,7 +38,14 @@ const EditName = ({ navigation }: Props) => {
                 <Text style={styles.headerText}>Name</Text>
 
                 <TouchableOpacity
-                    onPress={()=>navigation.navigate('Edit')}
+                    onPress={async()=> {
+                        const docRef= doc(firestore, "users", user.uid)
+                        await updateDoc(docRef, {
+                            displayName: name
+                            }
+                        ); 
+            
+                        navigation.navigate('Edit')}}
                     style={styles.doneButton}>
                     <Text style={styles.headerText}>Done</Text>
                 </TouchableOpacity>
