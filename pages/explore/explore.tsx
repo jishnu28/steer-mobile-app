@@ -1,28 +1,20 @@
 import React from "react";
 import {
-  Button,
   Dimensions,
-  Image,
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import COLORS from "../../config/COLORS";
-import CATEGORIES from "../../config/CATEGORIES";
-import HeartButton from "./components/HeartButton";
-import ExploreItemPanel from "./components/ExploreItemPanel";
+import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
 
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
-import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import ExploreMenu from "./components/ExploreMenu";
-
-const width = Dimensions.get("screen").width;
 
 const handleCreateAccommodation = async () => {
   try {
