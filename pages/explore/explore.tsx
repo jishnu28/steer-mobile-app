@@ -1,12 +1,50 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import {
+  Button,
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import COLORS from "../../config/COLORS";
+import CATEGORIES from "../../config/CATEGORIES";
+import HeartButton from "./components/HeartButton";
+import ExploreItemPanel from "./components/ExploreItemPanel";
+import createAccommodation from "./functions/createAccommodation";
+import createExperience from "./functions/createExperience";
+
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import ExploreMenu from "./components/ExploreMenu";
+
+const width = Dimensions.get("screen").width;
+
+const handleCreateAccommodation = async () => {
+  try {
+    await createAccommodation();
+    console.log("Accommodation post created successfully!");
+    // Add any navigation or UI updates you want here
+  } catch (error) {
+    console.error("Error creating accommodation post:", error);
+    // Handle error or show error message to the user
+  }
+};
+
+const handleCreateExperience = async () => {
+  try {
+    await createExperience();
+    console.log("Experience post created successfully!");
+    // Add any navigation or UI updates you want here
+  } catch (error) {
+    console.error("Error creating experience post:", error);
+    // Handle error or show error message to the user
+  }
+};
 
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;
