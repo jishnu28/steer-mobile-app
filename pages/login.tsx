@@ -47,6 +47,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           displayName: "Some name",
           email: user.email,
           uid: user.uid,
+          profilePic: "",
         }
       );
 

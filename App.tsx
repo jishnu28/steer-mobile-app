@@ -5,9 +5,6 @@
   import ChatScreen from "./pages/chat/chatScreen";
   import ChatList from "./pages/chat/chatList";
   import ProfilePage from "./pages/profile/profile";
-  import EditProfile from "./pages/profile/edit_profile";
-  import EditName from "./pages/profile/edit_name";
-  import EditEmail from "./pages/profile/edit_email";
   import Explore from "./pages/explore/explore";
 
   import { NavigationContainer } from "@react-navigation/native";
@@ -47,9 +44,6 @@ import { ChatContextProvider } from "./pages/chat/ChatContext";
             <Stack.Screen name="Messages" component={ChatList} />
             <Stack.Screen name="ChatScreen" component ={ChatScreen} />
             <Stack.Screen name="Profile" component={ProfilePage} />
-            <Stack.Screen name="Edit" component={EditProfile} />
-            <Stack.Screen name="EditName" component={EditName} />
-            <Stack.Screen name="EditEmail" component={EditEmail} />
         </Stack.Navigator>
       </NavigationContainer>
       </ChatContextProvider>
