@@ -37,7 +37,11 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
   const handleSignUp = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       console.log("Registered with:", user.email);
 
@@ -62,7 +66,11 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView
+      style={styles.container}
+      keyboardVerticalOffset={-256} // to fix keyboard pushing content above in android devices
+      behavior="padding"
+    >
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -99,6 +107,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
