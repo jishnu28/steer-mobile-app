@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -14,8 +15,32 @@ import COLORS from "../../config/COLORS";
 import CATEGORIES from "../../config/CATEGORIES";
 import HeartButton from "./components/HeartButton";
 import ExploreItemPanel from "./components/ExploreItemPanel";
+import createAccommodation from "./functions/createAccommodation";
+import createExperience from "./functions/createExperience";
 
 const width = Dimensions.get("screen").width;
+
+const handleCreateAccommodation = async () => {
+  try {
+    await createAccommodation();
+    console.log("Accommodation post created successfully!");
+    // Add any navigation or UI updates you want here
+  } catch (error) {
+    console.error("Error creating accommodation post:", error);
+    // Handle error or show error message to the user
+  }
+};
+
+const handleCreateExperience = async () => {
+  try {
+    await createExperience();
+    console.log("Experience post created successfully!");
+    // Add any navigation or UI updates you want here
+  } catch (error) {
+    console.error("Error creating experience post:", error);
+    // Handle error or show error message to the user
+  }
+};
 
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;
@@ -37,8 +62,12 @@ function Explore({ navigation }: ExploreProps) {
               <Text
                 style={{
                   fontSize: 20,
-                  color: activeCategory === index ? COLORS.ORANGE : COLORS.BROWN,
-                  fontFamily: activeCategory === index ? "AvenirNext-Bold" : "Avenir Next",
+                  color:
+                    activeCategory === index ? COLORS.ORANGE : COLORS.BROWN,
+                  fontFamily:
+                    activeCategory === index
+                      ? "AvenirNext-Bold"
+                      : "Avenir Next",
                 }}
               >
                 {category.title}
@@ -59,7 +88,8 @@ function Explore({ navigation }: ExploreProps) {
             <TouchableOpacity
               style={styles.card}
               key={index}
-              onPress={() => navigation.navigate("Detail", {
+              onPress={() =>
+                navigation.navigate("Detail", {
                   item: item,
                   navigation: navigation,
                 })
@@ -75,6 +105,11 @@ function Explore({ navigation }: ExploreProps) {
             </TouchableOpacity>
           ))}
         </ScrollView>
+        <Button
+          title="Create Accommodation!"
+          onPress={handleCreateAccommodation}
+        />
+        <Button title="Create Experience!" onPress={handleCreateExperience} />
       </View>
     </SafeAreaView>
   );
