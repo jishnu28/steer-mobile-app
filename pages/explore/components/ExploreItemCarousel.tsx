@@ -11,7 +11,6 @@ import {
 import CATEGORIES from "../../../config/CATEGORIES";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "./HeartButton";
-import COLORS from "../../../config/COLORS";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
@@ -19,6 +18,7 @@ interface ExploreItemCarouselProps {
 }
 
 const width = Dimensions.get("screen").width;
+const height = Dimensions.get("screen").height;
 
 function ExploreItemCarousel({
   activeCategory,
@@ -26,36 +26,38 @@ function ExploreItemCarousel({
 }: ExploreItemCarouselProps) {
   return (
     <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      snapToInterval={width * 0.75}
+      showsVerticalScrollIndicator={false}
+      snapToInterval={height * 0.6}
       decelerationRate="fast"
       pagingEnabled
       style={{ marginVertical: 20 }}
     >
+      {/* TODO: configure getting the data from Firebase instead */}
       {CATEGORIES[activeCategory].items.map((item, index) => (
-        <Pressable
-          style={styles.card}
-          key={index}
-          onPress={() =>
-            navigation.navigate("Detail", {
-              item: item,
-              navigation: navigation,
-            })
-          }
-        >
+        <View>
           <View style={styles.heartButtonContainer}>
             <HeartButton />
           </View>
+          <Pressable
+            style={styles.card}
+            key={index}
+            onPress={() =>
+              navigation.navigate("Detail", {
+                item: item,
+                navigation: navigation,
+              })
+            }
+          >
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.title}> {item.title} </Text>
+              <Text style={styles.price}> {item.price} </Text>
+            </View>
 
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.description}>
-              {item.title} {item.price}
-            </Text>
-          </View>
+            <View style={styles.descriptionBackground}></View>
 
-          <Image source={item.image} style={styles.image} />
-        </Pressable>
+            <Image source={item.image} style={styles.image} />
+          </Pressable>
+        </View>
       ))}
     </ScrollView>
   );
@@ -65,30 +67,45 @@ export default ExploreItemCarousel;
 
 const styles = StyleSheet.create({
   card: {
-    width: width * 0.7,
-    height: width * 0.9,
+    width: width * 0.8,
+    height: height * 0.6,
     overflow: "hidden",
-    borderRadius: 20,
-    marginRight: 20,
+    borderRadius: 30,
+    marginBottom: 10,
   },
 
-  description: {
-    textAlign: "justify",
-    padding: 10,
-    fontFamily: "Avenir",
-    fontSize: 20,
-    color: COLORS.BROWN,
+  title: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#88838A",
+  },
+
+  price: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#FFFFFF",
   },
 
   descriptionContainer: {
     position: "absolute",
+    bottom: 0,
+    zIndex: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+    width: "100%",
+    height: 87,
+  },
+
+  descriptionBackground: {
+    position: "absolute",
+    bottom: 0,
     zIndex: 1,
     width: "100%",
-    height: "15%",
-    backgroundColor: COLORS.WHITE,
-    alignContent: "center",
-    justifyContent: "center",
-    bottom: 0,
+    height: 87,
+    backgroundColor: "#E5E8D9",
+    opacity: 0.8,
   },
 
   heartButtonContainer: {

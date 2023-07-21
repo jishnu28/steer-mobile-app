@@ -1,20 +1,23 @@
 import React from "react";
 import {
-  Dimensions,
+  FlatList,
+  Image,
   SafeAreaView,
   StyleSheet,
+  Text,
   View,
 } from "react-native";
-import { NativeBaseProvider } from "native-base";
+import { NativeBaseProvider, ScrollView } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import COLORS from "../../config/COLORS";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
 
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import ExploreMenu from "./components/ExploreMenu";
+import Carousel from "react-native-snap-carousel";
+import CATEGORIES from "../../config/CATEGORIES";
 
 const handleCreateAccommodation = async () => {
   try {
@@ -69,13 +72,24 @@ function Explore({ navigation }: ExploreProps) {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: COLORS.BEIGE,
     flex: 1,
+    backgroundColor: "#E5E8D9",
   },
 
   container: {
     padding: 20,
+    alignItems: "center",
   },
+
+  image: {
+    width: 500,
+    height: 500,
+  },
+
+  testContainer: {
+    width: 500,
+    height: 500,
+  }
 });
 
 export default Explore;
