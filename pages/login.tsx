@@ -68,7 +68,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      keyboardVerticalOffset={-256} // to fix keyboard pushing content above in android devices
+      keyboardVerticalOffset={-300} // to fix keyboard pushing content above in android devices
       behavior="padding"
     >
       <View style={styles.inputContainer}>
