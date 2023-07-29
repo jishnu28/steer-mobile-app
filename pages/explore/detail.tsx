@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Dimensions,
-  FlatList,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -10,7 +9,6 @@ import {
 
 import DetailButtonRow from "./components/DetailButtonRow";
 import DetailInfoCard from "./components/DetailInfoCard";
-import ACCOMODATION from "../../config/ACCOMODATION";
 const width = Dimensions.get("screen").width;
 
 function Detail({ route }: any) {

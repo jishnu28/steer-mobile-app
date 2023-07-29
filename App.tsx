@@ -15,7 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Detail from "./pages/explore/detail";
 import LoginScreen from "./pages/login";
 import { ChatContextProvider } from "./pages/chat/ChatContext";
-import Carousel from "./pages/explore/components/Carousel";
+import Gallery from "./pages/explore/gallery";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +44,7 @@ export default function App() {
           />
           <Stack.Screen name="Explore" component={Explore} />
           <Stack.Screen name="Detail" component={Detail} />
-          <Stack.Screen name="Carousel" component={Carousel} />
+          <Stack.Screen name="Gallery" component={Gallery} />
           <Stack.Screen name="Itinerary" component={ItineraryLanding} />
           <Stack.Screen name="Messages" component={ChatList} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />

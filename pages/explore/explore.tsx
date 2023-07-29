@@ -1,10 +1,7 @@
 import React from "react";
 import {
-  FlatList,
-  Image,
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { NativeBaseProvider, ScrollView } from "native-base";
@@ -85,11 +82,6 @@ const styles = StyleSheet.create({
     width: 500,
     height: 500,
   },
-
-  testContainer: {
-    width: 500,
-    height: 500,
-  }
 });
 
 export default Explore;

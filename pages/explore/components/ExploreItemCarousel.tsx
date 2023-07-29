@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Dimensions,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 import CATEGORIES from "../../../config/CATEGORIES";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "./HeartButton";
+import ImageCarousel from "./ImageCarousel";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
@@ -20,6 +20,9 @@ interface ExploreItemCarouselProps {
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
+const cardWidth: number = width * 0.8;
+const cardHeight: number = height * 0.6;
+
 function ExploreItemCarousel({
   activeCategory,
   navigation,
@@ -27,36 +30,47 @@ function ExploreItemCarousel({
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      snapToInterval={height * 0.6}
+      snapToInterval={height * 0.55}
       decelerationRate="fast"
       pagingEnabled
       style={{ marginVertical: 20 }}
     >
       {/* TODO: configure getting the data from Firebase instead */}
+
       {CATEGORIES[activeCategory].items.map((item, index) => (
-        <View>
+        <View key={index}>
           <View style={styles.heartButtonContainer}>
             <HeartButton />
           </View>
-          <Pressable
-            style={styles.card}
-            key={index}
-            onPress={() =>
-              navigation.navigate("Detail", {
-                item: item,
-                navigation: navigation,
-              })
-            }
-          >
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.title}> {item.title} </Text>
-              <Text style={styles.price}> {item.price} </Text>
-            </View>
 
-            <View style={styles.descriptionBackground}></View>
+          <View style={styles.card}>
+            <Pressable
+              key={index}
+              style={styles.descriptionBackground}
+              onPress={() =>
+                navigation.navigate("Detail", {
+                  item: item,
+                  navigation: navigation,
+                })
+              }
 
-            <Image source={item.image} style={styles.image} />
-          </Pressable>
+              // Uncomment this section to see the Gallery view
+              // navigation.navigate("Gallery", {
+              //   item: item,
+              //   navigation: navigation,
+              // })}
+            >
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.title}> {item.title} </Text>
+                <Text style={styles.price}> {item.price} </Text>
+              </View>
+            </Pressable>
+            <ImageCarousel
+              width={cardWidth}
+              height={cardHeight}
+              resizeMode="cover"
+            />
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -67,8 +81,8 @@ export default ExploreItemCarousel;
 
 const styles = StyleSheet.create({
   card: {
-    width: width * 0.8,
-    height: height * 0.6,
+    width: cardWidth,
+    height: cardHeight,
     overflow: "hidden",
     borderRadius: 30,
     marginBottom: 10,
@@ -114,10 +128,5 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
     justifyContent: "flex-end",
-  },
-
-  image: {
-    width: "100%",
-    height: "100%",
   },
 });
