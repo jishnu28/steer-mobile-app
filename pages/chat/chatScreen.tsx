@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { firestore } from "../../firebaseConfig";
@@ -7,6 +8,7 @@ import { Unsubscribe } from "firebase/auth";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import Message from "./components/Message";
 import Input from "./components/Input";
+import COLORS from "../../config/COLORS";
 
 type RootStackParamList = {
     ChatList: undefined;
@@ -41,22 +43,34 @@ const ChatScreen = ({ navigation }: MessagesProps)=> {
   }, [data.chatId]);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.username}>{data.userInfo.displayName}</Text>
-                <View style={styles.messages}>
-                    {messages.map((m: any) => (
-                        <Message message={m} key={m.id} />
-                    ))}
-                </View>
-                <View style={styles.inputContainer}>
-                    <Input/>
-                </View>
-        </View>    
+        <SafeAreaView style={styles.background}>
+            <View style={styles.usernameContainer}>
+              <Text style={styles.username}>{data.userInfo.displayName}</Text>
+            </View>
+            <View style={styles.messages}>
+                {messages.map((m: any) => (
+                    <Message message={m} key={m.id} />
+                ))}
+            </View>
+            <View style={styles.inputContainer}>
+                <Input/>
+            </View>
+        </SafeAreaView>    
   );
 };
 
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: COLORS.BEIGE
+    // marginLeft: 16, 
+    // marginRight: 16,  
+  },
+  usernameContainer: {
+    alignItems: "center", // Center the text horizontally
+    marginBottom: 10,
+  },
     messages: {
         // Add styles for the messages container
       },
@@ -66,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   username: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 10,
   },
