@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import COLORS from "../../../config/COLORS";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface DetailInfoCardProps {
@@ -49,14 +48,12 @@ const styles = StyleSheet.create({
     fontFamily: "Avenir",
     fontSize: 30,
     fontWeight: "bold",
-    color: COLORS.BROWN,
   },
 
   priceLabel: {
     alignSelf: "flex-start",
     padding: 10,
     borderRadius: 10,
-    backgroundColor: COLORS.ACCENT,
     marginRight: 10,
   },
 
@@ -64,27 +61,23 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "Avenir",
     fontSize: 20,
-    color: COLORS.BROWN,
   },
 
   bookButton: {
     alignSelf: "flex-start",
     padding: 10,
     borderRadius: 10,
-    backgroundColor: COLORS.GREY,
   },
 
   bookButtonText: {
     textAlign: "left",
     fontFamily: "Avenir",
     fontSize: 20,
-    color: COLORS.WHITE,
   },
 
   description: {
     textAlign: "left",
     fontFamily: "Avenir",
     fontSize: 20,
-    color: COLORS.BROWN,
   },
 });

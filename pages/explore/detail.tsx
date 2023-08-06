@@ -7,11 +7,8 @@ import {
   View,
 } from "react-native";
 
-import COLORS from "../../config/COLORS";
-
 import DetailButtonRow from "./components/DetailButtonRow";
 import DetailInfoCard from "./components/DetailInfoCard";
-
 const width = Dimensions.get("screen").width;
 
 function Detail({ route }: any) {
@@ -37,7 +34,6 @@ const styles = StyleSheet.create({
     top: width * 0.9,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: COLORS.BEIGE,
     padding: 20,
   },
 
