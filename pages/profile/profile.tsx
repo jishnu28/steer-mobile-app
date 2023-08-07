@@ -1,16 +1,15 @@
 import React from "react";
 import { NativeBaseProvider } from "native-base";
-import Modal from "react-native-modal";
 import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import PostsTabView from "./posts";
+import PopupModal from "./PopupModal";
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firebaseAuth, firestore } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { TextInput } from "react-native-gesture-handler";
 
 type RootStackParamList = {
     Profile: undefined;
@@ -24,6 +23,7 @@ type profilePageScreenNavigationProp = NativeStackNavigationProp<
 
 type Props = {
     navigation: profilePageScreenNavigationProp;
+    userProfile: {};
 };
 
 const ProfilePage = ({ navigation }: Props) => {
@@ -38,7 +38,19 @@ const ProfilePage = ({ navigation }: Props) => {
     const [usernameModal, setUsernameModal]= React.useState(false);
     const [emailModal, setEmailModal]= React.useState(false);
 
-    //Code for profile pic upload
+    //Retrieves profile info when page first rendered
+    const getProfile= async () => {
+        const profileRef= doc(firestore, "users", user?.uid);
+        const userProfile= await getDoc(profileRef);
+        console.log(userProfile.data())
+        setProfileInfo(userProfile.data());
+    }
+
+    React.useEffect(() => {
+        getProfile()
+    }, []); 
+
+    //Code for profile picture upload
     const [image, setImage]= React.useState("");
     const checkForCameraRollPermission= async()=>{
         const {status} = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -48,48 +60,6 @@ const ProfilePage = ({ navigation }: Props) => {
             console.log("Media Permissions have been granted")
         }
     }
-
-
-    const getProfile= async () => {
-        const profileRef= doc(firestore, "users", user?.uid);
-        const userProfile= await getDoc(profileRef);
-        console.log(userProfile.data())
-        setProfileInfo(userProfile.data());
-    }
-
-    const saveProfilePic= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            profilePic: image,
-        }); 
-    }
-
-    const saveUsername= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            displayName: username,
-        }); 
-    }
-
-    const saveEmail= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            email: email,
-        }); 
-    }
-
-    React.useEffect(() => {
-        //Prevent empty uri being uploaded when page first renders
-        if (image!=""){
-            saveProfilePic()
-        }
-        getProfile()
-    }, [image]);
-
-    // React.useEffect(() => {
-    //     getProfile()
-    // }, [[], profileInfo]);
-    
 
     React.useEffect(() => {
         checkForCameraRollPermission()
@@ -104,7 +74,33 @@ const ProfilePage = ({ navigation }: Props) => {
         });
         if (!_image.cancelled) {  //checks that the user doesn't close photo library before selecting an image
             setImage(_image.uri);
+            saveProfilePic();
         }
+    }
+
+    const saveProfilePic= async () => {
+        const docRef= doc(firestore, "users", user.uid)
+        await updateDoc(docRef, {
+            profilePic: image,
+        });
+        getProfile() 
+    }
+
+    //Code for profile info upload
+    const saveUsername= async () => {
+        const docRef= doc(firestore, "users", user.uid)
+        await updateDoc(docRef, {
+            displayName: username,
+        }); 
+        getProfile()
+    }
+
+    const saveEmail= async () => {
+        const docRef= doc(firestore, "users", user.uid)
+        await updateDoc(docRef, {
+            email: email,    
+        }); 
+        getProfile()
     }
 
     return (
@@ -113,7 +109,7 @@ const ProfilePage = ({ navigation }: Props) => {
             {/* Profile Info */}
             <View style={[styles.profile, {flex: 2}]}>
                 {/* Profile Pic */}
-                <View>
+                <View style={{width:140, height:140, justifyContent:'center', alignItems:'center'}}>
                     {profileInfo['profilePic']=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
                     {profileInfo['profilePic']!='' && <Image source={{uri: profileInfo['profilePic']}} style={styles.profilePic}/>}
                     <TouchableOpacity 
@@ -144,93 +140,40 @@ const ProfilePage = ({ navigation }: Props) => {
             </View>
 
             {/* Modals */}
-            <Modal 
-                isVisible={usernameModal} 
-                coverScreen= {false}
-                backdropOpacity= {0.4}
-                style= {{justifyContent:'center', alignItems:'center'}}
-                >
-                <View style={styles.modalPopUp}>
-                    <Text style={styles.modalText}>Enter your new username below:</Text>
-                    <TextInput
-                        style={styles.infoBox}
-                        value={username}
-                        onChangeText={newUsername => setUsername(newUsername)}
-                    />
-                    <View style={styles.modalButtonSection}>
-                        <TouchableOpacity
-                            onPress={()=>{
-                                setUsername('')
-                                setUsernameModal(!usernameModal)
-                            }}
-                            style={styles.modalButton}
-                        >
-                            <Text>Back</Text>
-                        </TouchableOpacity>
+            <PopupModal
+                inputName="username"
+                inputValue={username}
+                setInputValue={setUsername}
+                saveValue= {saveUsername}
+                isModalVisible= {usernameModal}
+                setModalVisibility= {setUsernameModal}
+            />
 
-                        <TouchableOpacity
-                            onPress={()=>{
-                                saveUsername()
-                                setUsername('')
-                                setUsernameModal(!usernameModal)
-                            }}
-                            style={styles.modalButton}
-                        >
-                            <Text>Confirm</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            </Modal>
-
-            <Modal 
-                isVisible={emailModal} 
-                coverScreen= {false}
-                backdropOpacity= {0.4}
-                style= {{justifyContent:'center', alignItems:'center'}}
-                >
-                <View style={styles.modalPopUp}>
-                    <Text style={styles.modalText}>Enter your new email below:</Text>
-                    <TextInput
-                        style={styles.infoBox}
-                        value={email}
-                        onChangeText={newEmail => setEmail(newEmail)}
-                    />
-                    <View style={styles.modalButtonSection}>
-                        <TouchableOpacity
-                            onPress={()=>{
-                                setEmail('')
-                                setEmailModal(!emailModal)
-                            }}
-                            style={styles.modalButton}
-                        >
-                            <Text>Back</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={()=>{
-                                saveEmail()
-                                setEmail('')
-                                setEmailModal(!emailModal)
-                            }}
-                            style={styles.modalButton}
-                        >
-                            <Text>Confirm</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            </Modal>
+            <PopupModal
+                inputName="email"
+                inputValue={email}
+                setInputValue={setEmail}
+                saveValue= {saveEmail}
+                isModalVisible= {emailModal}
+                setModalVisibility= {setEmailModal}
+            />
+            
             
             {/* Posts */}
             <View style={[styles.posts, {flex: 5}]}>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Saved</Text>
+                </View>
                 <PostsTabView/>
             </View>
+            
             <TouristsNavbar navigation={navigation} currentIndex={3} />
         </SafeAreaView>
     </NativeBaseProvider>
 );
 };
+
+export default ProfilePage;
 
 const styles = StyleSheet.create({
     container: {
@@ -247,16 +190,16 @@ const styles = StyleSheet.create({
     },
 
     profilePic : {
-        width: 120, 
-        height: 120, 
-        borderRadius: 60, 
+        width: 130, 
+        height: 130, 
+        borderRadius: 65, 
         borderWidth:2, 
         borderColor: '#88838A',
     },
 
     editProfilePic: {
         position:'absolute', 
-        left:'80%', 
+        left:'75%', 
         bottom:'0%'
     },
 
@@ -280,6 +223,20 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         backgroundColor: '#F8FAF0',
+    },
+
+    header: {
+        alignItems: 'center',
+        padding: 10,
+        borderBottomWidth: 0.5,
+        borderColor: '#88838A',
+    },
+
+    headerText: {
+        // fontFamily: 'Bitter',
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#88838A',
     },
 
     posts: {
@@ -328,4 +285,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ProfilePage;
