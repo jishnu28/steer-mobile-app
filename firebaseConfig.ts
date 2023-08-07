@@ -27,5 +27,7 @@ export const firestore = getFirestore(firebaseApp);
 export const firebaseStorage = getStorage(firebaseApp); // this storage is for images and similar media objects
 export const messageCollection = collection(firestore, "messages");
 export const messageQuery = query(messageCollection, orderBy("createdAt", "desc"));
+export const accomodationsCollection = collection(firestore, "accomodations");
+
 // for additional services, like analytics and storage, initialise them here and use their exports in other files
 // The alternative way of initialising them in their respective files threw a weird error

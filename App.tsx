@@ -1,4 +1,4 @@
-  import * as React from "react";
+import * as React from "react";
 
   import Home from "./pages/home";
   import ItineraryLanding from "./pages/itinerary/itineraryLanding";
@@ -7,13 +7,14 @@
   import ProfilePage from "./pages/profile/profile";
   import Explore from "./pages/explore/explore";
 
-  import { NavigationContainer } from "@react-navigation/native";
-  import { createNativeStackNavigator } from "@react-navigation/native-stack";
-  import Detail from "./pages/explore/detail";
-  import LoginScreen from "./pages/login";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Detail from "./pages/explore/detail";
+import LoginScreen from "./pages/login";
 import { ChatContextProvider } from "./pages/chat/ChatContext";
+import Gallery from "./pages/explore/gallery";
 
-  const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
   export default function App() {
     /**
@@ -46,6 +47,6 @@ import { ChatContextProvider } from "./pages/chat/ChatContext";
             <Stack.Screen name="Profile" component={ProfilePage} />
         </Stack.Navigator>
       </NavigationContainer>
-      </ChatContextProvider>
-    );
-  }
+    </ChatContextProvider>
+  );
+}
