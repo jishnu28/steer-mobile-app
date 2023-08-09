@@ -4,7 +4,8 @@ import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'rea
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import PostsTabView from "./posts";
-import PopupModal from "./PopupModal";
+import SavedItemCarousel from "./components/SavedItemCarousel";
+import PopupModal from "./components/PopupModal";
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firebaseAuth, firestore } from "../../firebaseConfig";
@@ -107,6 +108,7 @@ const ProfilePage = ({ navigation }: Props) => {
     <NativeBaseProvider>
         <SafeAreaView style={styles.container}>
             {/* Profile Info */}
+
             <View style={[styles.profile, {flex: 2}]}>
                 {/* Profile Pic */}
                 <View style={{width:140, height:140, justifyContent:'center', alignItems:'center'}}>
@@ -158,16 +160,20 @@ const ProfilePage = ({ navigation }: Props) => {
                 setModalVisibility= {setEmailModal}
             />
             
-            
             {/* Posts */}
-            <View style={[styles.posts, {flex: 5}]}>
+            {/* marginBottom to leave space for the NavBar */}
+            <View style={[styles.posts, {flex: 5, marginBottom: 60}]}>  
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>Saved</Text>
+                    <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
                 </View>
-                <PostsTabView/>
+                    <SavedItemCarousel
+                        activeCategory={0}
+                        navigation={navigation}
+                    />
             </View>
             
             <TouristsNavbar navigation={navigation} currentIndex={3} />
+
         </SafeAreaView>
     </NativeBaseProvider>
 );
@@ -227,7 +233,7 @@ const styles = StyleSheet.create({
 
     header: {
         alignItems: 'center',
-        padding: 10,
+        paddingTop: 10,
         borderBottomWidth: 0.5,
         borderColor: '#88838A',
     },
@@ -244,6 +250,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     modalPopUp: {
