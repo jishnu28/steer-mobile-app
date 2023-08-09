@@ -3,11 +3,11 @@ import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
-import PostsTabView from "./posts";
+import UploadPic from "./components/UploadPic";
+import UploadInfo from "./components/UploadInfo";
 import SavedItemCarousel from "./components/SavedItemCarousel";
 import PopupModal from "./components/PopupModal";
 import * as ImagePicker from 'expo-image-picker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firebaseAuth, firestore } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -107,38 +107,21 @@ const ProfilePage = ({ navigation }: Props) => {
     return (
     <NativeBaseProvider>
         <SafeAreaView style={styles.container}>
-            {/* Profile Info */}
 
+            {/* Profile Info */}
             <View style={[styles.profile, {flex: 2}]}>
-                {/* Profile Pic */}
-                <View style={{width:140, height:140, justifyContent:'center', alignItems:'center'}}>
-                    {profileInfo['profilePic']=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
-                    {profileInfo['profilePic']!='' && <Image source={{uri: profileInfo['profilePic']}} style={styles.profilePic}/>}
-                    <TouchableOpacity 
-                        onPress= {addImage}
-                        style={styles.editProfilePic}>
-                        <MaterialCommunityIcons name="plus-circle" size={36} color="#FFAF87"/>
-                    </TouchableOpacity>
-                </View>
-                {/* Profile Info */}
-                <View style={{marginLeft:15}}>
-                    <View style= {styles.button}>
-                        <Text style={styles.profileText} numberOfLines={2}>{profileInfo["displayName"]}</Text>
-                        <TouchableOpacity
-                            onPress={()=>setUsernameModal(!usernameModal)}
-                        >
-                            <MaterialCommunityIcons name="pencil" size={20} color="#88838A"/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style= {styles.button}>
-                        <Text style={styles.profileText} numberOfLines={2}>{profileInfo["email"]}</Text>
-                        <TouchableOpacity
-                            onPress={()=>setEmailModal(!emailModal)}
-                        >
-                            <MaterialCommunityIcons name="pencil" size={20} color="#88838A"/>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <UploadPic 
+                    url={profileInfo['profilePic']} 
+                    addImage={addImage}
+                />
+                <UploadInfo 
+                    name={profileInfo['displayName']} 
+                    email={profileInfo['email']}
+                    isUserModalVisible={usernameModal}
+                    setUserModalVisible={setUsernameModal}
+                    isEmailModalVisible={emailModal}
+                    setEmailModalVisible={setEmailModal}
+                />
             </View>
 
             {/* Modals */}
@@ -193,42 +176,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-
-    profilePic : {
-        width: 130, 
-        height: 130, 
-        borderRadius: 65, 
-        borderWidth:2, 
-        borderColor: '#88838A',
-    },
-
-    editProfilePic: {
-        position:'absolute', 
-        left:'75%', 
-        bottom:'0%'
-    },
-
-    profileText: {
-        // fontFamily: 'Bitter',
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#88838A',
-        maxWidth: '80%',
-        marginVertical: 1,
-        marginHorizontal: 5,
-    },
-
-    button: {
-        flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: "center", 
-        borderRadius: 20,
-        marginVertical:3,
-        width: 200,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        backgroundColor: '#F8FAF0',
     },
 
     header: {

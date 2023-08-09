@@ -1,6 +1,12 @@
 import React from "react";
 import Modal from "react-native-modal";
-import {StyleSheet, Text, TextInput, View, TouchableOpacity} from 'react-native';
+import {
+    StyleSheet, 
+    Text, 
+    TextInput, 
+    View, 
+    TouchableOpacity
+} from 'react-native';
 
 interface PopupModalProps {
     //https://medium.com/@jeffbutsch/typescript-interface-functions-c691a108e3f1
@@ -12,7 +18,14 @@ interface PopupModalProps {
     setModalVisibility(newVisibility: boolean): any; //set modal value to useState
 };
 
-const PopupModal = ({inputName, inputValue, setInputValue, saveValue, isModalVisible, setModalVisibility}: PopupModalProps) => {
+const PopupModal = ({
+        inputName, 
+        inputValue, 
+        setInputValue, 
+        saveValue, 
+        isModalVisible, 
+        setModalVisibility
+    }: PopupModalProps) => {
     return (
         <Modal 
             isVisible={isModalVisible} 
@@ -48,7 +61,6 @@ const PopupModal = ({inputName, inputValue, setInputValue, saveValue, isModalVis
                     >
                         <Text>Confirm</Text>
                     </TouchableOpacity>
-
                 </View>
             </View>
         </Modal>
