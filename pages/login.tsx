@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
+  Dimensions,
 } from "react-native";
 import {
   createUserWithEmailAndPassword,
@@ -20,6 +22,8 @@ interface LoginProps {
 }
 
 const auth = firebaseAuth;
+
+const { width, height } = Dimensions.get("screen");
 
 const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -68,12 +72,18 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      keyboardVerticalOffset={-300} // to fix keyboard pushing content above in android devices
+      keyboardVerticalOffset={-0.5 * height} // to fix keyboard pushing content above in android devices
       behavior="padding"
     >
+      <View>
+        <Image
+          source={require("../assets/images/steer-logo.png")}
+          style={{ width: 191, height: 151, marginBottom: 40 }}
+        />
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Email"
+          placeholder="Email address"
           value={email}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
@@ -95,7 +105,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           onPress={handleSignUp}
           style={[styles.button, styles.buttonOutline]}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Text style={styles.buttonOutlineText}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -107,6 +117,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F8FAF0",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#E5E8D9",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
@@ -128,26 +139,27 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: "#0782F9",
+    backgroundColor: "#FFAF87",
     width: "100%",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 100,
     alignItems: "center",
   },
   buttonOutline: {
-    backgroundColor: "white",
+    backgroundColor: "#F8FAF0",
     marginTop: 5,
-    borderColor: "#0782F9",
+    borderColor: "#FFAF87",
     borderWidth: 2,
+    borderRadius: 100,
   },
   buttonText: {
     color: "white",
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 18,
   },
   buttonOutlineText: {
-    color: "#0782F9",
+    color: "#FFAF87",
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 18,
   },
 });
