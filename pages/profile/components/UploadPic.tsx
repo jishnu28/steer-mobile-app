@@ -8,12 +8,12 @@ interface UploadPicProps {
 }
 
 function UploadPic({
-        url, 
-        addImage,
-    }:  UploadPicProps) {
+    url, 
+    addImage,
+}:  UploadPicProps) {
     return (
         <View style={{width:140, height:140, justifyContent:'center', alignItems:'center'}}>
-            {url=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
+            {url=='' && <MaterialCommunityIcons name="account-circle" size={146} color="#88838A"/>}
             {url!='' && <Image source={{uri: url}} style={styles.profilePic}/>}
             <TouchableOpacity 
                 onPress= {addImage}

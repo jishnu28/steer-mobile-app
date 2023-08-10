@@ -80,86 +80,107 @@ const ProfilePage = ({ navigation }: Props) => {
     }
 
     const saveProfilePic= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            profilePic: image,
-        });
-        getProfile() 
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                profilePic: image,
+            });
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating profile pic to users collection:",
+                error
+            );
+        }
     }
 
     //Code for profile info upload
     const saveUsername= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            displayName: username,
-        }); 
-        getProfile()
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                displayName: username,
+            }); 
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating username to users collection:",
+                error
+            );
+        }
     }
 
     const saveEmail= async () => {
-        const docRef= doc(firestore, "users", user.uid)
-        await updateDoc(docRef, {
-            email: email,    
-        }); 
-        getProfile()
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                email: email,    
+            }); 
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating email to users collection:",
+                error
+            );
+        }
     }
 
     return (
-    <NativeBaseProvider>
-        <SafeAreaView style={styles.container}>
+        <NativeBaseProvider>
+            <SafeAreaView style={styles.container}>
 
-            {/* Profile Info */}
-            <View style={[styles.profile, {flex: 2}]}>
-                <UploadPic 
-                    url={profileInfo['profilePic']} 
-                    addImage={addImage}
-                />
-                <UploadInfo 
-                    name={profileInfo['displayName']} 
-                    email={profileInfo['email']}
-                    isUserModalVisible={usernameModal}
-                    setUserModalVisible={setUsernameModal}
-                    isEmailModalVisible={emailModal}
-                    setEmailModalVisible={setEmailModal}
-                />
-            </View>
-
-            {/* Modals */}
-            <PopupModal
-                inputName="username"
-                inputValue={username}
-                setInputValue={setUsername}
-                saveValue= {saveUsername}
-                isModalVisible= {usernameModal}
-                setModalVisibility= {setUsernameModal}
-            />
-
-            <PopupModal
-                inputName="email"
-                inputValue={email}
-                setInputValue={setEmail}
-                saveValue= {saveEmail}
-                isModalVisible= {emailModal}
-                setModalVisibility= {setEmailModal}
-            />
-            
-            {/* Posts */}
-            {/* marginBottom to leave space for the NavBar */}
-            <View style={[styles.posts, {flex: 5, marginBottom: 60}]}>  
-                <View style={styles.header}>
-                    <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
-                </View>
-                    <SavedItemCarousel
-                        activeCategory={0}
-                        navigation={navigation}
+                {/* Profile Info */}
+                <View style={[styles.profile, {flex: 2}]}>
+                    <UploadPic 
+                        url={profileInfo['profilePic']} 
+                        addImage={addImage}
                     />
-            </View>
-            
-            <TouristsNavbar navigation={navigation} currentIndex={3} />
+                    <UploadInfo 
+                        name={profileInfo['displayName']} 
+                        email={profileInfo['email']}
+                        isUserModalVisible={usernameModal}
+                        setUserModalVisible={setUsernameModal}
+                        isEmailModalVisible={emailModal}
+                        setEmailModalVisible={setEmailModal}
+                    />
+                </View>
 
-        </SafeAreaView>
-    </NativeBaseProvider>
-);
+                {/* Modals */}
+                <PopupModal
+                    inputName="username"
+                    inputValue={username}
+                    setInputValue={setUsername}
+                    saveValue= {saveUsername}
+                    isModalVisible= {usernameModal}
+                    setModalVisibility= {setUsernameModal}
+                />
+
+                <PopupModal
+                    inputName="email"
+                    inputValue={email}
+                    setInputValue={setEmail}
+                    saveValue= {saveEmail}
+                    isModalVisible= {emailModal}
+                    setModalVisibility= {setEmailModal}
+                />
+                
+                {/* Posts */}
+                {/* marginBottom to leave space for the NavBar */}
+                <View style={[styles.posts, {flex: 5, marginBottom: 0}]}>  
+                    <View style={styles.header}>
+                        <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
+                    </View>
+                        <SavedItemCarousel
+                            activeCategory={0}
+                            navigation={navigation}
+                        />
+                </View>
+                
+                <TouristsNavbar navigation={navigation} currentIndex={3} />
+
+            </SafeAreaView>
+        </NativeBaseProvider>
+    );
 };
 
 export default ProfilePage;

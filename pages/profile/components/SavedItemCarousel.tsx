@@ -27,13 +27,15 @@ function SavedItemCarousel({
   activeCategory,
   navigation,
 }: SavedItemCarouselProps) {
+
+  
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       snapToInterval={height * 0.55}
       decelerationRate="fast"
       pagingEnabled
-      style={{ marginVertical: 20 }}
+      style={{ marginVertical: 10 }}
     >
       {/* TODO: configure getting the data from Firebase instead */}
 
