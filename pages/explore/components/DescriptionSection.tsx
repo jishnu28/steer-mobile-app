@@ -2,13 +2,13 @@ import { Badge, Flex, Text, HStack, Box } from "native-base";
 
 const DescriptionSection = () => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" px="4" py="4">
+    <Flex flexWrap="wrap" flexDirection="row" p="4">
       <HStack
         w="100%"
         px={4}
         justifyContent="center"
-        pb={4}
-        borderBottomColor="blue.200"
+        pb={2}
+        borderBottomColor="#767C77"
         borderBottomWidth={1}
       >
         <Box w="70%" display="flex" justifyContent="center">
@@ -18,7 +18,7 @@ const DescriptionSection = () => {
           <Text fontSize="md">Testing Ave 123</Text>
         </Box>
         <Box w="30%" display="flex" justifyContent="center">
-          <Text fontSize="3xl">
+          <Text fontSize="2xl">
             <Text fontSize="md">$</Text>
             <Text bold fontSize="4xl">
               30
@@ -27,7 +27,7 @@ const DescriptionSection = () => {
           </Text>
         </Box>
       </HStack>
-      <Box px="4" py="4">
+      <Box p={4}>
         <Text>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
           sollicitudin tincidunt neque ut ultrices. Nulla neque magna, elementum

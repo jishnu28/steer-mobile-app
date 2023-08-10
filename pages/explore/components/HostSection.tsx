@@ -5,15 +5,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const HostSection = () => {
   return (
     <Flex flexWrap="wrap" flexDirection="row" justifyContent="center" p={4}>
-      <Box w="95%" pb={2}>
+      <Box w="100%" pb={2}>
         <Heading>Host</Heading>
       </Box>
       <HStack
         flexWrap="wrap"
         justifyContent="center"
         borderRadius={"xl"}
-        bg="amber.200"
-        w="95%"
+        bg="#E5E8D9"
+        w="100%"
         mx={4}
         py={4}
       >
@@ -25,7 +25,7 @@ const HostSection = () => {
           />
         </Box>
         <Box w="50%">
-          <Heading borderBottomWidth={0.5} fontSize="2xl">
+          <Heading w="80%" borderBottomWidth={0.5} fontSize="2xl">
             HostName
           </Heading>
           <HStack pt={2}>
@@ -34,7 +34,7 @@ const HostSection = () => {
             </Text>
             <Icon
               as={<MaterialCommunityIcons name={"star"} />}
-              color="yellow.500"
+              color="#FFAF87"
               size="2xl"
               my={1}
               mr={2}

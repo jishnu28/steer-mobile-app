@@ -1,5 +1,6 @@
-import { Box, Flex, Heading } from "native-base";
-import ReviewsCard from "./ReviewsCard";
+import { Box, Button, Center, Flex, Heading, Icon } from "native-base";
+import ReviewsCard from "./ReviewCard";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const reviewList: string[][] = [
   [
@@ -19,8 +20,23 @@ const reviewList: string[][] = [
 const ReviewSection = () => {
   return (
     <Flex flexWrap="wrap" flexDirection="row" justifyContent="center" p={4}>
-      <Box w="95%" pb={2}>
+      <Box w="75%" pb={2} justifyContent={"center"}>
         <Heading>Reviews</Heading>
+      </Box>
+      <Box w="25%" pb={2}>
+        <Button
+          bg="#FFAF87"
+          borderRadius={100}
+          onPress={() => console.log("add review button pressed")}
+          leftIcon={
+            <Icon
+              color="black"
+              as={MaterialCommunityIcons}
+              name="plus-circle-outline"
+              size="8"
+            />
+          }
+        />
       </Box>
       <Flex
         flexWrap="wrap"
@@ -28,12 +44,12 @@ const ReviewSection = () => {
         px="4"
         py="4"
         justifyContent="center"
-        bg="amber.100"
-        w="95%"
+        bg="#E5E8D9"
+        w="100%"
         borderRadius="xl"
       >
         {reviewList.map((review) => (
-          <ReviewsCard avatarUri={review[0]} text={review[1]} />
+          <ReviewsCard key={review[1]} avatarUri={review[0]} text={review[1]} />
         ))}
       </Flex>
     </Flex>

@@ -9,9 +9,9 @@ interface ReviewsCardProps {
 
 const { width, height } = Dimensions.get("screen");
 
-const ReviewsCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
+const ReviewCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
   return (
-    <HStack bg={"amber.400"} px={4} my={2} py={4} borderRadius="xl" w="100%">
+    <HStack bg={"#FFF8F5"} px={4} my={2} py={4} borderRadius="xl" w="100%">
       <Box>
         <Avatar source={{ uri: avatarUri }} mr={4} />
       </Box>
@@ -22,4 +22,4 @@ const ReviewsCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
   );
 };
 
-export default ReviewsCard;
+export default ReviewCard;

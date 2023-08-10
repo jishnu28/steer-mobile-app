@@ -8,9 +8,9 @@ const tagList: string[] = [
   "Rustic",
 ];
 
-const AmenitiesSection = () => {
+const TagsSection = () => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" px="4" py="4">
+    <Flex flexWrap="wrap" flexDirection="row" p={4}>
       {tagList.map((tag) => (
         <Badge
           key={tag}
@@ -18,7 +18,7 @@ const AmenitiesSection = () => {
           minHeight="8"
           mb="2"
           variant="outline"
-          borderColor="amber.700"
+          borderColor="#767C77"
           borderRadius="md"
         >
           {tag}
@@ -28,4 +28,4 @@ const AmenitiesSection = () => {
   );
 };
 
-export default AmenitiesSection;
+export default TagsSection;

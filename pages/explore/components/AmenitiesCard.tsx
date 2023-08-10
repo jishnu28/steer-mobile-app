@@ -12,7 +12,7 @@ const AmenitiesCard = ({ iconName, text }: AmenitiesCardProps) => {
     <HStack w="40%" mx={4}>
       <Icon
         as={<MaterialCommunityIcons name={iconName} />}
-        color="black"
+        color="#767C77"
         size="lg"
         my={1}
         mr={2}

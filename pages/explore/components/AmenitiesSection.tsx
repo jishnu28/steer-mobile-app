@@ -13,7 +13,7 @@ const amenitiesList: string[][] = [
 
 const AmenitiesSection = () => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" px="4" py="4">
+    <Flex flexWrap="wrap" flexDirection="row" p={4}>
       {amenitiesList.map((amenity) => (
         <AmenitiesCard
           key={amenity[0]}
