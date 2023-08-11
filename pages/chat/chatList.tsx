@@ -14,7 +14,7 @@ import ChatButton from "./components/ChatButton";
 
 type RootStackParamList = {
     ChatList: undefined;
-    ChatScreen: undefined;
+    ChatScreen: { chatId: string } | undefined;
 };
 
 type chatPageNavigationProp = NativeStackNavigationProp<
@@ -57,8 +57,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
       return () => unsubscribe();
     }, []);
 
-    const imageUrl = 'https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png';
-
+    const imageUrl = 'https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png'; //to replace with code to retrieve profile pic from db
 
     return (
       <NativeBaseProvider>
@@ -79,11 +78,6 @@ const ChatList = ({ navigation }: ChatListProps) => {
               </View>
             </TouchableOpacity>
           ))}
-
-          <View>
-            <ChatButton/>
-          </View>
-
           <TouristsNavbar navigation={navigation} currentIndex={2} />
         </SafeAreaView>
         </NativeBaseProvider>
@@ -125,22 +119,3 @@ const ChatList = ({ navigation }: ChatListProps) => {
     });
     
 export default ChatList;
-
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   chatContainer: {
-//     padding: 10,
-//     borderBottomWidth: 1,
-//     borderBottomColor: "#ccc",
-//   },
-//   chatText: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-// });

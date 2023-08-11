@@ -1,29 +1,81 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View, Text  } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
 import COLORS from "../../../config/COLORS";
+import { firebaseAuth } from "../../../firebaseConfig";
+import { ChatContext } from "../ChatContext";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-function ChatButton() {
+type RootStackParamList = {
+  ChatButton: undefined;
+  ChatScreen: { chatId: string } | undefined;
+};
+
+type launchChatPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ChatButton"
+>;
+
+type LaunchChatProps = {
+  navigation: launchChatPageNavigationProp;
+};
+
+
+const auth = firebaseAuth;
+
+const ChatButton =( {navigation}: LaunchChatProps ) => {
+  const { dispatch } = useContext(ChatContext);
+  const currentUser = { 
+    displayName: "John Doe",
+    email: auth?.currentUser?.email,
+    uid: auth?.currentUser?.uid,
+  };
+
+  const currentUserId = currentUser.uid || "";
+
+
+  const handleSelectLaunchChat = () => {
+
+    const hostId = "bQeden5g87gzkD7CTz5R950gHcE3"; // to replace with code to retrieve host id from database
+    const chatId =
+      currentUserId < hostId ? currentUserId + hostId : hostId + currentUserId;
+
+    console.log(chatId);
+    navigation.navigate("ChatScreen", { chatId });
+    // : 'bQeden5g87gzkD7CTz5R950gHcE3pNgCVARvtJhIExll4BM3qYdplNK2' 
+  };
+
   return (
       <TouchableOpacity 
-        onPress={() => console.log('Favorited, to be implemented')}
-        style={styles.heartButton}>
-        <Ionicons name="chatbubble-ellipses-outline" size={45} color="black" />
+      onPress={handleSelectLaunchChat}
+      style={styles.buttonContainer}>
+        <Text style={styles.buttonText}>Message to Book</Text>
       </TouchableOpacity>
   );
-}
+};
 
-export default ChatButton;
 
 const styles = StyleSheet.create({
-  heartButton: {
-    backgroundColor: COLORS.ACCENT,
-    borderRadius: 100,
-    height: 60,
-    width: 60,
-    padding: 8,
-    alignSelf: "flex-end",
+  buttonContainer: {
+    backgroundColor: "#FFAF87", // Change to your desired button color
+    borderRadius: 30,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  buttonText: {
+    color: COLORS.WHITE,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
+
+export default ChatButton;

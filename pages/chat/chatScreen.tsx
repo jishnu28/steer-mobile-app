@@ -12,7 +12,7 @@ import COLORS from "../../config/COLORS";
 
 type RootStackParamList = {
     ChatList: undefined;
-    ChatScreen: undefined;
+    ChatScreen: { chatId: string } | undefined;
 };
 
 type messagesNavigationProp = NativeStackNavigationProp<
