@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     top: width * 0.9,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: COLORS.BEIGE,
     padding: 20,
   },
 

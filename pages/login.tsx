@@ -50,10 +50,21 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       console.log("Registered with:", user.email);
 
       await setDoc(doc(firestore, "userChats", user.uid), {});
+      await setDoc(doc(firestore, "users", user.uid), 
+        {
+          displayName: "Some name",
+          email: user.email,
+          uid: user.uid,
+          profilePic: "",
+        }
+      );
+
     } catch (error: any) {
       const errorMessage = error.message;
       alert(errorMessage);
     }
+
+
   };
 
   const handleLogin = () => {
