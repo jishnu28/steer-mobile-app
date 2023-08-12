@@ -1,13 +1,15 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
 import { NativeBaseProvider, Box } from "native-base";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Text,
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { firebaseAuth } from "../firebaseConfig";
@@ -59,7 +61,7 @@ const Home = ({ navigation }: HomeProps) => {
             uri: "https://picsum.photos/200/300",
           }}
         />
-        <StatusBar style="auto" />
+        <ExpoStatusBar style="auto" />
         <Text>Current user: {auth.currentUser?.email}</Text>
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: "beige",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   button: {
     backgroundColor: "#0782F9",

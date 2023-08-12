@@ -5,6 +5,7 @@ import ItineraryLanding from "../pages/itinerary/itineraryLanding";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
+import { Platform } from "react-native";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,11 +18,10 @@ export default function HomeTabs() {
       backBehavior="history"
       barStyle={{
         backgroundColor: "#FFAF87",
-        height: 82,
         borderTopWidth: 1,
         borderTopColor: "#FF691F",
+        height: 80,
       }}
-      shifting={true}
     >
       <Tab.Screen
         name="Explore"

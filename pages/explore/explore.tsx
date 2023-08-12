@@ -1,6 +1,12 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import { NativeBaseProvider, ScrollView } from "native-base";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Platform,
+  StatusBar,
+} from "react-native";
+import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
@@ -8,8 +14,6 @@ import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
 
 import ExploreMenu from "./components/ExploreMenu";
-import Carousel from "react-native-snap-carousel";
-import CATEGORIES from "../../config/CATEGORIES";
 
 const handleCreateAccommodation = async () => {
   try {
@@ -65,10 +69,10 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "#E5E8D9",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 
   container: {
-    padding: 20,
     alignItems: "center",
   },
 

@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Platform,
+  StatusBar,
+} from "react-native";
 import { onSnapshot, doc, collection } from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../firebaseConfig";
 import { ChatContext } from "./ChatContext";
@@ -90,7 +97,8 @@ const ChatList = ({ navigation }: ChatListProps) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: COLORS.BEIGE,
+    backgroundColor: "#E5E8D9",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     // marginLeft: 16,
     // marginRight: 16,
   },
