@@ -3,9 +3,14 @@ import { NativeBaseProvider } from "native-base";
 import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
-import PostsTabView from "./posts";
+import UploadPic from "./components/UploadPic";
+import UploadInfo from "./components/UploadInfo";
+import SavedItemCarousel from "./components/SavedItemCarousel";
+import PopupModal from "./components/PopupModal";
 import * as ImagePicker from 'expo-image-picker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { firebaseAuth, firestore } from "../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 type RootStackParamList = {
     Profile: undefined;
@@ -19,11 +24,34 @@ type profilePageScreenNavigationProp = NativeStackNavigationProp<
 
 type Props = {
     navigation: profilePageScreenNavigationProp;
+    userProfile: {};
 };
 
 const ProfilePage = ({ navigation }: Props) => {
 
-    //Code for profile pic upload
+    //Used for user info retrieval
+    const [user, loading, error]= useAuthState(firebaseAuth);
+    const [profileInfo, setProfileInfo]= React.useState({});
+
+    //Used to set user info
+    const [username, setUsername]= React.useState('');
+    const [email, setEmail]= React.useState('');
+    const [usernameModal, setUsernameModal]= React.useState(false);
+    const [emailModal, setEmailModal]= React.useState(false);
+
+    //Retrieves profile info when page first rendered
+    const getProfile= async () => {
+        const profileRef= doc(firestore, "users", user?.uid);
+        const userProfile= await getDoc(profileRef);
+        console.log(userProfile.data())
+        setProfileInfo(userProfile.data());
+    }
+
+    React.useEffect(() => {
+        getProfile()
+    }, []); 
+
+    //Code for profile picture upload
     const [image, setImage]= React.useState("");
     const checkForCameraRollPermission= async()=>{
         const {status} = await ImagePicker.getMediaLibraryPermissionsAsync();
@@ -47,44 +75,115 @@ const ProfilePage = ({ navigation }: Props) => {
         });
         if (!_image.cancelled) {  //checks that the user doesn't close photo library before selecting an image
             setImage(_image.uri);
+            saveProfilePic();
         }
     }
-    
+
+    const saveProfilePic= async () => {
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                profilePic: image,
+            });
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating profile pic to users collection:",
+                error
+            );
+        }
+    }
+
+    //Code for profile info upload
+    const saveUsername= async () => {
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                displayName: username,
+            }); 
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating username to users collection:",
+                error
+            );
+        }
+    }
+
+    const saveEmail= async () => {
+        try {
+            const docRef= doc(firestore, "users", user.uid)
+            await updateDoc(docRef, {
+                email: email,    
+            }); 
+            getProfile()
+        } catch (error){
+            console.error(
+                "Error updating email to users collection:",
+                error
+            );
+        }
+    }
+
     return (
-    <NativeBaseProvider>
-        <SafeAreaView style={styles.container}>
-            {/* Profile Info */}
-            <View style={[styles.profile, {flex: 2}]}>
-                {/* Profile Pic */}
-                <View>
-                    {image=='' && <MaterialCommunityIcons name="account-circle" size={140} color="#88838A"/>}
-                    {image!='' && <Image source={{uri: image}} style={styles.profilePic}/>}
-                    <TouchableOpacity onPress={addImage} style={styles.editProfilePic}>
-                        <MaterialCommunityIcons name="plus-circle" size={36} color="#FFAF87"/>
-                    </TouchableOpacity>
-                </View>
+        <NativeBaseProvider>
+            <SafeAreaView style={styles.container}>
+
                 {/* Profile Info */}
-                <View style={{marginLeft:10}}>
-                    <Text style={styles.profileText}>My username</Text>
-                    <Text style={styles.profileText}>ID: 12345678</Text>
-                    <TouchableOpacity
-                        onPress={()=>navigation.navigate("Edit")}
-                        style= {styles.button}
-                    >
-                        <Text style={styles.profileText}>View Profile</Text>
-                    </TouchableOpacity>
+                <View style={[styles.profile, {flex: 2}]}>
+                    <UploadPic 
+                        url={profileInfo['profilePic']} 
+                        addImage={addImage}
+                    />
+                    <UploadInfo 
+                        name={profileInfo['displayName']} 
+                        email={profileInfo['email']}
+                        isUserModalVisible={usernameModal}
+                        setUserModalVisible={setUsernameModal}
+                        isEmailModalVisible={emailModal}
+                        setEmailModalVisible={setEmailModal}
+                    />
                 </View>
-            </View>
-            
-            {/* Posts */}
-            <View style={[styles.posts, {flex: 4}]}>
-                <PostsTabView/>
-            </View>
-            <TouristsNavbar navigation={navigation} currentIndex={3} />
-        </SafeAreaView>
-    </NativeBaseProvider>
-);
+
+                {/* Modals */}
+                <PopupModal
+                    inputName="username"
+                    inputValue={username}
+                    setInputValue={setUsername}
+                    saveValue= {saveUsername}
+                    isModalVisible= {usernameModal}
+                    setModalVisibility= {setUsernameModal}
+                />
+
+                <PopupModal
+                    inputName="email"
+                    inputValue={email}
+                    setInputValue={setEmail}
+                    saveValue= {saveEmail}
+                    isModalVisible= {emailModal}
+                    setModalVisibility= {setEmailModal}
+                />
+                
+                {/* Posts */}
+                {/* marginBottom to leave space for the NavBar */}
+                <View style={[styles.posts, {flex: 5, marginBottom: 0}]}>  
+                    <View style={styles.header}>
+                        <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
+                    </View>
+                        <SavedItemCarousel
+                            activeCategory={0}
+                            navigation={navigation}
+                        />
+                </View>
+                
+                <TouristsNavbar navigation={navigation} currentIndex={3} />
+
+            </SafeAreaView>
+        </NativeBaseProvider>
+    );
 };
+
+export default ProfilePage;
 
 const styles = StyleSheet.create({
     container: {
@@ -98,40 +197,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-
     },
 
-    profilePic : {
-        width: 120, 
-        height: 120, 
-        borderRadius: 60, 
-        borderWidth:2, 
+    header: {
+        alignItems: 'center',
+        paddingTop: 10,
+        borderBottomWidth: 0.5,
         borderColor: '#88838A',
     },
 
-    editProfilePic: {
-        position:'absolute', 
-        left:'75%', 
-        bottom:'5%'
-    },
-
-    profileText: {
+    headerText: {
         // fontFamily: 'Bitter',
-        fontSize: 18,
-        fontWeight: '600',
+        fontSize: 16,
+        fontWeight: '700',
         color: '#88838A',
-        marginVertical: 1,
-        marginHorizontal: 5,
-    },
-
-    button: {
-        borderWidth: 1.5,
-        borderColor: '#88838A',
-        borderRadius: 20,
-        width: 140,
-        paddingVertical: 5,
-        alignItems: 'center', 
-        backgroundColor: '#F8FAF0',
     },
 
     posts: {
@@ -139,7 +218,46 @@ const styles = StyleSheet.create({
         width: '100%',
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    modalPopUp: {
+        justifyContent: "space-around",
+        alignItems: 'center',
+        width: '90%',
+        height: 160,
+        paddingVertical: 10,
+        borderRadius: 20,
+        backgroundColor: '#E5E8D9'
+    },
+
+    modalText: {
+        fontSize: 17
+    },
+
+    infoBox: {
+        width: '80%',
+        height: 40,
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+    },
+
+    modalButtonSection: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        width: '80%',
+    },
+
+    modalButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
+        width: 80,
+        marginHorizontal: 5,
+        borderWidth: 1,
+        borderRadius: 40,
     }
 });
 
-export default ProfilePage;
