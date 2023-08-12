@@ -1,8 +1,14 @@
 import React from "react";
 import { NativeBaseProvider } from "native-base";
-import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Image,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import UploadPic from "./components/UploadPic";
 import UploadInfo from "./components/UploadInfo";
 import SavedItemCarousel from "./components/SavedItemCarousel";
@@ -13,13 +19,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 type RootStackParamList = {
-    Profile: undefined;
-    Edit: undefined;
+  Profile: undefined;
+  Edit: undefined;
 };
 
 type profilePageScreenNavigationProp = NativeStackNavigationProp<
-    RootStackParamList,
-    "Profile"
+  RootStackParamList,
+  "Profile"
 >;
 
 type Props = {
@@ -61,10 +67,11 @@ const ProfilePage = ({ navigation }: Props) => {
             console.log("Media Permissions have been granted")
         }
     }
+  };
 
-    React.useEffect(() => {
-        checkForCameraRollPermission()
-    }, []);
+  React.useEffect(() => {
+    checkForCameraRollPermission();
+  }, []);
 
     const addImage= async () => {
         let _image= await ImagePicker.launchImageLibraryAsync({
@@ -175,8 +182,6 @@ const ProfilePage = ({ navigation }: Props) => {
                             navigation={navigation}
                         />
                 </View>
-                
-                <TouristsNavbar navigation={navigation} currentIndex={3} />
 
             </SafeAreaView>
         </NativeBaseProvider>
@@ -186,12 +191,12 @@ const ProfilePage = ({ navigation }: Props) => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#E5E8D9',
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#E5E8D9",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
     profile: {
         flexDirection: 'row',

@@ -2,7 +2,6 @@ import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { NativeBaseProvider, Box } from "native-base";
-import TouristsNavbar from "../custom_components/TouristsNavbar";
 import {
   StyleSheet,
   Text,
@@ -65,7 +64,6 @@ const Home = ({ navigation }: HomeProps) => {
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>
         </TouchableOpacity>
-        <TouristsNavbar navigation={navigation} />
       </SafeAreaView>
     </NativeBaseProvider>
   );

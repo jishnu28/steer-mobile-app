@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { NativeBaseProvider, ScrollView } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -11,7 +7,6 @@ import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
 
-import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import ExploreMenu from "./components/ExploreMenu";
 import Carousel from "react-native-snap-carousel";
 import CATEGORIES from "../../config/CATEGORIES";
@@ -61,7 +56,6 @@ function Explore({ navigation }: ExploreProps) {
             navigation={navigation}
           />
         </View>
-        <TouristsNavbar navigation={navigation} currentIndex={0} />
       </SafeAreaView>
     </NativeBaseProvider>
   );
