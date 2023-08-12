@@ -9,7 +9,7 @@ interface LandingProps {
 
 const LandingScreen: React.FC<LandingProps> = ({ navigation }) => {
   useEffect(() => {
-    // Navigate to the Login screen after 100 milliseconds
+    // Navigate to the Login screen after 800 milliseconds
     const timeout = setTimeout(() => {
       navigation.dispatch(StackActions.replace("Login"));
     }, 800);

@@ -9,23 +9,8 @@ import {
   Box,
 } from "native-base";
 import { StyleSheet, SafeAreaView } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import TouristsNavbar from "../../custom_components/TouristsNavbar";
 
-type RootStackParamList = {
-  Itinerary: undefined;
-};
-
-type itineraryLandingScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Itinerary"
->;
-
-type Props = {
-  navigation: itineraryLandingScreenNavigationProp;
-};
-
-const ItineraryLanding = ({ navigation }: Props) => {
+const ItineraryLanding = () => {
   const [natureValue, setnatureValue] = React.useState(50);
   const [trekkingValue, settrekkingValue] = React.useState(50);
   const [birdWatchingValue, setbirdWatchingValue] = React.useState(50);
@@ -132,7 +117,6 @@ const ItineraryLanding = ({ navigation }: Props) => {
             </Stack>
           </Box>
         </ScrollView>
-        <TouristsNavbar navigation={navigation} currentIndex={1} />
       </SafeAreaView>
     </NativeBaseProvider>
   );
