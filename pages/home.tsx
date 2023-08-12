@@ -1,12 +1,10 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { NativeBaseProvider, Box } from "native-base";
+import { NativeBaseProvider, Text, Image } from "native-base";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import {
   StyleSheet,
-  Text,
   SafeAreaView,
-  Image,
   TouchableOpacity,
   Platform,
   StatusBar,
@@ -55,6 +53,8 @@ const Home = ({ navigation }: HomeProps) => {
         <Text>This is our awesome Home screen for now.</Text>
         <Text>Tap on one of the icons in the navbar to open a page.</Text>
         <Image
+          paddingY={10}
+          alt="random image"
           source={{
             width: 200,
             height: 300,
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    fontFamily: "Bitter-Regular",
   },
   button: {
     backgroundColor: "#0782F9",
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontFamily: "Bitter-Regular",
     fontWeight: "700",
     fontSize: 16,
   },

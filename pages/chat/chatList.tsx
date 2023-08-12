@@ -112,12 +112,11 @@ const styles = StyleSheet.create({
     flex: 1, // Take remaining available space
   },
   displayNameText: {
-    fontFamily: "Bitter",
+    fontFamily: "Bitter-Bold",
     fontSize: 26,
-    fontWeight: "bold",
   },
   messageText: {
-    fontFamily: "Bitter",
+    fontFamily: "Bitter-Regular",
     fontSize: 20,
     color: "#88838A",
   },

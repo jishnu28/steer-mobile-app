@@ -13,14 +13,14 @@ interface MessageProps {
 const auth = firebaseAuth;
 
 const Message: React.FC<MessageProps> = ({ message }) => {
-    const currentUser = { 
-        displayName: "John Doe",
-        email: auth?.currentUser?.email,
-        uid: auth?.currentUser?.uid,
-    };
-    const { data } = useContext(ChatContext);
+  const currentUser = {
+    displayName: "John Doe",
+    email: auth?.currentUser?.email,
+    uid: auth?.currentUser?.uid,
+  };
+  const { data } = useContext(ChatContext);
 
-    const isCurrentUser = message.senderId === currentUser.uid;
+  const isCurrentUser = message.senderId === currentUser.uid;
 
   return (
     <View>
@@ -30,9 +30,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
           isCurrentUser ? styles.owner : styles.otherUser,
         ]}
       >
-        <Text style={styles.textMessage}>
-          {message.text}
-        </Text>
+        <Text style={styles.textMessage}>{message.text}</Text>
       </View>
     </View>
   );
@@ -56,6 +54,7 @@ const styles = StyleSheet.create({
   textMessage: {
     color: "black",
     fontSize: 16,
+    fontFamily: "Bitter-Regular",
   },
 });
 

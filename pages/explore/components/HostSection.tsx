@@ -6,7 +6,7 @@ const HostSection = () => {
   return (
     <Flex flexWrap="wrap" flexDirection="row" justifyContent="center" p={4}>
       <Box w="100%" pb={2}>
-        <Heading>Host</Heading>
+        <Heading fontFamily={"Bitter-ExtraBold"}>Host</Heading>
       </Box>
       <HStack
         flexWrap="wrap"
@@ -25,11 +25,16 @@ const HostSection = () => {
           />
         </Box>
         <Box w="50%">
-          <Heading w="80%" borderBottomWidth={0.5} fontSize="2xl">
+          <Heading
+            w="80%"
+            borderBottomWidth={0.5}
+            fontFamily={"Bitter-Bold"}
+            fontSize="2xl"
+          >
             HostName
           </Heading>
           <HStack pt={2}>
-            <Text fontSize="3xl" fontWeight="bold">
+            <Text fontFamily={"Bitter-Bold"} fontSize="3xl">
               4.8
             </Text>
             <Icon

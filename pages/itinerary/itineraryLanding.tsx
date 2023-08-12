@@ -47,11 +47,11 @@ const ItineraryLanding = () => {
     <NativeBaseProvider>
       <SafeAreaView style={styles.container}>
         <Center>
-          <Heading paddingBottom={10}>
+          <Heading fontFamily={"Bitter-Bold"} paddingBottom={10}>
             Oops! We're still working on this:
           </Heading>
-          <Image source={require("../../assets/coding-cat.gif")} />
-          <Text padding={10} fontSize={"md"}>
+          <Image source={require("../../assets/animations/coding-cat.gif")} />
+          <Text fontFamily={"Bitter-Regular"} padding={10} fontSize={"md"}>
             In the meantime, feel free to submit your feedback to us at the
             following link:{" "}
             <EmailLink email="steerapprc4@gmail.com">

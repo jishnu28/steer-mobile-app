@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "native-base";
+import { Flex } from "native-base";
 import AmenitiesCard from "./AmenitiesCard";
 
 const amenitiesList: string[][] = [

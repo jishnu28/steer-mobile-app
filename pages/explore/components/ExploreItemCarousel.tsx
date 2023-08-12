@@ -89,13 +89,15 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#88838A",
   },
 
   price: {
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#FFFFFF",
   },

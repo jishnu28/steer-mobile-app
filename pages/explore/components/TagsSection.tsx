@@ -13,6 +13,7 @@ const TagsSection = () => {
     <Flex flexWrap="wrap" flexDirection="row" p={4}>
       {tagList.map((tag) => (
         <Badge
+          size={"2xl"}
           key={tag}
           mr="4"
           minHeight="8"
@@ -20,6 +21,7 @@ const TagsSection = () => {
           variant="outline"
           borderColor="#767C77"
           borderRadius="md"
+          fontFamily={"Bitter-Medium"}
         >
           {tag}
         </Badge>

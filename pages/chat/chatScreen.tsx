@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontFamily: "Bitter-Bold",
     marginBottom: 10,
   },
 });

@@ -17,7 +17,6 @@ import {
   VStack,
 } from "native-base";
 import BackButton from "../../custom_components/BackButton";
-import Swipeable from "react-native-gesture-handler/Swipeable";
 import ReviewSection from "../../custom_components/ReviewSection";
 import HostSection from "./components/HostSection";
 import AmenitiesSection from "./components/AmenitiesSection";

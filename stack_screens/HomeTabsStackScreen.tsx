@@ -5,7 +5,6 @@ import ItineraryLanding from "../pages/itinerary/itineraryLanding";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
-import { Platform } from "react-native";
 
 const Tab = createMaterialBottomTabNavigator();
 

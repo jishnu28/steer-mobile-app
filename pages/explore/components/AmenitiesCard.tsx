@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, HStack, Icon, Text } from "native-base";
+import { HStack, Icon, Text } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface AmenitiesCardProps {
@@ -17,7 +17,7 @@ const AmenitiesCard = ({ iconName, text }: AmenitiesCardProps) => {
         my={1}
         mr={2}
       />
-      <Text my={1} px={1} fontSize={"lg"}>
+      <Text my={1} px={1} fontFamily="Bitter-Regular" fontSize={"lg"}>
         {text}
       </Text>
     </HStack>

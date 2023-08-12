@@ -39,6 +39,7 @@ export default ExploreMenu;
 const styles = StyleSheet.create({
   activeCategory: {
     color: "#FFAF87",
+    fontFamily: "Bitter-Black",
     fontSize: 18,
     fontWeight: "800",
     textDecorationLine: "underline",
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
 
   inactiveCategory: {
     color: "#88838A",
+    fontFamily: "Bitter-Black",
     fontSize: 18,
     fontWeight: "800",
   },

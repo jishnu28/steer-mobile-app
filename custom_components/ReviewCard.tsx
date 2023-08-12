@@ -11,12 +11,20 @@ const { width, height } = Dimensions.get("screen");
 
 const ReviewCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
   return (
-    <HStack bg={"#FFF8F5"} px={4} my={2} py={4} borderRadius="xl" w="100%">
+    <HStack
+      bg={"#FFF8F5"}
+      px={4}
+      my={2}
+      py={4}
+      borderRadius="xl"
+      w="100%"
+      shadow={"2"}
+    >
       <Box>
         <Avatar source={{ uri: avatarUri }} mr={4} />
       </Box>
       <Box pr="20%">
-        <Text>{text}</Text>
+        <Text fontFamily={"Bitter-Light"}>{text}</Text>
       </Box>
     </HStack>
   );

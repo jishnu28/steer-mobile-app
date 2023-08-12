@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Text  } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import COLORS from "../../../config/COLORS";
 import { firebaseAuth } from "../../../firebaseConfig";
@@ -20,12 +20,11 @@ type LaunchChatProps = {
   navigation: launchChatPageNavigationProp;
 };
 
-
 const auth = firebaseAuth;
 
-const ChatButton =( {navigation}: LaunchChatProps ) => {
+const ChatButton = ({ navigation }: LaunchChatProps) => {
   const { dispatch } = useContext(ChatContext);
-  const currentUser = { 
+  const currentUser = {
     displayName: "John Doe",
     email: auth?.currentUser?.email,
     uid: auth?.currentUser?.uid,
@@ -33,27 +32,25 @@ const ChatButton =( {navigation}: LaunchChatProps ) => {
 
   const currentUserId = currentUser.uid || "";
 
-
   const handleSelectLaunchChat = () => {
-
     const hostId = "bQeden5g87gzkD7CTz5R950gHcE3"; // to replace with code to retrieve host id from database
     const chatId =
       currentUserId < hostId ? currentUserId + hostId : hostId + currentUserId;
 
     console.log(chatId);
     navigation.navigate("ChatScreen", { chatId });
-    // : 'bQeden5g87gzkD7CTz5R950gHcE3pNgCVARvtJhIExll4BM3qYdplNK2' 
+    // : 'bQeden5g87gzkD7CTz5R950gHcE3pNgCVARvtJhIExll4BM3qYdplNK2'
   };
 
   return (
-      <TouchableOpacity 
+    <TouchableOpacity
       onPress={handleSelectLaunchChat}
-      style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Message to Book</Text>
-      </TouchableOpacity>
+      style={styles.buttonContainer}
+    >
+      <Text style={styles.buttonText}>Message to Book</Text>
+    </TouchableOpacity>
   );
 };
-
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -73,8 +70,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: COLORS.WHITE,
+    fontFamily: "Bitter-Bold",
     fontSize: 18,
-    fontWeight: "bold",
   },
 });
 

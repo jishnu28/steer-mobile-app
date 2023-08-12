@@ -45,9 +45,8 @@ const styles = StyleSheet.create({
 
   title: {
     textAlign: "left",
-    fontFamily: "Avenir",
+    fontFamily: "Bitter-Bold",
     fontSize: 30,
-    fontWeight: "bold",
   },
 
   priceLabel: {
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
 
   priceText: {
     textAlign: "left",
-    fontFamily: "Avenir",
+    fontFamily: "Bitter-Medium",
     fontSize: 20,
   },
 
@@ -71,13 +70,13 @@ const styles = StyleSheet.create({
 
   bookButtonText: {
     textAlign: "left",
-    fontFamily: "Avenir",
+    fontFamily: "Bitter-Medium",
     fontSize: 20,
   },
 
   description: {
     textAlign: "left",
-    fontFamily: "Avenir",
+    fontFamily: "Bitter-Regular",
     fontSize: 20,
   },
 });
