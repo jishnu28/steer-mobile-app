@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { firestore } from "../../firebaseConfig";
@@ -7,10 +8,11 @@ import { Unsubscribe } from "firebase/auth";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import Message from "./components/Message";
 import Input from "./components/Input";
+import COLORS from "../../config/COLORS";
 
 type RootStackParamList = {
     ChatList: undefined;
-    ChatScreen: undefined;
+    ChatScreen: { chatId: string } | undefined;
 };
 
 type messagesNavigationProp = NativeStackNavigationProp<
@@ -41,57 +43,40 @@ const ChatScreen = ({ navigation }: MessagesProps)=> {
   }, [data.chatId]);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.username}>{data.userInfo.displayName}</Text>
-                <View style={styles.messages}>
-                    {messages.map((m: any) => (
-                        <Message message={m} key={m.id} />
-                    ))}
-                </View>
-                <View style={styles.inputContainer}>
-                    <Input/>
-                </View>
-        </View>    
+        <SafeAreaView style={styles.background}>
+            <View style={styles.usernameContainer}>
+              <Text style={styles.username}>{data.userInfo.displayName}</Text>
+            </View>
+            <ScrollView>
+            <View >
+                {messages.map((m: any) => (
+                    <Message message={m} key={m.id} />
+                ))}
+            </View>
+            </ScrollView>
+            <View>
+                <Input/>
+            </View>
+        </SafeAreaView>    
   );
 };
 
 
 const styles = StyleSheet.create({
-    messages: {
-        // Add styles for the messages container
-      },
-  container: {
+  background: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: COLORS.BEIGE,
+    marginLeft: 16, 
+    marginRight: 16,  
   },
-  username: {
-    fontSize: 20,
-    fontWeight: "bold",
+  usernameContainer: {
+    alignItems: "center", // Center the text horizontally
     marginBottom: 10,
   },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-  },
-  sendButton: {
-    marginLeft: 10,
-    backgroundColor: "blue",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-  },
-  sendButtonText: {
-    color: "white",
+  username: {
+    fontSize: 30,
     fontWeight: "bold",
+    marginBottom: 10,
   },
 });
 

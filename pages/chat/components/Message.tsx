@@ -20,33 +20,42 @@ const Message: React.FC<MessageProps> = ({ message }) => {
     };
     const { data } = useContext(ChatContext);
 
-
+    const isCurrentUser = message.senderId === currentUser.uid;
 
   return (
     <View>
-      <View style={[styles.message, message.senderId === currentUser.uid && styles.owner]}>
-        <View style={styles.messageInfo}></View>
-        <Text>just now</Text>
-      </View>
-      <View style={styles.messageContent}>
-        <Text>{message.text}</Text>
+      <View
+        style={[
+          styles.messageContainer,
+          isCurrentUser ? styles.owner : styles.otherUser,
+        ]}
+      >
+        <Text style={styles.textMessage}>
+          {message.text}
+        </Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  message: {
-    // Add styles for the message container
+  messageContainer: {
+    borderRadius: 40,
+    padding: 10,
+    marginBottom: 8,
+    minHeight: 40,
   },
   owner: {
-    // Add styles for the owner container
+    alignSelf: "flex-end",
+    backgroundColor: "#A4A0A6",
   },
-  messageInfo: {
-    // Add styles for the message info container
+  otherUser: {
+    alignSelf: "flex-start",
+    backgroundColor: "#D7D5D7",
   },
-  messageContent: {
-    // Add styles for the message content container
+  textMessage: {
+    color: "black",
+    fontSize: 16,
   },
 });
 

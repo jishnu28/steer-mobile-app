@@ -5,6 +5,7 @@ import { updateDoc, doc, arrayUnion, serverTimestamp, collection } from "firebas
 import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import uuidRandom from "uuid-random";
+import COLORS from "../../../config/COLORS";
 
 const auth = firebaseAuth;
 
@@ -52,7 +53,7 @@ const Input: React.FC = () => {
     }};
 
   return (
-    <View style={styles.input}>
+    <View style={styles.inputContainer}>
       <TextInput
         style={styles.textInput}
         placeholder="Type message..."
@@ -67,15 +68,27 @@ const Input: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    // Add styles for the input container
-  },
-  textInput: {
-    // Add styles for the text input
-  },
-  send: {
-    // Add styles for the send button container
-  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 35, // Add horizontal padding
+    paddingBottom: 0, // Add bottom padding
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+},
+textInput: {
+    flex: 1,
+    height: 45,
+    borderWidth: 1,
+    borderColor: COLORS.ACCENT,
+    backgroundColor: COLORS.ACCENT,
+    borderRadius: 40, // Rounded input box
+    paddingHorizontal: 12,
+},
+send: {
+    marginLeft: 8,
+},
 });
 
 export default Input;
