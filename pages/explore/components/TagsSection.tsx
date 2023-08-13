@@ -1,5 +1,9 @@
 import { Badge, Flex } from "native-base";
 
+interface TagsSectionProps {
+  accommodationTags: string[];
+}
+
 const tagList: string[] = [
   "Cosy",
   "Budget-friendly",
@@ -8,10 +12,10 @@ const tagList: string[] = [
   "Rustic",
 ];
 
-const TagsSection = () => {
+const TagsSection: React.FC<TagsSectionProps> = ({ accommodationTags }) => {
   return (
     <Flex flexWrap="wrap" flexDirection="row" p={4}>
-      {tagList.map((tag) => (
+      {accommodationTags.map((tag) => (
         <Badge
           size={"2xl"}
           key={tag}

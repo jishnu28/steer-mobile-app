@@ -1,20 +1,18 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import COLORS from "../../../config/COLORS";
+import { StyleSheet } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Fab, Icon } from "native-base";
 
 type RootStackParamList = {
   ChatButton: undefined;
   ChatScreen: { chatId: string } | undefined;
 };
 
-type launchChatPageNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "ChatButton"
->;
+type launchChatPageNavigationProp = NativeStackNavigationProp<any>;
+// Change 'any' back to 'RootStackParamList,"ChatButton"' if it causes any issues
 
 type LaunchChatProps = {
   navigation: launchChatPageNavigationProp;
@@ -43,36 +41,26 @@ const ChatButton = ({ navigation }: LaunchChatProps) => {
   };
 
   return (
-    <TouchableOpacity
+    <Fab
+      renderInPortal={false}
+      shadow={2}
+      placement="bottom-right"
+      bg="#FFAF87"
+      size="lg"
+      label="Message to book"
       onPress={handleSelectLaunchChat}
-      style={styles.buttonContainer}
-    >
-      <Text style={styles.buttonText}>Message to Book</Text>
-    </TouchableOpacity>
+      icon={
+        <Icon
+          color="white"
+          as={MaterialCommunityIcons}
+          name="chat-outline"
+          size="6"
+        />
+      }
+    />
   );
 };
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    backgroundColor: "#FFAF87", // Change to your desired button color
-    borderRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  buttonText: {
-    color: COLORS.WHITE,
-    fontFamily: "Bitter-Bold",
-    fontSize: 18,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default ChatButton;
