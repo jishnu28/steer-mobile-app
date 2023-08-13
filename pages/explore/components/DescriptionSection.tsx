@@ -1,6 +1,18 @@
 import { Badge, Flex, Text, HStack, Box } from "native-base";
 
-const DescriptionSection = () => {
+interface DescriptionSectionProps {
+  title: string;
+  address: string;
+  price: number;
+  description: string;
+}
+
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({
+  title,
+  address,
+  price,
+  description,
+}) => {
   return (
     <Flex flexWrap="wrap" flexDirection="row" p="4">
       <HStack
@@ -13,10 +25,10 @@ const DescriptionSection = () => {
       >
         <Box w="70%" display="flex" justifyContent="center">
           <Text fontFamily={"Bitter-ExtraBold"} fontSize="3xl">
-            Tiny Testing Tent
+            {title}
           </Text>
           <Text fontFamily="Bitter-Medium" fontSize="md">
-            Testing Ave 123
+            {address}
           </Text>
         </Box>
         <Box w="30%" display="flex" justifyContent="center">
@@ -25,7 +37,7 @@ const DescriptionSection = () => {
               $
             </Text>
             <Text fontFamily={"Bitter-ExtraBold"} fontSize="4xl">
-              30
+              {price}
             </Text>
             <Text fontFamily="Bitter-Medium" fontSize="md">
               /night
@@ -35,9 +47,7 @@ const DescriptionSection = () => {
       </HStack>
       <Box p={4}>
         <Text fontFamily="Bitter-Regular" fontSize={"md"}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-          sollicitudin tincidunt neque ut ultrices. Nulla neque magna, elementum
-          et tellus id, dapibus accumsan dolor.
+          {description}
         </Text>
       </Box>
     </Flex>
