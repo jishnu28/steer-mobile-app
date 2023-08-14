@@ -27,11 +27,19 @@ type Props = {
     userProfile: {};
 };
 
+interface ProfileData {
+    displayName: string;
+    email: string;
+    profilePic: string;
+    uid: string;
+}
+
 const ProfilePage = ({ navigation }: Props) => {
 
     //Used for user info retrieval
     const [user, loading, error]= useAuthState(firebaseAuth);
-    const [profileInfo, setProfileInfo]= React.useState({});
+    // const [profileInfo, setProfileInfo]= React.useState({});
+    const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
 
     //Used to set user info
     const [username, setUsername]= React.useState('');
@@ -41,10 +49,20 @@ const ProfilePage = ({ navigation }: Props) => {
 
     //Retrieves profile info when page first rendered
     const getProfile= async () => {
-        const profileRef= doc(firestore, "users", user?.uid);
-        const userProfile= await getDoc(profileRef);
-        console.log(userProfile.data())
-        setProfileInfo(userProfile.data());
+        try {
+            const profileRef= doc(firestore, "users", user?.uid as any);
+            const userProfile= await getDoc(profileRef);
+            console.log(userProfile.data())
+            // console.log(typeof userProfile.data())
+            setProfileInfo(userProfile.data());
+
+
+        } catch (error){
+            console.error(
+                "Error retrieving profile data:",
+                error
+            );
+        }
     }
 
     React.useEffect(() => {
@@ -73,15 +91,17 @@ const ProfilePage = ({ navigation }: Props) => {
             aspect: [1,1], //speciifies the fixed aspect ratio for your cropped image
             quality: 1, //controls quality of the selected image, value between 0 to 1, which 1 denoting highest quality
         });
-        if (!_image.cancelled) {  //checks that the user doesn't close photo library before selecting an image
-            setImage(_image.uri);
+
+        if (!_image.canceled) {  //checks that the user doesn't close photo library before selecting an image
+            console.log(_image.assets[0].uri)
+            setImage(_image.assets[0].uri);
             saveProfilePic();
         }
     }
 
     const saveProfilePic= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 profilePic: image,
             });
@@ -97,7 +117,7 @@ const ProfilePage = ({ navigation }: Props) => {
     //Code for profile info upload
     const saveUsername= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 displayName: username,
             }); 
@@ -112,7 +132,7 @@ const ProfilePage = ({ navigation }: Props) => {
 
     const saveEmail= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 email: email,    
             }); 
