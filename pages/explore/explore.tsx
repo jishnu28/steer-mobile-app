@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
+import CATEGORIES from "../../config/CATEGORIES";
 
 import ExploreMenu from "./components/ExploreMenu";
 
@@ -57,6 +57,7 @@ function Explore({ navigation }: ExploreProps) {
           />
           <ExploreItemCarousel
             activeCategory={activeCategory}
+            collectionName={CATEGORIES[activeCategory].dbName}
             navigation={navigation}
           />
         </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   Pressable,
@@ -11,9 +11,12 @@ import CATEGORIES from "../../../config/CATEGORIES";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "./HeartButton";
 import ImageCarousel from "./ImageCarousel";
+import { getDocs, collection, DocumentData } from "firebase/firestore";
+import { firestore } from "../../../firebaseConfig";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
+  collectionName: string;
   navigation: NativeStackNavigationProp<any>;
 }
 
@@ -26,7 +29,27 @@ const cardHeight: number = height * 0.6;
 function ExploreItemCarousel({
   activeCategory,
   navigation,
+  collectionName,
 }: ExploreItemCarouselProps) {
+  const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const currItems: DocumentData[] = [];
+      const querySnapshot = await getDocs(
+        collection(firestore, collectionName)
+      );
+      querySnapshot.docs.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        currItems.push(doc.data());
+      });
+      setDbItems(currItems);
+    }
+
+    fetchData();
+    console.log("dbItems", dbItems);
+  }, []);
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -37,7 +60,7 @@ function ExploreItemCarousel({
     >
       {/* TODO: configure getting the data from Firebase instead */}
 
-      {CATEGORIES[activeCategory].items.map((item, index) => (
+      {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
             <HeartButton />
@@ -68,7 +91,7 @@ function ExploreItemCarousel({
             <ImageCarousel
               width={cardWidth}
               height={cardHeight}
-              resizeMode="cover"
+              imagesToShow={item.images ?? []}
             />
           </View>
         </View>

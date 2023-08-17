@@ -5,7 +5,7 @@ import { ScrollView } from "native-base";
 interface ImageCarouselProps {
   width: number;
   height: number;
-  resizeMode: string;
+  imagesToShow: string[];
 }
 
 // TODO: to be replaced with actual images once Firebase understood
@@ -16,7 +16,7 @@ const images = [
   "https://images.pexels.com/photos/4551619/pexels-photo-4551619.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
 ];
 
-function ImageCarousel({ width, height, resizeMode }: ImageCarouselProps) {
+function ImageCarousel({ width, height, imagesToShow }: ImageCarouselProps) {
   const [count, setCount] = useState(0);
   const updatePaging = (event: any) => {
     const slide = Math.ceil(
@@ -31,7 +31,7 @@ function ImageCarousel({ width, height, resizeMode }: ImageCarouselProps) {
   return (
     <View>
       <View style={styles.paginator}>
-        {images.map((item, index) => (
+        {imagesToShow.map((item, index) => (
           <Text
             key={index}
             style={count == index ? styles.pagingActive : styles.pagingInactive}
@@ -46,11 +46,11 @@ function ImageCarousel({ width, height, resizeMode }: ImageCarouselProps) {
         showsHorizontalScrollIndicator={false}
         onScroll={updatePaging}
       >
-        {images.map((item: any, index: number) => (
+        {imagesToShow.map((item: any, index: number) => (
           <Image
             key={index}
             source={{ uri: item }}
-            style={{ width: width, height: height, resizeMode: resizeMode }}
+            style={{ width: width, height: height }}
           />
         ))}
       </ScrollView>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import React, { useState } from "react";
+import { Dimensions, StyleSheet } from "react-native";
 
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,39 +15,31 @@ import HostSection from "./components/HostSection";
 import AmenitiesSection from "./components/AmenitiesSection";
 import TagsSection from "./components/TagsSection";
 import DescriptionSection from "./components/DescriptionSection";
-import { DocumentData, doc, getDoc } from "firebase/firestore";
-import { firestore } from "../../firebaseConfig";
+import { DocumentData } from "firebase/firestore";
 import InfoButton from "./components/InfoButton";
 import ChatButton from "../chat/components/ChatButton";
-
-const docRef = doc(firestore, "accommodations", "O9bk2HaqsjZAdhsyJSDr");
+import { RouteProp } from "@react-navigation/native";
+import ImageCarousel from "./components/ImageCarousel";
 
 const { width, height } = Dimensions.get("screen");
 
+type RootStackParamList = {
+  Detail: { item: any };
+  // other routes...
+};
+
+type DetailScreenRouteProp = RouteProp<RootStackParamList, "Detail">;
+
 interface DetailProps {
+  route: DetailScreenRouteProp;
   navigation: NativeStackNavigationProp<any>;
 }
 
-async function fetchDetailData() {
-  const doc = await getDoc(docRef);
-  if (doc.exists()) {
-    console.log("Document data:", doc.data());
-  }
-  return doc.data();
-}
-
-function Detail({ navigation }: DetailProps) {
+function Detail({ route, navigation }: DetailProps) {
+  const { item } = route.params;
+  console.log("item", item);
   const { isOpen, onOpen, onClose } = useDisclose();
-  const [data, setData] = useState<DocumentData | undefined>(undefined);
-
-  useEffect(() => {
-    async function fetchData() {
-      const detailData = await fetchDetailData();
-      setData(detailData);
-    }
-
-    fetchData();
-  }, []);
+  const [data, setData] = useState<DocumentData | undefined>(item);
 
   if (!data) {
     // Loading state if necessary
@@ -56,16 +48,10 @@ function Detail({ navigation }: DetailProps) {
     return (
       <NativeBaseProvider>
         <SafeAreaView style={styles.container}>
-          <Image
-            source={{
-              width: width,
-              height: height,
-              uri:
-                "https://picsum.photos/" +
-                Math.round(width).toString() +
-                "/" +
-                Math.round(height).toString(),
-            }}
+          <ImageCarousel
+            width={width}
+            height={height}
+            imagesToShow={data.images}
           />
           {isOpen ? (
             <>
