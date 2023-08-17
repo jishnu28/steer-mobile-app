@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { View, TextInput, Button, StyleSheet } from "react-native";
+import { View, TextInput, Button, StyleSheet, Platform } from "react-native";
 import { firestore } from "../../../firebaseConfig";
 import {
   updateDoc,
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 35, // Add horizontal padding
-    paddingBottom: 0, // Add bottom padding
+    paddingHorizontal: 10, // Add horizontal padding
+    paddingBottom: Platform.OS === "android" ? 20 : 0, // Add bottom padding
     position: "absolute",
     bottom: 0,
     width: "100%",

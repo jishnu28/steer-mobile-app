@@ -36,7 +36,10 @@ const ChatButton = ({ navigation }: LaunchChatProps) => {
       currentUserId < hostId ? currentUserId + hostId : hostId + currentUserId;
 
     console.log(chatId);
-    navigation.navigate("ChatScreen", { chatId });
+    navigation.navigate("Chat", {
+      screen: "ChatScreen",
+      params: { chatId },
+    });
     // : 'bQeden5g87gzkD7CTz5R950gHcE3pNgCVARvtJhIExll4BM3qYdplNK2'
   };
 
