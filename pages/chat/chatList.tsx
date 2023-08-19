@@ -7,7 +7,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import { onSnapshot, doc, collection } from "firebase/firestore";
+import { onSnapshot, doc, collection, getDoc } from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../firebaseConfig";
 import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -52,6 +52,21 @@ const ChatList = ({ navigation }: ChatListProps) => {
     return dateObject.toLocaleString();
   };
 
+  const getRecipientDisplayName = async (recipientUid: string) => {
+    try {
+      const userDocRef = doc(firestore, "users", recipientUid);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        return userData.displayName;
+      }
+      return "Unknown User"; // Default if user not found
+    } catch (error) {
+      console.error("Error fetching recipient's display name:", error);
+      return "Error"; // Handle the error case
+    }
+  };
+  
   useEffect(() => {
     const documentRef = doc(
       collection(firestore, "userChats"),
@@ -68,36 +83,61 @@ const ChatList = ({ navigation }: ChatListProps) => {
   const imageUrl =
     "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png"; //to replace with code to retrieve profile pic from db
 
-  return (
-    <NativeBaseProvider>
-      <SafeAreaView style={styles.background}>
-        <SearchBar />
-        {chats.length === 0 ? (
-          <View style={styles.noChatsContainer}>
-            <Text style={styles.noChatsText}>You have no active chats.</Text>
-          </View>
-        ) : (
-          chats.map((chat) => (
-            <TouchableOpacity
-              style={styles.container}
-              key={chat.chatId}
-              onPress={() => handleSelectChat(chat)}
-            >
-              <Image source={{ uri: imageUrl }} style={styles.image} />
 
-              <View style={styles.textContainer}>
-                <Text style={styles.displayNameText}>
-                  {chat.userInfo.displayName}
-                </Text>
-                <Text style={styles.messageText}>{chat.lastMessage}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        )}
-      </SafeAreaView>
-    </NativeBaseProvider>
-  );
-};
+    const [recipientDisplayNames, setRecipientDisplayNames] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+      const fetchRecipientDisplayNames = async () => {
+        const updatedRecipientDisplayNames: Record<string, string> = {};
+  
+        for (const chat of chats) {
+          const recipientUid = chat.userInfo.uid;
+          const recipientDisplayName = await getRecipientDisplayName(recipientUid);
+          updatedRecipientDisplayNames[recipientUid] = recipientDisplayName;
+        }
+  
+        setRecipientDisplayNames(updatedRecipientDisplayNames);
+      };
+  
+      fetchRecipientDisplayNames();
+    }, [chats]);
+  
+    return (
+      <NativeBaseProvider>
+        <SafeAreaView style={styles.background}>
+          <SearchBar />
+          {chats.length === 0 ? (
+            <View style={styles.noChatsContainer}>
+              <Text style={styles.noChatsText}>You have no active chats.</Text>
+            </View>
+          ) : (
+            chats.map((chat) => {
+              const recipientUid = chat.userInfo.uid;
+              const recipientDisplayName = recipientDisplayNames[recipientUid] || "Loading...";
+  
+              return (
+                <TouchableOpacity
+                  style={styles.container}
+                  key={chat.chatId}
+                  onPress={() => handleSelectChat(chat)}
+                >
+                  <Image source={{ uri: imageUrl }} style={styles.image} />
+  
+                  <View style={styles.textContainer}>
+                    <Text style={styles.displayNameText}>
+                      {recipientDisplayName}
+                    </Text>
+                    <Text style={styles.messageText}>{chat.lastMessage}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
+        </SafeAreaView>
+      </NativeBaseProvider>
+    );
+  };
+  
 
 const styles = StyleSheet.create({
   background: {
