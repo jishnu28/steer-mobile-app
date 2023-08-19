@@ -1,12 +1,11 @@
 import React from "react";
 import { NativeBaseProvider } from "native-base";
 import {
-  StyleSheet,
-  Text,
-  Image,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
@@ -19,13 +18,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 type RootStackParamList = {
-  Profile: undefined;
-  Edit: undefined;
+    Profile: undefined;
+    Edit: undefined;
 };
 
 type profilePageScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Profile"
+    RootStackParamList,
+    "Profile"
 >;
 
 type Props = {
@@ -33,11 +32,18 @@ type Props = {
     userProfile: {};
 };
 
+interface ProfileData {
+    displayName: string;
+    email: string;
+    profilePic: string;
+    uid: string;
+}
+
 const ProfilePage = ({ navigation }: Props) => {
 
     //Used for user info retrieval
     const [user, loading, error]= useAuthState(firebaseAuth);
-    const [profileInfo, setProfileInfo]= React.useState({});
+    const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
 
     //Used to set user info
     const [username, setUsername]= React.useState('');
@@ -47,10 +53,17 @@ const ProfilePage = ({ navigation }: Props) => {
 
     //Retrieves profile info when page first rendered
     const getProfile= async () => {
-        const profileRef= doc(firestore, "users", user?.uid);
-        const userProfile= await getDoc(profileRef);
-        console.log(userProfile.data())
-        setProfileInfo(userProfile.data());
+        try {
+            const profileRef= doc(firestore, "users", user?.uid as any);
+            const userProfile= await getDoc(profileRef);
+            console.log(userProfile.data())
+            setProfileInfo(userProfile.data());
+        } catch (error){
+            console.error(
+                "Error retrieving profile data:",
+                error
+            );
+        }
     }
 
     React.useEffect(() => {
@@ -67,11 +80,10 @@ const ProfilePage = ({ navigation }: Props) => {
             console.log("Media Permissions have been granted")
         }
     }
-  };
 
-  React.useEffect(() => {
-    checkForCameraRollPermission();
-  }, []);
+    React.useEffect(() => {
+        checkForCameraRollPermission();
+    }, []);
 
     const addImage= async () => {
         let _image= await ImagePicker.launchImageLibraryAsync({
@@ -80,15 +92,17 @@ const ProfilePage = ({ navigation }: Props) => {
             aspect: [1,1], //speciifies the fixed aspect ratio for your cropped image
             quality: 1, //controls quality of the selected image, value between 0 to 1, which 1 denoting highest quality
         });
-        if (!_image.cancelled) {  //checks that the user doesn't close photo library before selecting an image
-            setImage(_image.uri);
+
+        if (!_image.canceled) {  //checks that the user doesn't close photo library before selecting an image
+            console.log(_image.assets[0].uri)
+            setImage(_image.assets[0].uri);
             saveProfilePic();
         }
     }
 
     const saveProfilePic= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 profilePic: image,
             });
@@ -104,7 +118,7 @@ const ProfilePage = ({ navigation }: Props) => {
     //Code for profile info upload
     const saveUsername= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 displayName: username,
             }); 
@@ -119,7 +133,7 @@ const ProfilePage = ({ navigation }: Props) => {
 
     const saveEmail= async () => {
         try {
-            const docRef= doc(firestore, "users", user.uid)
+            const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
                 email: email,    
             }); 
@@ -139,12 +153,12 @@ const ProfilePage = ({ navigation }: Props) => {
                 {/* Profile Info */}
                 <View style={[styles.profile, {flex: 2}]}>
                     <UploadPic 
-                        url={profileInfo['profilePic']} 
+                        url={profileInfo ? profileInfo['profilePic']: ''} //sets placeholder in case user data does not exist
                         addImage={addImage}
                     />
                     <UploadInfo 
-                        name={profileInfo['displayName']} 
-                        email={profileInfo['email']}
+                        name={profileInfo ? profileInfo['displayName']: 'Placeholder name'} 
+                        email={profileInfo ? profileInfo['email']: 'Placeholder email'}
                         isUserModalVisible={usernameModal}
                         setUserModalVisible={setUsernameModal}
                         isEmailModalVisible={emailModal}
@@ -177,10 +191,11 @@ const ProfilePage = ({ navigation }: Props) => {
                     <View style={styles.header}>
                         <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
                     </View>
-                        <SavedItemCarousel
-                            activeCategory={0}
-                            navigation={navigation}
-                        />
+
+                    <SavedItemCarousel
+                        collectionName="accommodations" 
+                        // collectionName="experiences"
+                    />
                 </View>
 
             </SafeAreaView>
@@ -191,12 +206,12 @@ const ProfilePage = ({ navigation }: Props) => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E5E8D9",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: "#E5E8D9",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 
     profile: {
         flexDirection: 'row',
