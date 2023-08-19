@@ -1,6 +1,6 @@
 import React from "react";
 import { NativeBaseProvider } from "native-base";
-import {StyleSheet, Text, Image, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import TouristsNavbar from "../../custom_components/TouristsNavbar";
 import UploadPic from "./components/UploadPic";
@@ -38,7 +38,6 @@ const ProfilePage = ({ navigation }: Props) => {
 
     //Used for user info retrieval
     const [user, loading, error]= useAuthState(firebaseAuth);
-    // const [profileInfo, setProfileInfo]= React.useState({});
     const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
 
     //Used to set user info
@@ -53,10 +52,7 @@ const ProfilePage = ({ navigation }: Props) => {
             const profileRef= doc(firestore, "users", user?.uid as any);
             const userProfile= await getDoc(profileRef);
             console.log(userProfile.data())
-            // console.log(typeof userProfile.data())
             setProfileInfo(userProfile.data());
-
-
         } catch (error){
             console.error(
                 "Error retrieving profile data:",
@@ -152,12 +148,12 @@ const ProfilePage = ({ navigation }: Props) => {
                 {/* Profile Info */}
                 <View style={[styles.profile, {flex: 2}]}>
                     <UploadPic 
-                        url={profileInfo['profilePic']} 
+                        url={profileInfo ? profileInfo['profilePic']: ''} //sets placeholder in case user data does not exist
                         addImage={addImage}
                     />
                     <UploadInfo 
-                        name={profileInfo['displayName']} 
-                        email={profileInfo['email']}
+                        name={profileInfo ? profileInfo['displayName']: 'Placeholder name'} 
+                        email={profileInfo ? profileInfo['email']: 'Placeholder email'}
                         isUserModalVisible={usernameModal}
                         setUserModalVisible={setUsernameModal}
                         isEmailModalVisible={emailModal}
