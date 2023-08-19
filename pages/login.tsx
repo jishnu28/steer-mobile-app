@@ -49,7 +49,12 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       const user = userCredential.user;
       console.log("Registered with:", user.email);
 
-      await setDoc(doc(firestore, "userChats", user.uid), {});
+      await setDoc(doc(firestore, "userChats", user.uid), 
+        {
+          myName: "Some name",
+          chats: []
+        }
+      );
       await setDoc(doc(firestore, "users", user.uid), 
         {
           displayName: "Some name",
