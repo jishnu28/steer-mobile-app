@@ -1,94 +1,131 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Platform,
+  StatusBar,
+} from "react-native";
 import { onSnapshot, doc, collection } from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../firebaseConfig";
 import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Unsubscribe } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TouristsNavbar from "../../custom_components/TouristsNavbar";
+import { Container, NativeBaseProvider, View } from "native-base";
+import COLORS from "../../config/COLORS";
+import SearchBar from "./components/SearchBar";
+import ChatButton from "./components/ChatButton";
 
 type RootStackParamList = {
-    ChatList: undefined;
-    ChatScreen: undefined;
+  ChatList: undefined;
+  ChatScreen: { chatId: string } | undefined;
 };
 
 type chatPageNavigationProp = NativeStackNavigationProp<
-    RootStackParamList,
-    "ChatList"
+  RootStackParamList,
+  "ChatList"
 >;
 
 type ChatListProps = {
-    navigation: chatPageNavigationProp;
+  navigation: chatPageNavigationProp;
 };
 
 const auth = firebaseAuth;
 
 const ChatList = ({ navigation }: ChatListProps) => {
-    const [chats, setChats] = useState<any[]>([]);
-    const { dispatch } = useContext(ChatContext);
-    const currentUser = { 
-        displayName: "John Doe",
-        email: auth?.currentUser?.email,
-        uid: auth?.currentUser?.uid,
-    };
+  const [chats, setChats] = useState<any[]>([]);
+  const { dispatch } = useContext(ChatContext);
+  const currentUser = {
+    displayName: "John Doe",
+    email: auth?.currentUser?.email,
+    uid: auth?.currentUser?.uid,
+  };
 
-    const handleSelectChat = (chat: any) => {
+  const handleSelectChat = (chat: any) => {
     dispatch({ type: "GET_CHAT_ID", payload: chat.userInfo });
     navigation.navigate("ChatScreen");
-    };
+  };
 
-    useEffect(() => {
-    const documentRef = doc(collection(firestore, "userChats"), currentUser.uid);
+  const formatTimestamp = (timestamp: number) => {
+    const dateObject = new Date(timestamp);
+    return dateObject.toLocaleString();
+  };
+
+  useEffect(() => {
+    const documentRef = doc(
+      collection(firestore, "userChats"),
+      currentUser.uid
+    );
     const unsubscribe: Unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
-        const data = docSnapshot.data();
-        setChats(data?.chats || []);
+      const data = docSnapshot.data();
+      setChats(data?.chats || []);
     });
-  
+
     return () => unsubscribe();
-    }, []);
+  }, []);
 
+  const imageUrl =
+    "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png"; //to replace with code to retrieve profile pic from db
 
-    return (
-        <SafeAreaView style={styles.container}>
-          {chats.map((chat) => (
-            <TouchableOpacity
-              key={chat.chatId}
-              onPress={() => handleSelectChat(chat)}
-            >
-              <Text>{chat.userInfo.displayName}</Text>
-              <Text>{chat.lastMessage}</Text>
-            </TouchableOpacity>
-          ))}
-          {/* <TouristsNavbar navigation={navigation} currentIndex={2} /> */}
-        </SafeAreaView>
-      );
-    };
-    
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        backgroundColor: "#FDF8E6", // Pale yellow background color
-      },
-    });
-    
+  return (
+    <NativeBaseProvider>
+      <SafeAreaView style={styles.background}>
+        <SearchBar />
+        {chats.map((chat) => (
+          <TouchableOpacity
+            style={styles.container}
+            key={chat.chatId}
+            onPress={() => handleSelectChat(chat)}
+          >
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.displayNameText}>
+                {chat.userInfo.displayName}
+              </Text>
+              <Text style={styles.messageText}>{chat.lastMessage}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </SafeAreaView>
+    </NativeBaseProvider>
+  );
+};
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: "#E5E8D9",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // marginLeft: 16,
+    // marginRight: 16,
+  },
+  container: {
+    flexDirection: "row", // Arrange children horizontally
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "#E5E8D9",
+  },
+  textContainer: {
+    flex: 1, // Take remaining available space
+  },
+  displayNameText: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 26,
+  },
+  messageText: {
+    fontFamily: "Bitter-Regular",
+    fontSize: 20,
+    color: "#88838A",
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 100,
+    marginRight: 12,
+  },
+});
+
 export default ChatList;
-
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   chatContainer: {
-//     padding: 10,
-//     borderBottomWidth: 1,
-//     borderBottomColor: "#ccc",
-//   },
-//   chatText: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-// });

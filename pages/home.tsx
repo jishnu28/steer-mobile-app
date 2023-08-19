@@ -1,14 +1,13 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { NativeBaseProvider, Box } from "native-base";
-import TouristsNavbar from "../custom_components/TouristsNavbar";
+import { NativeBaseProvider, Text, Image } from "native-base";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import {
   StyleSheet,
-  Text,
   SafeAreaView,
-  Image,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { firebaseAuth } from "../firebaseConfig";
@@ -54,18 +53,19 @@ const Home = ({ navigation }: HomeProps) => {
         <Text>This is our awesome Home screen for now.</Text>
         <Text>Tap on one of the icons in the navbar to open a page.</Text>
         <Image
+          paddingY={10}
+          alt="random image"
           source={{
             width: 200,
             height: 300,
             uri: "https://picsum.photos/200/300",
           }}
         />
-        <StatusBar style="auto" />
+        <ExpoStatusBar style="auto" />
         <Text>Current user: {auth.currentUser?.email}</Text>
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign out</Text>
         </TouchableOpacity>
-        <TouristsNavbar navigation={navigation} />
       </SafeAreaView>
     </NativeBaseProvider>
   );
@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
     backgroundColor: "beige",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    fontFamily: "Bitter-Regular",
   },
   button: {
     backgroundColor: "#0782F9",
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontFamily: "Bitter-Regular",
     fontWeight: "700",
     fontSize: 16,
   },

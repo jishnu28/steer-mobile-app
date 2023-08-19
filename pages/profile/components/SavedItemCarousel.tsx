@@ -27,8 +27,6 @@ function SavedItemCarousel({
   activeCategory,
   navigation,
 }: SavedItemCarouselProps) {
-
-  
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -44,7 +42,7 @@ function SavedItemCarousel({
           <View style={styles.heartButtonContainer}>
             <HeartButton />
           </View>
-          
+
           {/* Remove Pressable feature to navigate to another page */}
           <View style={styles.card}>
             <View style={styles.descriptionBackground}>
@@ -78,13 +76,15 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 18,
+    fontFamily: "Bitter-Bold",
+    fontSize: 20,
     fontWeight: "800",
     color: "#88838A",
   },
 
   price: {
-    fontSize: 18,
+    fontFamily: "Bitter-Bold",
+    fontSize: 20,
     fontWeight: "800",
     color: "#FFFFFF",
   },

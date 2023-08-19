@@ -1,20 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   View,
+  Platform,
+  StatusBar,
 } from "react-native";
-import { NativeBaseProvider, ScrollView } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import createAccommodation from "./functions/createAccommodation";
 import createExperience from "./functions/createExperience";
-
-import TouristsNavbar from "../../custom_components/TouristsNavbar";
-import ExploreMenu from "./components/ExploreMenu";
-import Carousel from "react-native-snap-carousel";
 import CATEGORIES from "../../config/CATEGORIES";
+
+import ExploreMenu from "./components/ExploreMenu";
 
 const handleCreateAccommodation = async () => {
   try {
@@ -58,10 +57,10 @@ function Explore({ navigation }: ExploreProps) {
           />
           <ExploreItemCarousel
             activeCategory={activeCategory}
+            collectionName={CATEGORIES[activeCategory].dbName}
             navigation={navigation}
           />
         </View>
-        <TouristsNavbar navigation={navigation} currentIndex={0} />
       </SafeAreaView>
     </NativeBaseProvider>
   );
@@ -71,10 +70,10 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "#E5E8D9",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 
   container: {
-    padding: 20,
     alignItems: "center",
   },
 
