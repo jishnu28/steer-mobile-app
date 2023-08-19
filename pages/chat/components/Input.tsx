@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { View, TextInput, Button, StyleSheet, Platform } from "react-native";
+import { View, TextInput, Button, StyleSheet, Platform, KeyboardAvoidingView } from "react-native";
 import { firestore } from "../../../firebaseConfig";
 import {
   updateDoc,
@@ -12,6 +12,7 @@ import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import uuidRandom from "uuid-random";
 import COLORS from "../../../config/COLORS";
+import { ScrollView } from "native-base";
 
 const auth = firebaseAuth;
 
@@ -60,20 +61,24 @@ const Input: React.FC = () => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Type message..."
-        onChangeText={(value) => setText(value)}
-        value={text}
-      />
-      <View style={styles.send}>
-        <Button title="Send" onPress={handleSend} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.keyboardAvoidingContainer}
+    >
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Type message..."
+          onChangeText={(value) => setText(value)}
+          value={text}
+        />
+        <View style={styles.send}>
+          <Button title="Send" onPress={handleSend} />
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
 const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
@@ -81,6 +86,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, // Add horizontal padding
     paddingBottom: Platform.OS === "android" ? 20 : 0, // Add bottom padding
     position: "absolute",
+    bottom: 0,
+    width: "100%",
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingBottom: Platform.OS === "android" ? 20 : 0,
     bottom: 0,
     width: "100%",
   },
