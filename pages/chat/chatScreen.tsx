@@ -5,7 +5,7 @@ import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { firestore } from "../../firebaseConfig";
 import { Unsubscribe } from "firebase/auth";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import Message from "./components/Message";
 import Input from "./components/Input";
 import COLORS from "../../config/COLORS";
@@ -27,6 +27,27 @@ type MessagesProps = {
 const ChatScreen = ({ navigation }: MessagesProps) => {
   const { data } = useContext(ChatContext);
   const [messages, setMessages] = useState<any[]>([]);
+  const [recipientDisplayName, setRecipientDisplayName] = useState<string>("");
+
+  const recipientId = data.userInfo.uid;
+  useEffect(() => {
+    const fetchRecipientDisplayName = async () => {
+      try {
+        const userDocRef = doc(firestore, "users", recipientId);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          setRecipientDisplayName(userData.displayName);
+        }
+      } catch (error) {
+        console.error("Error fetching recipient's display name:", error);
+      }
+    };
+
+    fetchRecipientDisplayName();
+  }, [recipientId]);
+
+  console.log("data: ", data)
 
   useEffect(() => {
     const documentRef = doc(collection(firestore, "chats"), data.chatId);
@@ -40,16 +61,20 @@ const ChatScreen = ({ navigation }: MessagesProps) => {
     return () => unsubscribe();
   }, [data.chatId]);
 
+  console.log(messages)
+  console.log(recipientDisplayName)
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.usernameContainer}>
-        <Text style={styles.username}>{data.userInfo.displayName}</Text>
+        <Text style={styles.username}>{recipientDisplayName}</Text>
       </View>
       <ScrollView>
         <View>
-          {messages.map((m: any) => (
-            <Message message={m} key={m.id} />
-          ))}
+          {messages.length > 0 &&
+            messages.map((m: any) => (
+              <Message message={m} key={m.id} />
+            ))}
         </View>
       </ScrollView>
       <View>

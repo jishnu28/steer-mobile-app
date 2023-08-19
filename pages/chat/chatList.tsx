@@ -16,7 +16,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Container, NativeBaseProvider, View } from "native-base";
 import COLORS from "../../config/COLORS";
 import SearchBar from "./components/SearchBar";
-import ChatButton from "./components/ChatButton";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -73,22 +72,28 @@ const ChatList = ({ navigation }: ChatListProps) => {
     <NativeBaseProvider>
       <SafeAreaView style={styles.background}>
         <SearchBar />
-        {chats.map((chat) => (
-          <TouchableOpacity
-            style={styles.container}
-            key={chat.chatId}
-            onPress={() => handleSelectChat(chat)}
-          >
-            <Image source={{ uri: imageUrl }} style={styles.image} />
+        {chats.length === 0 ? (
+          <View style={styles.noChatsContainer}>
+            <Text style={styles.noChatsText}>You have no active chats.</Text>
+          </View>
+        ) : (
+          chats.map((chat) => (
+            <TouchableOpacity
+              style={styles.container}
+              key={chat.chatId}
+              onPress={() => handleSelectChat(chat)}
+            >
+              <Image source={{ uri: imageUrl }} style={styles.image} />
 
-            <View style={styles.textContainer}>
-              <Text style={styles.displayNameText}>
-                {chat.userInfo.displayName}
-              </Text>
-              <Text style={styles.messageText}>{chat.lastMessage}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+              <View style={styles.textContainer}>
+                <Text style={styles.displayNameText}>
+                  {chat.userInfo.displayName}
+                </Text>
+                <Text style={styles.messageText}>{chat.lastMessage}</Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        )}
       </SafeAreaView>
     </NativeBaseProvider>
   );
@@ -125,6 +130,18 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 100,
     marginRight: 12,
+  },
+  noChatsText: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 25,
+    textAlign: "center",
+    marginVertical: 20,
+  },
+  
+  noChatsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
