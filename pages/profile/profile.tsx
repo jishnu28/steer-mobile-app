@@ -71,7 +71,6 @@ const ProfilePage = ({ navigation }: Props) => {
     }, []); 
 
     //Code for profile picture upload
-    const [image, setImage]= React.useState("");
     const checkForCameraRollPermission= async()=>{
         const {status} = await ImagePicker.getMediaLibraryPermissionsAsync();
         if (status!='granted'){
@@ -94,17 +93,18 @@ const ProfilePage = ({ navigation }: Props) => {
         });
 
         if (!_image.canceled) {  //checks that the user doesn't close photo library before selecting an image
-            console.log(_image.assets[0].uri)
-            setImage(_image.assets[0].uri);
-            saveProfilePic();
+            console.log(_image)
+            // saveProfilePic(_image.assets[0].uri);
+            saveProfilePic(_image);
         }
     }
 
-    const saveProfilePic= async () => {
+    const saveProfilePic= async (saved_image : any) => {
         try {
+            console.log("Image in file", saved_image)
             const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
-                profilePic: image,
+                profilePic: saved_image.assets[0].uri, //saves the uri of the image to the database
             });
             getProfile()
         } catch (error){
