@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from "react-native";
-import CATEGORIES from "../../../config/CATEGORIES";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "./HeartButton";
 import ImageCarousel from "./ImageCarousel";
@@ -85,7 +84,13 @@ function ExploreItemCarousel({
             >
               <View style={styles.descriptionContainer}>
                 <Text style={styles.title}> {item.title} </Text>
-                <Text style={styles.price}> {item.price} </Text>
+                <Text style={styles.price}>
+                  {" "}
+                  ${item.price}
+                  <Text style={[styles.price, { fontSize: 14 }]}>
+                    /night
+                  </Text>{" "}
+                </Text>
               </View>
             </Pressable>
             <ImageCarousel
@@ -112,14 +117,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
-    color: "#88838A",
+    color: "#343135",
   },
 
   price: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#FFFFFF",

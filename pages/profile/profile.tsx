@@ -138,7 +138,7 @@ const ProfilePage = ({ navigation }: Props) => {
 
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
         {/* Profile Info */}
         <View style={[styles.profile, { flex: 2 }]}>
           <UploadPic
@@ -214,16 +214,16 @@ const styles = StyleSheet.create({
 
   header: {
     alignItems: "center",
-    paddingTop: 10,
+    paddingVertical: 5,
     borderBottomWidth: 0.5,
-    borderColor: "#88838A",
+    borderColor: "#343135",
   },
 
   headerText: {
     // fontFamily: 'Bitter',
     fontSize: 16,
     fontWeight: "700",
-    color: "#88838A",
+    color: "#343135",
   },
 
   posts: {
