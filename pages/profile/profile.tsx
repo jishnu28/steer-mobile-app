@@ -1,12 +1,11 @@
 import React from "react";
 import { NativeBaseProvider } from "native-base";
 import {
-  StyleSheet,
-  Text,
-  Image,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    TouchableOpacity,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
@@ -19,13 +18,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 type RootStackParamList = {
-  Profile: undefined;
-  Edit: undefined;
+    Profile: undefined;
+    Edit: undefined;
 };
 
 type profilePageScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Profile"
+    RootStackParamList,
+    "Profile"
 >;
 
 type Props = {
@@ -81,11 +80,10 @@ const ProfilePage = ({ navigation }: Props) => {
             console.log("Media Permissions have been granted")
         }
     }
-  };
 
-  React.useEffect(() => {
-    checkForCameraRollPermission();
-  }, []);
+    React.useEffect(() => {
+        checkForCameraRollPermission();
+    }, []);
 
     const addImage= async () => {
         let _image= await ImagePicker.launchImageLibraryAsync({
@@ -193,10 +191,11 @@ const ProfilePage = ({ navigation }: Props) => {
                     <View style={styles.header}>
                         <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
                     </View>
-                        <SavedItemCarousel
-                            activeCategory={0}
-                            navigation={navigation}
-                        />
+
+                    <SavedItemCarousel
+                        collectionName="accommodations" 
+                        // collectionName="experiences"
+                    />
                 </View>
 
             </SafeAreaView>
@@ -207,12 +206,12 @@ const ProfilePage = ({ navigation }: Props) => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E5E8D9",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: "#E5E8D9",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 
     profile: {
         flexDirection: 'row',

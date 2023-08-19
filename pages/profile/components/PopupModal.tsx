@@ -57,9 +57,9 @@ const PopupModal = ({
               setInputValue("");
               setModalVisibility(!isModalVisible);
             }}
-            style={styles.modalButton}
+            style={[styles.modalButton, { backgroundColor: "#9CADA4", borderWidth: 0 }]}
           >
-            <Text>Confirm</Text>
+            <Text style={{color:"#E5E8D9"}}>Confirm</Text>
           </TouchableOpacity>
         </View>
       </View>
