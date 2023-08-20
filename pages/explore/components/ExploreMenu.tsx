@@ -17,7 +17,7 @@ function ExploreMenu({
       {CATEGORIES.map((category, index) => (
         <TouchableOpacity
           onPress={() => updateActiveCategory(index)}
-          style={{ marginRight: 10 }}
+          style={{ marginRight: 10, paddingTop: 5 }}
           key={category.id}
         >
           <Text
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   activeCategory: {
     color: "#FFAF87",
     fontFamily: "Bitter-Black",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "800",
     textDecorationLine: "underline",
   },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   inactiveCategory: {
     color: "#88838A",
     fontFamily: "Bitter-Black",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "800",
   },
 });

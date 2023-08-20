@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "../../explore/components/HeartButton";
 import ImageCarousel from "../../explore/components/ImageCarousel";
@@ -50,7 +44,7 @@ function SavedItemCarousel({
     // console.log("dbItems", dbItems);
   }, []);
 
-  if (dbItems.length != 0) { 
+  if (dbItems.length != 0) {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -59,18 +53,23 @@ function SavedItemCarousel({
         pagingEnabled
         style={{ marginVertical: 10 }}
       >
-          
         {dbItems.map((item, index) => (
           <View key={index}>
             <View style={styles.heartButtonContainer}>
               <HeartButton />
             </View>
-  
+
             <View style={styles.card}>
               <View style={styles.descriptionBackground}>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.title}> {item.title} </Text>
-                  <Text style={styles.price}> ${item.price} </Text>
+                  <Text style={styles.price}>
+                    {" "}
+                    ${item.price}
+                    <Text style={[styles.price, { fontSize: 14 }]}>
+                      /night
+                    </Text>{" "}
+                  </Text>
                 </View>
               </View>
               <ImageCarousel
@@ -85,13 +84,21 @@ function SavedItemCarousel({
     );
   } else {
     return (
-      <View style={[styles.card, {justifyContent:'center', alignItems:'center'}]}>
-        <MaterialCommunityIcons name="emoticon-dead-outline" size={cardWidth * 0.8} color="#88838A" />
+      <View
+        style={[
+          styles.card,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <MaterialCommunityIcons
+          name="emoticon-dead-outline"
+          size={cardWidth * 0.8}
+          color="#88838A"
+        />
         <Text style={styles.title}>No Items Saved</Text>
       </View>
-    )
+    );
   }
-  
 }
 
 export default SavedItemCarousel;
@@ -106,14 +113,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
-    color: "#88838A",
+    color: "#343135",
   },
 
   price: {
-    fontSize: 20,
+    fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#FFFFFF",

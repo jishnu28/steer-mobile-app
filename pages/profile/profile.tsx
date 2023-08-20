@@ -68,9 +68,10 @@ const ProfilePage = ({ navigation }: Props) => {
         }
     }
 
+
     React.useEffect(() => {
-        getProfile()
-    }, []); 
+        getProfile();
+    }, []);
 
     //Code for profile picture upload
     const checkForCameraRollPermission= async()=>{
@@ -102,7 +103,6 @@ const ProfilePage = ({ navigation }: Props) => {
 
     const saveProfilePic= async (saved_image : any) => {
         try {
-
             //Uploads image to firebase storage
             const response= await fetch(saved_image.uri);
             const blob= await response.blob();
@@ -126,53 +126,47 @@ const ProfilePage = ({ navigation }: Props) => {
     }
 
     //Code for profile info upload
-    const saveUsername= async () => {
+    const saveUsername = async () => {
         try {
-            const docRef= doc(firestore, "users", user!.uid)
+            const docRef = doc(firestore, "users", user!.uid);
             await updateDoc(docRef, {
                 displayName: username,
-            }); 
-            getProfile()
-        } catch (error){
-            console.error(
-                "Error updating username to users collection:",
-                error
-            );
+            });
+            getProfile();
+        } catch (error) {
+            console.error("Error updating username to users collection:", error);
         }
-    }
+    };
 
-    const saveEmail= async () => {
+    const saveEmail = async () => {
         try {
-            const docRef= doc(firestore, "users", user!.uid)
+            const docRef = doc(firestore, "users", user!.uid);
             await updateDoc(docRef, {
-                email: email,    
-            }); 
-            getProfile()
-        } catch (error){
-            console.error(
-                "Error updating email to users collection:",
-                error
-            );
+                email: email,
+            });
+            getProfile();
+        } catch (error) {
+            console.error("Error updating email to users collection:", error);
         }
-    }
+    };
 
     return (
         <NativeBaseProvider>
-            <SafeAreaView style={styles.container}>
-
+            <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
                 {/* Profile Info */}
-                <View style={[styles.profile, {flex: 2}]}>
-                    <UploadPic 
-                        url={profileInfo ? profileInfo['profilePic']: ''} //sets placeholder in case user data does not exist
+                <View style={[styles.profile, { flex: 2 }]}>
+                    <UploadPic
+                        url={profileInfo ? profileInfo["profilePic"] : ""} //sets placeholder in case user data does not exist
                         addImage={addImage}
                     />
-                    <UploadInfo 
-                        name={profileInfo ? profileInfo['displayName']: 'Placeholder name'} 
-                        email={profileInfo ? profileInfo['email']: 'Placeholder email'}
+                    <UploadInfo
+                        name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
+                        email={profileInfo ? profileInfo["email"] : "Placeholder email"}
                         isUserModalVisible={usernameModal}
                         setUserModalVisible={setUsernameModal}
                         isEmailModalVisible={emailModal}
                         setEmailModalVisible={setEmailModal}
+                        navigation={navigation}
                     />
                 </View>
 
@@ -181,37 +175,40 @@ const ProfilePage = ({ navigation }: Props) => {
                     inputName="username"
                     inputValue={username}
                     setInputValue={setUsername}
-                    saveValue= {saveUsername}
-                    isModalVisible= {usernameModal}
-                    setModalVisibility= {setUsernameModal}
+                    saveValue={saveUsername}
+                    isModalVisible={usernameModal}
+                    setModalVisibility={setUsernameModal}
                 />
 
                 <PopupModal
                     inputName="email"
                     inputValue={email}
                     setInputValue={setEmail}
-                    saveValue= {saveEmail}
-                    isModalVisible= {emailModal}
-                    setModalVisibility= {setEmailModal}
+                    saveValue={saveEmail}
+                    isModalVisible={emailModal}
+                    setModalVisibility={setEmailModal}
                 />
-                
+
                 {/* Posts */}
                 {/* marginBottom to leave space for the NavBar */}
-                <View style={[styles.posts, {flex: 5, marginBottom: 0}]}>  
+                <View style={[styles.posts, { flex: 5, marginBottom: 0 }]}>
                     <View style={styles.header}>
-                        <Text style={[styles.headerText, {width:300, textAlign:'center'}]}>Saved</Text>
+                        <Text
+                        style={[styles.headerText, { width: 300, textAlign: "center" }]}
+                        >
+                        Saved
+                        </Text>
                     </View>
 
                     <SavedItemCarousel
-                        collectionName="accommodations" 
+                        collectionName="accommodations"
                         // collectionName="experiences"
                     />
                 </View>
-
             </SafeAreaView>
         </NativeBaseProvider>
     );
-};
+    };
 
 export default ProfilePage;
 
@@ -224,50 +221,50 @@ const styles = StyleSheet.create({
     },
 
     profile: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     header: {
-        alignItems: 'center',
-        paddingTop: 10,
+        alignItems: "center",
+        paddingVertical: 5,
         borderBottomWidth: 0.5,
-        borderColor: '#88838A',
+        borderColor: "#343135",
     },
 
     headerText: {
         // fontFamily: 'Bitter',
         fontSize: 16,
-        fontWeight: '700',
-        color: '#88838A',
+        fontWeight: "700",
+        color: "#343135",
     },
 
     posts: {
-        backgroundColor: '#F8FAF0',
-        width: '100%',
+        backgroundColor: "#F8FAF0",
+        width: "100%",
         borderTopRightRadius: 40,
         borderTopLeftRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     modalPopUp: {
         justifyContent: "space-around",
-        alignItems: 'center',
-        width: '90%',
+        alignItems: "center",
+        width: "90%",
         height: 160,
         paddingVertical: 10,
         borderRadius: 20,
-        backgroundColor: '#E5E8D9'
+        backgroundColor: "#E5E8D9",
     },
 
     modalText: {
-        fontSize: 17
+        fontSize: 17,
     },
 
     infoBox: {
-        width: '80%',
+        width: "80%",
         height: 40,
         borderWidth: 1,
         borderRadius: 5,
@@ -275,19 +272,18 @@ const styles = StyleSheet.create({
     },
 
     modalButtonSection: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '80%',
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        width: "80%",
     },
 
     modalButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         height: 40,
         width: 80,
         marginHorizontal: 5,
         borderWidth: 1,
         borderRadius: 40,
-    }
+    },
 });
-

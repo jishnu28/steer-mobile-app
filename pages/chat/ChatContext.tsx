@@ -27,6 +27,7 @@ export const ChatContextProvider: React.FC<{ children: React.ReactNode }> = ({ch
     const chatReducer = (state: State, action: Action, currentUser: any): State => {
         switch (action.type) {
         case "GET_CHAT_ID":
+            console.log(action)
             return {
                 userInfo: action.payload,  //other parties' info
                 chatId: currentUser.uid < action.payload.uid
