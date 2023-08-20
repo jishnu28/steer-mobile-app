@@ -13,9 +13,12 @@ import UploadInfo from "./components/UploadInfo";
 import SavedItemCarousel from "./components/SavedItemCarousel";
 import PopupModal from "./components/PopupModal";
 import * as ImagePicker from 'expo-image-picker';
-import { firebaseAuth, firestore } from "../../firebaseConfig";
+import { firebaseAuth, firestore, firebaseStorage } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import firebase from "firebase/app";
+import 'firebase/storage';
+import {ref as storageRef, getDownloadURL, uploadBytes} from 'firebase/storage';
 
 type RootStackParamList = {
     Profile: undefined;
@@ -44,7 +47,6 @@ const ProfilePage = ({ navigation }: Props) => {
     //Used for user info retrieval
     const [user, loading, error]= useAuthState(firebaseAuth);
     const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
-
     //Used to set user info
     const [username, setUsername]= React.useState('');
     const [email, setEmail]= React.useState('');
@@ -56,7 +58,7 @@ const ProfilePage = ({ navigation }: Props) => {
         try {
             const profileRef= doc(firestore, "users", user?.uid as any);
             const userProfile= await getDoc(profileRef);
-            console.log(userProfile.data())
+            console.log(userProfile.data());
             setProfileInfo(userProfile.data());
         } catch (error){
             console.error(
@@ -89,22 +91,30 @@ const ProfilePage = ({ navigation }: Props) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images, //determines the type of file used: Image, video or both
             allowsEditing: true, //provides an editing interface to crop/edit image after it is selected from photo library
             aspect: [1,1], //speciifies the fixed aspect ratio for your cropped image
-            quality: 1, //controls quality of the selected image, value between 0 to 1, which 1 denoting highest quality
+            quality: 0.2, //controls quality of the selected image, value between 0 to 1, which 1 denoting highest quality
         });
 
         if (!_image.canceled) {  //checks that the user doesn't close photo library before selecting an image
-            console.log(_image)
-            // saveProfilePic(_image.assets[0].uri);
+            // console.log(_image)
             saveProfilePic(_image);
         }
     }
 
     const saveProfilePic= async (saved_image : any) => {
         try {
-            console.log("Image in file", saved_image)
+
+            //Uploads image to firebase storage
+            const response= await fetch(saved_image.uri);
+            const blob= await response.blob();
+            const imageRef= storageRef(firebaseStorage, `images/userProfileImages/${user!.uid}`);
+            await uploadBytes(imageRef, blob);
+            console.log("Image uploaded to firebase storage");
+
+            //Update url link to firestore
+            const url= await getDownloadURL(imageRef);
             const docRef= doc(firestore, "users", user!.uid)
             await updateDoc(docRef, {
-                profilePic: saved_image.assets[0].uri, //saves the uri of the image to the database
+                profilePic: url, //saves the uri of the image to the database
             });
             getProfile()
         } catch (error){
