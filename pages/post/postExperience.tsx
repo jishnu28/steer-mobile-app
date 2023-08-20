@@ -8,7 +8,7 @@ import {
   Switch,
 } from "native-base";
 
-const PostAccomodation = () => {
+const PostExperience = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(0);
   const [owner, setOwner] = useState("");
@@ -46,14 +46,14 @@ const PostAccomodation = () => {
       alert('An error occurred while uploading the document.');
     }
     */
-    console.log("Upload Accommodation");
+    console.log("Upload Experience");
   };
 
   return (
     <NativeBaseProvider>
       <SafeAreaView>
         <View>
-          <Text>Upload Accommodation</Text>
+          <Text>Upload Experience</Text>
           <FormControl>
             <FormControl.Label>Title</FormControl.Label>
             <Input value={title} onChangeText={(text) => setTitle(text)} />
@@ -109,7 +109,7 @@ const PostAccomodation = () => {
               onToggle={() => setHasKitchen(!hasKitchen)}
             />
           </View>
-          {/* Add input for accommodationTags */}
+          {/* Add input for experienceTags */}
           {/* Add input for description */}
         </View>
       </SafeAreaView>
@@ -117,4 +117,4 @@ const PostAccomodation = () => {
   );
 };
 
-export default PostAccomodation;
+export default PostExperience;
