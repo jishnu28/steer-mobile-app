@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HStack, Heading, NativeBaseProvider, VStack } from "native-base";
+import { HStack, Heading, Icon, NativeBaseProvider, VStack } from "native-base";
 import React, { useState } from "react";
 import {
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,10 +25,10 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
   const handlePress = (buttonTitle: string) => {
     if (buttonTitle === "Accommodations") {
       setIsAccommodationsSelected(true);
-      navigation.navigate("postAccommodation");
+      navigation.navigate("postAccommodation", { navigation: navigation });
     } else {
       setIsExperiencesSelected(true);
-      navigation.navigate("postExperience");
+      navigation.navigate("postExperience", { navigation: navigation });
     }
   };
 
@@ -50,15 +51,14 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
                 isAccommodationsSelected && styles.selectedButton,
               ]}
             >
-              <Image
-                source={{
-                  width: 100,
-                  height: 100,
-                  uri: "https://picsum.photos/100/100",
-                }}
-                style={styles.image}
+              <Icon
+                paddingTop="5%"
+                as={<MaterialCommunityIcons name="home-group" />}
+                color="#88838A"
+                size={70}
+                my={2}
               />
-              <Text style={styles.text}>Accommodations</Text>
+              <Text style={styles.text}>Accommodation</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handlePress("Experiences")}
@@ -67,15 +67,14 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
                 isExperiencesSelected && styles.selectedButton,
               ]}
             >
-              <Image
-                source={{
-                  width: 100,
-                  height: 100,
-                  uri: "https://picsum.photos/100/100",
-                }}
-                style={styles.image}
+              <Icon
+                paddingTop="5%"
+                as={<MaterialCommunityIcons name="forest" />}
+                color="#88838A"
+                size={70}
+                my={2}
               />
-              <Text style={styles.text}>Experiences</Text>
+              <Text style={styles.text}>Experience</Text>
             </TouchableOpacity>
           </HStack>
         </VStack>

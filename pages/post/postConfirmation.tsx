@@ -1,5 +1,11 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Heading, Icon, NativeBaseProvider, VStack } from "native-base";
+import {
+  CheckCircleIcon,
+  Heading,
+  Icon,
+  NativeBaseProvider,
+  VStack,
+} from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { SafeAreaView } from "react-native";
@@ -18,17 +24,11 @@ const PostConfirmation = ({ navigation }: PostConfirmationProps) => {
           justifyContent: "center",
         }}
       >
-        <VStack space={10} alignItems={"center"}>
+        <VStack space={5} alignItems={"center"}>
           <Heading justifyContent={"center"}>
             Your post has been uploaded!
           </Heading>
-          <Icon
-            mb="1"
-            paddingTop="5%"
-            as={<MaterialCommunityIcons name={"check-circle-outline"} />}
-            color="white"
-            size="3xl"
-          />
+          <CheckCircleIcon size="20" color="#9CADA4" />
         </VStack>
       </SafeAreaView>
     </NativeBaseProvider>
