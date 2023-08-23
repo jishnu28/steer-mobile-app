@@ -12,7 +12,7 @@ const BooleanToggle = ({ title, hasItem, setHasItem }: BooleanToggleProps) => {
       <Text fontFamily="Bitter-Medium" fontSize={16}>
         {title}
       </Text>
-      <Switch onToggle={() => setHasItem(!hasItem)} size="md" />
+      <Switch value={hasItem} onToggle={() => setHasItem(!hasItem)} size="md" />
     </HStack>
   );
 };

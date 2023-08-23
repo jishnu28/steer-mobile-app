@@ -7,8 +7,8 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
@@ -24,6 +24,7 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
 
   const handlePress = (buttonTitle: string) => {
     if (buttonTitle === "Accommodations") {
+      console.log("Accommodations selected");
       setIsAccommodationsSelected(true);
       navigation.navigate("postAccommodation", { navigation: navigation });
     } else {

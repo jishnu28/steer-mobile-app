@@ -2,7 +2,7 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 
 // Type declarations for the fields in the accommodations collection
-interface ExperienceData {
+export interface ExperienceData {
   isActive: boolean;
   owner: string; // use id to link to post owner's profile
   title: string;
@@ -15,7 +15,7 @@ interface ExperienceData {
   // TODO: @Ryan, for your reviews feature, add in the 'reviews' collection as a subcollection here
 }
 
-export default async function createExperience() {
+export default async function createExperience(newData: ExperienceData) {
   // TODO: @Jishnu, add image saving process, and pass in the download URLs to the image field below
 
   // TODO: @Celeste, Replace these test values with user input from an upload page, passed in as props
@@ -32,7 +32,7 @@ export default async function createExperience() {
   };
 
   try {
-    const docRef = await addDoc(collection(firestore, "experiences"), data);
+    const docRef = await addDoc(collection(firestore, "experiences"), newData);
     console.log(
       "Document written in experiences collection with ID: ",
       docRef.id

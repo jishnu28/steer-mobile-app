@@ -11,20 +11,11 @@ interface PostExperienceProps {
 const { width, height } = Dimensions.get("window");
 
 const PostExperience = ({ navigation }: PostExperienceProps) => {
-  const handleUpload = () => {
-    console.log("Uploading Experience post");
-    // TODO: Handle upload to firebase
-    navigation.navigate("postConfirmation", { navigation: navigation });
-  };
-
   return (
     <NativeBaseProvider>
       <SafeAreaView style={{ backgroundColor: "#E5E8D9" }}>
         <ScrollView h={height}>
-          <ExperienceInputs />
-          <Button h={0.1 * height} onPress={() => handleUpload()}>
-            Submit
-          </Button>
+          <ExperienceInputs navigation={navigation} />
         </ScrollView>
       </SafeAreaView>
     </NativeBaseProvider>
