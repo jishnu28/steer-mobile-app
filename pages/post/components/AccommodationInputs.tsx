@@ -6,16 +6,24 @@ import {
   Text,
   Heading,
   ScrollView,
+  Button,
 } from "native-base";
 import { Dimensions } from "react-native";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
+import createAccommodation, {
+  AccommodationData,
+} from "../../explore/functions/createAccommodation";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Timestamp } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
-interface AccommodationInputsProps {}
+interface AccommodationInputsProps {
+  navigation: NativeStackNavigationProp<any>;
+}
 
-const AccommodationInputs = () => {
+const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
@@ -24,12 +32,38 @@ const AccommodationInputs = () => {
   const [numBeds, setNumBeds] = useState(0);
   const [numBedrooms, setNumBedrooms] = useState(0);
   const [numBaths, setNumBaths] = useState(0);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [hasWifi, setHasWifi] = useState(false);
   const [hasHeating, setHasHeating] = useState(false);
   const [hasWaterheater, setHasWaterheater] = useState(false);
   const [hasKitchen, setHasKitchen] = useState(false);
-  const [accommodationTags, setAccommodationTags] = useState([]);
+  const [accommodationTags, setAccommodationTags] = useState("");
+
+  const handleUpload = () => {
+    console.log("Uploading Accommodation post");
+    // TODO: Handle upload to firebase
+    const newAccommodation: AccommodationData = {
+      isActive: isActive,
+      owner: "testOwner - this should be replaced with the user's UID",
+      title: title,
+      description: description,
+      images: [],
+      numGuests: numGuests,
+      numBeds: numBeds,
+      numBaths: numBaths,
+      numBedrooms: numBedrooms,
+      price: price,
+      address: address,
+      hasWifi: hasWifi,
+      hasKitchen: hasKitchen,
+      hasHeating: hasHeating,
+      hasWaterheater: hasWaterheater,
+      accommodationTags: accommodationTags.split(", ").map((tag) => tag.trim()),
+      postingDate: Timestamp.fromDate(new Date()),
+    };
+    createAccommodation(newAccommodation);
+    navigation.navigate("postConfirmation", { navigation: navigation });
+  };
 
   return (
     <ScrollView py={4} backgroundColor={"#FAF8F0"}>
@@ -59,6 +93,19 @@ const AccommodationInputs = () => {
             value={description}
             placeholder="Enter.."
             onChangeText={(text) => setDescription(text)}
+          />
+        </FormControl>
+
+        <FormControl w={0.9 * width}>
+          <FormControl.Label>
+            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
+              Tags:
+            </Text>
+          </FormControl.Label>
+          <Input
+            value={accommodationTags}
+            placeholder="Enter tags separated by commas.."
+            onChangeText={(text) => setAccommodationTags(text)}
           />
         </FormControl>
 
@@ -148,6 +195,9 @@ const AccommodationInputs = () => {
           setHasItem={setHasKitchen}
         />
       </VStack>
+      <Button h={0.1 * height} onPress={() => handleUpload()}>
+        Submit
+      </Button>
     </ScrollView>
   );
 };

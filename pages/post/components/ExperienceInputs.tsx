@@ -6,24 +6,50 @@ import {
   Text,
   Heading,
   View,
-  ScrollView,
+  Button,
 } from "native-base";
 import { Dimensions } from "react-native";
 import NumberToggle from "./NumberToggle";
-import BooleanToggle from "./BooleanToggle";
+import { Timestamp } from "firebase/firestore";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import createExperience, {
+  ExperienceData,
+} from "../../explore/functions/createExperience";
 
 const { width, height } = Dimensions.get("window");
 
-interface ExperienceInputsProps {}
+interface ExperienceInputsProps {
+  navigation: NativeStackNavigationProp<any>;
+}
 
-const ExperienceInputs = () => {
+const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [numGuests, setNumGuests] = useState<number>(0);
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [categoryTags, setCategoryTags] = useState<string[]>([]);
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const [categoryTags, setCategoryTags] = useState<string>("");
+
+  const handleUpload = () => {
+    console.log("Uploading Accommodation post");
+    // TODO: Handle upload to firebase
+    const newExperience: ExperienceData = {
+      isActive: isActive,
+      owner: "testOwner - this should be replaced with the user's UID",
+      title: title,
+      description: description,
+      images: [],
+      //numGuests: numGuests,
+
+      price: price,
+      address: address,
+      experienceTags: categoryTags.split(", ").map((tag) => tag.trim()),
+      postingDate: Timestamp.fromDate(new Date()),
+    };
+    createExperience(newExperience);
+    navigation.navigate("postConfirmation", { navigation: navigation });
+  };
 
   return (
     <View
@@ -96,6 +122,9 @@ const ExperienceInputs = () => {
           <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
         </FormControl>
       </VStack>
+      <Button h={0.1 * height} onPress={() => handleUpload()}>
+        Submit
+      </Button>
     </View>
   );
 };

@@ -2,7 +2,7 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 
 // Type declarations for the fields in the accommodations collection
-interface AccommodationData {
+export interface AccommodationData {
   isActive: boolean;
   owner: string;
   title: string;
@@ -23,7 +23,7 @@ interface AccommodationData {
   // TODO: @Ryan, for your reviews feature, add in the 'reviews' collection as a subcollection here
 }
 
-export default async function createAccommodation() {
+export default async function createAccommodation(newData: AccommodationData) {
   // TODO: @Jishnu, add image saving process, and pass in the download URLs to the image field below
 
   // TODO: @Celeste, Replace these test values with user input from an upload page, passed in as props
@@ -48,7 +48,10 @@ export default async function createAccommodation() {
   };
 
   try {
-    const docRef = await addDoc(collection(firestore, "accommodations"), data);
+    const docRef = await addDoc(
+      collection(firestore, "accommodations"),
+      newData
+    );
     console.log(
       "Document written in accommodations collection with ID: ",
       docRef.id
