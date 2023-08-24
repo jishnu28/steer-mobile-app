@@ -8,6 +8,7 @@ import {
   ScrollView,
   Button,
 } from "native-base";
+import * as ImagePicker from "expo-image-picker";
 import { Dimensions } from "react-native";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
@@ -16,6 +17,15 @@ import createAccommodation, {
 } from "../../explore/functions/createAccommodation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Timestamp } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth, firebaseStorage } from "../../../firebaseConfig";
+import {
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytes,
+} from "firebase/storage";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,6 +48,49 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [hasWaterheater, setHasWaterheater] = useState(false);
   const [hasKitchen, setHasKitchen] = useState(false);
   const [accommodationTags, setAccommodationTags] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+
+  const [user, loading, error] = useAuthState(firebaseAuth);
+
+  const addImages = async () => {
+    let _images = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.2,
+      allowsMultipleSelection: true, // allows multiple images to be selected
+    });
+
+    if (_images.assets) {
+      _images.assets.forEach((image) => {
+        saveAccommodationImages(image);
+      });
+    }
+  };
+
+  const saveAccommodationImages = async (saved_image: any) => {
+    try {
+      //Uploads image to firebase storage
+      const imageId = uuidv4();
+      const response = await fetch(saved_image.uri);
+      const blob = await response.blob();
+      const imageRef = storageRef(
+        firebaseStorage,
+        `images/accommodationImages/${user!.uid}/${imageId}}`
+      );
+      await uploadBytes(imageRef, blob);
+      console.log(
+        "Image uploaded to firebase storage's accommodationImages folder"
+      );
+
+      //Update image's url link in images array
+      const url = await getDownloadURL(imageRef);
+      setImages([...images, url]);
+    } catch (error) {
+      console.error(
+        "Error updating profile pic to accommodations collection:",
+        error
+      );
+    }
+  };
 
   const handleUpload = () => {
     console.log("Uploading Accommodation post");
@@ -133,6 +186,17 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
             placeholder="Enter.."
             onChangeText={(text) => setPrice(Number(text))}
           />
+        </FormControl>
+
+        <FormControl w={0.9 * width} justifyItems={"center"}>
+          <Button
+            h={0.05 * height}
+            w={0.5 * width}
+            backgroundColor={"#FFAF87"}
+            onPress={() => addImages()}
+          >
+            Upload Images
+          </Button>
         </FormControl>
 
         <FormControl w={0.9 * width}>

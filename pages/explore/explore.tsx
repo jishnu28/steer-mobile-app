@@ -15,28 +15,6 @@ import CATEGORIES from "../../config/CATEGORIES";
 
 import ExploreMenu from "./components/ExploreMenu";
 
-const handleCreateAccommodation = async () => {
-  try {
-    await createAccommodation();
-    console.log("Accommodation post created successfully!");
-    // Add any navigation or UI updates you want here
-  } catch (error) {
-    console.error("Error creating accommodation post:", error);
-    // Handle error or show error message to the user
-  }
-};
-
-const handleCreateExperience = async () => {
-  try {
-    await createExperience();
-    console.log("Experience post created successfully!");
-    // Add any navigation or UI updates you want here
-  } catch (error) {
-    console.error("Error creating experience post:", error);
-    // Handle error or show error message to the user
-  }
-};
-
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;
 }
