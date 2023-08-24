@@ -89,7 +89,8 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
     // TODO: Handle upload to firebase
     const newExperience: ExperienceData = {
       isActive: isActive,
-      owner: "testOwner - this should be replaced with the user's UID",
+      owner:
+        user?.uid ?? "testOwner - this should be replaced with the user's UID",
       title: title,
       description: description,
       images: [],

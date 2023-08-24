@@ -77,7 +77,7 @@ function Detail({ route, navigation }: DetailProps) {
                     <HostSection />
                     <ReviewSection />
                   </ScrollView>
-                  <ChatButton navigation={navigation} />
+                  <ChatButton navigation={navigation} hostID={data.owner} />
                 </Actionsheet.Content>
               </Actionsheet>
               <BackButton onPress={() => navigation.goBack()} />
@@ -87,7 +87,7 @@ function Detail({ route, navigation }: DetailProps) {
             <>
               <BackButton onPress={() => navigation.goBack()} />
               <InfoButton onPress={onOpen} />
-              <ChatButton navigation={navigation} />
+              <ChatButton navigation={navigation} hostID={data.owner} />
             </>
           )}
         </SafeAreaView>
