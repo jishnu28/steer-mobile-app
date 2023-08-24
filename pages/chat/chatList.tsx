@@ -13,8 +13,7 @@ import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Unsubscribe } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Container, NativeBaseProvider, View } from "native-base";
-import COLORS from "../../config/COLORS";
+import { NativeBaseProvider, View } from "native-base";
 import SearchBar from "./components/SearchBar";
 
 type RootStackParamList = {
@@ -66,7 +65,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
       return "Error"; // Handle the error case
     }
   };
-  
+
   useEffect(() => {
     const documentRef = doc(
       collection(firestore, "userChats"),
@@ -83,61 +82,64 @@ const ChatList = ({ navigation }: ChatListProps) => {
   const imageUrl =
     "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png"; //to replace with code to retrieve profile pic from db
 
+  const [recipientDisplayNames, setRecipientDisplayNames] = useState<
+    Record<string, string>
+  >({});
 
-    const [recipientDisplayNames, setRecipientDisplayNames] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const fetchRecipientDisplayNames = async () => {
+      const updatedRecipientDisplayNames: Record<string, string> = {};
 
-    useEffect(() => {
-      const fetchRecipientDisplayNames = async () => {
-        const updatedRecipientDisplayNames: Record<string, string> = {};
-  
-        for (const chat of chats) {
-          const recipientUid = chat.userInfo.uid;
-          const recipientDisplayName = await getRecipientDisplayName(recipientUid);
-          updatedRecipientDisplayNames[recipientUid] = recipientDisplayName;
-        }
-  
-        setRecipientDisplayNames(updatedRecipientDisplayNames);
-      };
-  
-      fetchRecipientDisplayNames();
-    }, [chats]);
-  
-    return (
-      <NativeBaseProvider>
-        <SafeAreaView style={styles.background}>
-          <SearchBar />
-          {chats.length === 0 ? (
-            <View style={styles.noChatsContainer}>
-              <Text style={styles.noChatsText}>You have no active chats.</Text>
-            </View>
-          ) : (
-            chats.map((chat) => {
-              const recipientUid = chat.userInfo.uid;
-              const recipientDisplayName = recipientDisplayNames[recipientUid] || "Loading...";
-  
-              return (
-                <TouchableOpacity
-                  style={styles.container}
-                  key={chat.chatId}
-                  onPress={() => handleSelectChat(chat)}
-                >
-                  <Image source={{ uri: imageUrl }} style={styles.image} />
-  
-                  <View style={styles.textContainer}>
-                    <Text style={styles.displayNameText}>
-                      {recipientDisplayName}
-                    </Text>
-                    <Text style={styles.messageText}>{chat.lastMessage}</Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })
-          )}
-        </SafeAreaView>
-      </NativeBaseProvider>
-    );
-  };
-  
+      for (const chat of chats) {
+        const recipientUid = chat.userInfo.uid;
+        const recipientDisplayName = await getRecipientDisplayName(
+          recipientUid
+        );
+        updatedRecipientDisplayNames[recipientUid] = recipientDisplayName;
+      }
+
+      setRecipientDisplayNames(updatedRecipientDisplayNames);
+    };
+
+    fetchRecipientDisplayNames();
+  }, [chats]);
+
+  return (
+    <NativeBaseProvider>
+      <SafeAreaView style={styles.background}>
+        <SearchBar />
+        {chats.length === 0 ? (
+          <View style={styles.noChatsContainer}>
+            <Text style={styles.noChatsText}>You have no active chats.</Text>
+          </View>
+        ) : (
+          chats.map((chat) => {
+            const recipientUid = chat.userInfo.uid;
+            const recipientDisplayName =
+              recipientDisplayNames[recipientUid] || "Loading...";
+
+            return (
+              <TouchableOpacity
+                style={styles.container}
+                key={chat.chatId}
+                onPress={() => handleSelectChat(chat)}
+              >
+                <Image source={{ uri: imageUrl }} style={styles.image} />
+
+                <View style={styles.textContainer}>
+                  <Text style={styles.displayNameText}>
+                    {recipientDisplayName}
+                  </Text>
+                  <Text style={styles.messageText}>{chat.lastMessage}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })
+        )}
+      </SafeAreaView>
+    </NativeBaseProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   background: {
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
   },
-  
+
   noChatsContainer: {
     flex: 1,
     justifyContent: "center",

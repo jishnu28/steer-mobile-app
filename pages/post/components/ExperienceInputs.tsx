@@ -8,6 +8,9 @@ import {
   View,
   Button,
 } from "native-base";
+import * as ImagePicker from "expo-image-picker";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 import { Dimensions } from "react-native";
 import NumberToggle from "./NumberToggle";
 import { Timestamp } from "firebase/firestore";
@@ -15,6 +18,13 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import createExperience, {
   ExperienceData,
 } from "../../explore/functions/createExperience";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth, firebaseStorage } from "../../../firebaseConfig";
+import {
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytes,
+} from "firebase/storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,13 +40,57 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   const [numGuests, setNumGuests] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
   const [categoryTags, setCategoryTags] = useState<string>("");
+  const [images, setImages] = useState<string[]>([]);
+
+  const [user, loading, error] = useAuthState(firebaseAuth);
+
+  const addImages = async () => {
+    let _images = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.2,
+      allowsMultipleSelection: true, // allows multiple images to be selected
+    });
+
+    if (_images.assets) {
+      _images.assets.forEach((image) => {
+        saveExperienceImages(image);
+      });
+    }
+  };
+
+  const saveExperienceImages = async (saved_image: any) => {
+    try {
+      //Uploads image to firebase storage
+      const imageId = uuidv4();
+      const response = await fetch(saved_image.uri);
+      const blob = await response.blob();
+      const imageRef = storageRef(
+        firebaseStorage,
+        `images/experienceImages/${user!.uid}/${imageId}}`
+      );
+      await uploadBytes(imageRef, blob);
+      console.log(
+        "Image uploaded to firebase storage's experienceImages folder"
+      );
+
+      //Update image's url link in images array
+      const url = await getDownloadURL(imageRef);
+      setImages([...images, url]);
+    } catch (error) {
+      console.error(
+        "Error updating profile pic to experiences collection:",
+        error
+      );
+    }
+  };
 
   const handleUpload = () => {
-    console.log("Uploading Accommodation post");
+    console.log("Uploading Experiences post");
     // TODO: Handle upload to firebase
     const newExperience: ExperienceData = {
       isActive: isActive,
-      owner: "testOwner - this should be replaced with the user's UID",
+      owner:
+        user?.uid ?? "testOwner - this should be replaced with the user's UID",
       title: title,
       description: description,
       images: [],

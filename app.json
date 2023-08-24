@@ -7,9 +7,9 @@
     "icon": "./assets/images/steer-logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/steer-logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/welcome.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#E5E8D9"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/steer-app-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#E5E8D9"
       },
       "package": "com.jishnu28.steerdev"
     },
