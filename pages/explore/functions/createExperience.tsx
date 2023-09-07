@@ -30,10 +30,6 @@ export default async function createExperience(newData: ExperienceData) {
 
   try {
     const docRef = await addDoc(collection(firestore, "experiences"), newData);
-    console.log(
-      "Document written in experiences collection with ID: ",
-      docRef.id
-    );
   } catch (error) {
     console.error(
       "Error creating new document in experiences collection:",

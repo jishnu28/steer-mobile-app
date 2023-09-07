@@ -49,10 +49,6 @@ export default async function createAccommodation(newData: AccommodationData) {
       collection(firestore, "accommodations"),
       newData
     );
-    console.log(
-      "Document written in accommodations collection with ID: ",
-      docRef.id
-    );
   } catch (error) {
     console.error(
       "Error creating new document in accommodations collection:",

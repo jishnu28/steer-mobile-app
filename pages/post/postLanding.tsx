@@ -24,7 +24,6 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
 
   const handlePress = (buttonTitle: string) => {
     if (buttonTitle === "Accommodations") {
-      console.log("Accommodations selected");
       setIsAccommodationsSelected(true);
       navigation.navigate("postAccommodation", { navigation: navigation });
     } else {
