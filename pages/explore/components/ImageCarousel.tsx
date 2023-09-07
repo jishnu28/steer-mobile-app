@@ -8,14 +8,6 @@ interface ImageCarouselProps {
   imagesToShow: string[];
 }
 
-// TODO: to be replaced with actual images once Firebase understood
-const images = [
-  "https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/310435/pexels-photo-310435.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/4551619/pexels-photo-4551619.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-];
-
 function ImageCarousel({ width, height, imagesToShow }: ImageCarouselProps) {
   const [count, setCount] = useState(0);
   const updatePaging = (event: any) => {

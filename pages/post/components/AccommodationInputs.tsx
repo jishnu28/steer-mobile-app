@@ -77,9 +77,6 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
         `images/accommodationImages/${user!.uid}/${imageId}}`
       );
       await uploadBytes(imageRef, blob);
-      console.log(
-        "Image uploaded to firebase storage's accommodationImages folder"
-      );
 
       //Update image's url link in images array
       const url = await getDownloadURL(imageRef);
@@ -93,12 +90,11 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   };
 
   const handleUpload = () => {
-    console.log("Uploading Accommodation post");
-    // TODO: Handle upload to firebase
     const newAccommodation: AccommodationData = {
       isActive: isActive,
       owner:
-        user?.uid ?? "testOwner - this should be replaced with the user's UID",
+        user?.uid ??
+        "default owner id - an error occurred while uploading this accommodation",
       title: title,
       description: description,
       images: [],

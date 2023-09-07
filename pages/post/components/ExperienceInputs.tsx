@@ -69,9 +69,6 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
         `images/experienceImages/${user!.uid}/${imageId}}`
       );
       await uploadBytes(imageRef, blob);
-      console.log(
-        "Image uploaded to firebase storage's experienceImages folder"
-      );
 
       //Update image's url link in images array
       const url = await getDownloadURL(imageRef);
@@ -85,17 +82,14 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   };
 
   const handleUpload = () => {
-    console.log("Uploading Experiences post");
-    // TODO: Handle upload to firebase
     const newExperience: ExperienceData = {
       isActive: isActive,
       owner:
-        user?.uid ?? "testOwner - this should be replaced with the user's UID",
+        user?.uid ??
+        "default owner id - an error occurred while uploading this accommodation",
       title: title,
       description: description,
       images: [],
-      //numGuests: numGuests,
-
       price: price,
       address: address,
       experienceTags: categoryTags.split(", ").map((tag) => tag.trim()),
@@ -165,6 +159,17 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             placeholder="Enter.."
             onChangeText={(text) => setPrice(Number(text))}
           />
+        </FormControl>
+
+        <FormControl w={0.9 * width} justifyItems={"center"}>
+          <Button
+            h={0.05 * height}
+            w={0.5 * width}
+            backgroundColor={"#FFAF87"}
+            onPress={() => addImages()}
+          >
+            Upload Images
+          </Button>
         </FormControl>
 
         <FormControl w={0.9 * width} p={2}>

@@ -2,11 +2,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   CheckCircleIcon,
   Heading,
-  Icon,
   NativeBaseProvider,
   VStack,
 } from "native-base";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { SafeAreaView } from "react-native";
 

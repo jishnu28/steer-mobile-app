@@ -7,7 +7,7 @@ export interface AccommodationData {
   owner: string;
   title: string;
   description: string;
-  images: string[]; // download URLs from cloud storage
+  images: string[]; // image URLs are fetched from cloud storage and stored as strings here
   numGuests: number;
   numBeds: number;
   numBaths: number;
@@ -20,14 +20,11 @@ export interface AccommodationData {
   hasWaterheater: boolean;
   accommodationTags: string[]; // for use in search and itinerary generation
   postingDate: Timestamp;
-  // TODO: @Ryan, for your reviews feature, add in the 'reviews' collection as a subcollection here
+  // TODO: Add in the 'reviews' collection as a subcollection here
 }
 
 export default async function createAccommodation(newData: AccommodationData) {
-  // TODO: @Jishnu, add image saving process, and pass in the download URLs to the image field below
-
-  // TODO: @Celeste, Replace these test values with user input from an upload page, passed in as props
-  const data: AccommodationData = {
+  const sampleData: AccommodationData = {
     isActive: true,
     owner: "testOwner - this should be replaced with the user's UID",
     title: "Tiny testing tent",
@@ -61,6 +58,6 @@ export default async function createAccommodation(newData: AccommodationData) {
       "Error creating new document in accommodations collection:",
       error
     );
-    // Handle error or show error message to the user
+    // TODO: Handle error or show error message to the user
   }
 }

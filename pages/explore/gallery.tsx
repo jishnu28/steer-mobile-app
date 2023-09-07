@@ -12,6 +12,10 @@ interface GalleryProps {
 const width = Dimensions.get("screen").width;
 const height = Dimensions.get("screen").height;
 
+/**
+ *
+ * @deprecated, originally used for displaying each post's images in a gallery
+ */
 function Gallery({ navigation }: GalleryProps) {
   return (
     <NativeBaseProvider>

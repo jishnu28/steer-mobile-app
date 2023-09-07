@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,8 +9,6 @@ import {
 import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
-import createAccommodation from "./functions/createAccommodation";
-import createExperience from "./functions/createExperience";
 import CATEGORIES from "../../config/CATEGORIES";
 
 import ExploreMenu from "./components/ExploreMenu";

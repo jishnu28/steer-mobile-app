@@ -37,6 +37,7 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
     ];
     console.log("waterHeater is:", hasWaterHeater);
 
+    // TODO: Refactor this to be more DRY
     if (numBeds > 0) {
       amenitiesList[0][1] = `${numBeds} Beds`;
     }
