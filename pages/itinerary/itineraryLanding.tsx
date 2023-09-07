@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  NativeBaseProvider,
-  Heading,
-  Text,
-  ScrollView,
-  Slider,
-  Stack,
-  Box,
-  Center,
-  Skeleton,
-} from "native-base";
+import { NativeBaseProvider, Heading, Text, Center } from "native-base";
 import {
   StyleSheet,
   SafeAreaView,

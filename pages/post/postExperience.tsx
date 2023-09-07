@@ -1,7 +1,7 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView, Dimensions } from "react-native";
-import { Button, NativeBaseProvider, ScrollView } from "native-base";
+import { NativeBaseProvider, ScrollView } from "native-base";
 import ExperienceInputs from "./components/ExperienceInputs";
 
 interface PostExperienceProps {

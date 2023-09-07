@@ -1,4 +1,4 @@
-import { Badge, Flex, Text, HStack, Box } from "native-base";
+import { Flex, Text, HStack, Box } from "native-base";
 
 interface DescriptionSectionProps {
   title: string;

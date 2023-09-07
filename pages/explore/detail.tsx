@@ -37,7 +37,6 @@ interface DetailProps {
 
 function Detail({ route, navigation }: DetailProps) {
   const { item } = route.params;
-  console.log("item", item);
   const { isOpen, onOpen, onClose } = useDisclose();
   const [data, setData] = useState<DocumentData | undefined>(item);
 

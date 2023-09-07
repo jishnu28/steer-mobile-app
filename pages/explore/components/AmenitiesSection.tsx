@@ -35,8 +35,8 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
       ["door-open", "0 Bedrooms"],
       ["shower", "0 Bathrooms"],
     ];
-    console.log("waterHeater is:", hasWaterHeater);
 
+    // TODO: Refactor this to be more DRY
     if (numBeds > 0) {
       amenitiesList[0][1] = `${numBeds} Beds`;
     }
@@ -58,7 +58,6 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
     if (hasWaterHeater) {
       amenitiesList.push(["water-boiler", "Water-heater"]);
     }
-    console.log("amenitiesList is:", amenitiesList);
     setFinalAmenitiesList(amenitiesList);
   }, [
     hasWifi,
@@ -70,7 +69,6 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
     hasWaterHeater,
   ]);
 
-  console.log(finalAmenitiesList);
   return (
     <Flex flexWrap="wrap" flexDirection="row" p={4}>
       {finalAmenitiesList.map((amenity) => (
