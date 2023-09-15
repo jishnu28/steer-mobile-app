@@ -9,7 +9,7 @@ import HomeTabs from "./stack_screens/HomeTabsStackScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     "Bitter-Black": require("./assets/fonts/Bitter-Black.ttf"),
     "Bitter-ExtraBold": require("./assets/fonts/Bitter-ExtraBold.ttf"),
     "Bitter-Bold": require("./assets/fonts/Bitter-Bold.ttf"),
@@ -22,6 +22,10 @@ export default function App() {
     "Bitter-Italic": require("./assets/fonts/Bitter-Italic.ttf"),
     "Bitter-BoldItalic": require("./assets/fonts/Bitter-BoldItalic.ttf"),
   });
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   return (
     <ChatContextProvider>

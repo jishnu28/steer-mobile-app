@@ -1,11 +1,11 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import ItineraryLanding from "../pages/itinerary/itineraryLanding";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
 import PostStack from "./PostStackScreen";
+import ItineraryStack from "./ItineraryStackScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -39,7 +39,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name="Itinerary"
-        component={ItineraryLanding}
+        component={ItineraryStack}
         options={{
           tabBarColor: "#FFAF87",
           tabBarIcon: ({ focused, color }) => (

@@ -4,7 +4,7 @@ import ProfilePage from "../pages/profile/profile";
 
 const Stack = createStackNavigator();
 
-// TODO: Replace Home with ProfilePage once ProfilePage is ready
+// TODO: Fix issue with component of ProfilePage screen
 export default function ProfileStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -5,6 +5,7 @@ import Explore from "../pages/explore/explore";
 
 const Stack = createStackNavigator();
 
+// TODO: Fix issue with component of Detail screen
 export default function ExploreStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
