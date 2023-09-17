@@ -50,13 +50,8 @@ function ExploreItemCarousel({
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      snapToInterval={height * 0.55}
-      decelerationRate="fast"
-      pagingEnabled
       style={{ marginVertical: 20 }}
     >
-      {/* TODO: configure getting the data from Firebase instead */}
-
       {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
@@ -91,11 +86,15 @@ function ExploreItemCarousel({
                 </Text>
               </View>
             </Pressable>
+
             <ImageCarousel
-              width={cardWidth}
-              height={cardHeight}
-              imagesToShow={item.images ?? []}
-            />
+                width={cardWidth}
+                height={cardHeight}
+                imagesToShow={item.images ?? []}
+                navigation={navigation}
+                item={item}
+                page={false}
+              />
           </View>
         </View>
       ))}
