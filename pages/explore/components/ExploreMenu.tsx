@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import CATEGORIES from "../../../config/CATEGORIES";
 
 interface ExploreMenuProps {
@@ -12,43 +12,68 @@ function ExploreMenu({
   updateActiveCategory,
   activeCategory,
 }: ExploreMenuProps) {
+
   return (
-    <ScrollView horizontal>
-      {CATEGORIES.map((category, index) => (
-        <TouchableOpacity
-          onPress={() => updateActiveCategory(index)}
-          style={{ marginRight: 10, paddingTop: 5 }}
-          key={category.id}
-        >
-          <Text
+    <View>
+      <View
+      style={styles.categoryButton}>
+        {CATEGORIES.map((category, index) => (
+          <TouchableOpacity
+            onPress={() => updateActiveCategory(index)}
             style={[
               activeCategory == index
                 ? styles.activeCategory
-                : styles.inactiveCategory,
+                : styles.inactiveCategory
             ]}
           >
-            {category.title}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+            <Text>{category.title}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 }
 
 export default ExploreMenu;
 const styles = StyleSheet.create({
+  categoryButton: {
+    height: 44, 
+    backgroundColor: 'white',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#FFAF87',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 5,
+  },
+
   activeCategory: {
-    color: "#FFAF87",
-    fontFamily: "Bitter-Black",
+    color: "#FFFFFF",
+    fontFamily: "Bitter-Bold",
     fontSize: 20,
-    fontWeight: "800",
-    textDecorationLine: "underline",
+    backgroundColor: "#FFAF87",
+
+    padding: 5,
+    paddingVertical: 10,
+
+    borderRadius: 20, 
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   inactiveCategory: {
     color: "#88838A",
-    fontFamily: "Bitter-Black",
+    fontFamily: "Bitter-Bold",
     fontSize: 20,
-    fontWeight: "800",
+
+    padding: 5,
+    paddingVertical: 10,
+
+    borderRadius: 20, 
+    flex: 1, 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
