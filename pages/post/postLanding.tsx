@@ -43,7 +43,7 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
         }}
       >
         <VStack space={10} alignItems={"center"}>
-          <Heading justifyContent={"center"}>I'm posting a...</Heading>
+          <Heading justifyContent={"center"} style={styles.titleText}>I'm posting an...</Heading>
           <HStack space={8} style={[styles.container]}>
             <TouchableOpacity
               onPress={() => handlePress("Accommodations")}
@@ -104,11 +104,17 @@ const styles = StyleSheet.create({
     width: 0.25 * width,
     height: 0.25 * width,
   },
+  titleText: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 25,
+    opacity: 0.6,
+  },
   text: {
-    marginTop: 8,
+    fontFamily: "Bitter-Bold",
     fontSize: 16,
     fontWeight: "bold",
-  },
+    opacity: 0.5,
+  }
 });
 
 export default PostLanding;

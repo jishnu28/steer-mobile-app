@@ -7,9 +7,10 @@ import {
   Heading,
   ScrollView,
   Button,
+  HStack,
 } from "native-base";
 import * as ImagePicker from "expo-image-picker";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet, Image } from "react-native";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
 import createAccommodation, {
@@ -26,7 +27,6 @@ import {
 } from "firebase/storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-
 const { width, height } = Dimensions.get("window");
 
 interface AccommodationInputsProps {
@@ -49,6 +49,7 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [hasKitchen, setHasKitchen] = useState(false);
   const [accommodationTags, setAccommodationTags] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const [selectedImageUri, setSelectedImageUri] = useState("");
 
   const [user, loading, error] = useAuthState(firebaseAuth);
 
@@ -60,6 +61,9 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
     });
 
     if (_images.assets) {
+      const firstImage = _images.assets[0];
+      setSelectedImageUri(firstImage.uri);
+
       _images.assets.forEach((image) => {
         saveAccommodationImages(image);
       });
@@ -119,73 +123,68 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
     navigation.navigate("postConfirmation", { navigation: navigation });
   };
 
-  return (
-    <ScrollView py={4} backgroundColor={"#FAF8F0"}>
-      <VStack px={4} space={4}>
-        <Heading backgroundColor={"red.400"}>Upload Accommodation</Heading>
+  const setPositiveNumGuests = (numGuests: number) => {
+    const positiveValue = Math.max(numGuests, 0);
+    setNumGuests(positiveValue);
+  };
 
+  const setPositiveNumBeds = (numBeds: number) => {
+    const positiveValue = Math.max(numBeds, 0);
+    setNumBeds(positiveValue);
+  };
+
+  const setPositiveNumBedrooms = (numBedrooms: number) => {
+    const positiveValue = Math.max(numBedrooms, 0);
+    setNumBedrooms(positiveValue);
+  };
+
+  const setPositiveNumBaths = (numBaths: number) => {
+    const positiveValue = Math.max(numBaths, 0);
+    setNumBaths(positiveValue);
+  };
+
+  return (
+    <ScrollView py={4}>
+      <VStack px={4} space={4}>
+        <Heading style={styles.title}>Upload Accommodation</Heading>
         <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Title:
+          {/* <FormControl.Label>
+            <Text fontFamily={"Bitter-Regular"} fontSize={16}>
+              Title
             </Text>
-          </FormControl.Label>
+          </FormControl.Label> */}
           <Input
             value={title}
-            placeholder="Enter.."
+            placeholder="Add a title"
+            borderBottomColor={"muted.300"}
+            borderTopColor={"text.100"}
+            borderLeftColor={"text.100"}
+            borderRightColor={"text.100"}
+            style={{
+              fontFamily: "Bitter-Bold",
+              fontSize: 25,
+              opacity: 0.6,
+            }}
             onChangeText={(text) => setTitle(text)}
           />
         </FormControl>
 
         <FormControl w={0.9 * width}>
-          <FormControl.Label>
+          {/* <FormControl.Label>
             <Text fontFamily={"Bitter-Medium"} fontSize={16}>
               Description:
             </Text>
-          </FormControl.Label>
+          </FormControl.Label> */}
           <Input
             value={description}
-            placeholder="Enter.."
+            placeholder="Add description"
+            borderWidth={0}
+            style={{
+              fontFamily: "Bitter-Bold",
+              fontSize: 20,
+              opacity: 0.6,
+            }}
             onChangeText={(text) => setDescription(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Tags:
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={accommodationTags}
-            placeholder="Enter tags separated by commas.."
-            onChangeText={(text) => setAccommodationTags(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Address:
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={address}
-            placeholder="Enter.."
-            onChangeText={(text) => setAddress(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Price/night:
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={price.toString()}
-            placeholder="Enter.."
-            onChangeText={(text) => setPrice(Number(text))}
           />
         </FormControl>
 
@@ -195,45 +194,131 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
             w={0.5 * width}
             backgroundColor={"#FFAF87"}
             onPress={() => addImages()}
+            borderRadius={20}
           >
-            Upload Images
+            <Text style={styles.button}>Upload Images</Text>
           </Button>
         </FormControl>
 
+        <ScrollView horizontal>
+          {images.map((imageUri, index) => (
+            <Image
+              key={index}
+              source={{ uri: imageUri }}
+              style={{ width: 200, height: 200, marginRight: 10 }}
+            />
+          ))}
+        </ScrollView>
+
         <FormControl w={0.9 * width}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16} pb={1}>
-              How many visitors can you host:
+            <Text style={styles.text} fontSize={16}>
+              Tags
             </Text>
           </FormControl.Label>
-          <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
+          <Input
+            value={accommodationTags}
+            placeholder="Enter tags separated by commas.."
+            borderWidth={0}
+            borderRadius={20}
+            onChangeText={(text) => setAccommodationTags(text)}
+            style={{
+              fontFamily: "Bitter-Regular",
+              fontSize: 16,
+              opacity: 0.6,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          />
         </FormControl>
 
         <FormControl w={0.9 * width}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16} pb={1}>
+            <Text style={styles.text} fontSize={16}>
+              Address
+            </Text>
+          </FormControl.Label>
+          <Input
+            value={address}
+            placeholder="Enter address"
+            borderWidth={0}
+            borderRadius={20}
+            onChangeText={(text) => setAddress(text)}
+            style={{
+              fontFamily: "Bitter-Regular",
+              fontSize: 16,
+              opacity: 0.6,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          />
+        </FormControl>
+
+        <FormControl w={0.9 * width}>
+          <FormControl.Label>
+            <Text style={styles.text} fontSize={16}>
+              Price/night
+            </Text>
+          </FormControl.Label>
+          <Input
+            value={price.toString()}
+            width={100}
+            borderWidth={0}
+            borderRadius={20}
+            onChangeText={(text) => setPrice(Number(text))}
+            style={{
+              fontFamily: "Bitter-Regular",
+              fontSize: 16,
+              opacity: 0.6,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          />
+        </FormControl>
+
+        <FormControl w={0.9 * width}>
+          <HStack>
+            <Text style={styles.text} marginRight={2}>
+              I can host
+            </Text>
+            <NumberToggle
+              numItems={numGuests}
+              setNumItems={setPositiveNumGuests}
+            />
+            <Text style={styles.text} marginLeft={2}>
+              visitors
+            </Text>
+          </HStack>
+        </FormControl>
+
+        <FormControl w={0.9 * width}>
+          <FormControl.Label>
+            <Text style={styles.text} marginRight={2} pb={1}>
               Number of Beds:
             </Text>
           </FormControl.Label>
-          <NumberToggle numItems={numBeds} setNumItems={setNumBeds} />
+          <NumberToggle numItems={numBeds} setNumItems={setPositiveNumBeds} />
         </FormControl>
 
         <FormControl w={0.9 * width}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16} pb={1}>
+            <Text style={styles.text} marginRight={2} pb={1}>
               Number of Bedrooms:
             </Text>
           </FormControl.Label>
-          <NumberToggle numItems={numBedrooms} setNumItems={setNumBedrooms} />
+          <NumberToggle
+            numItems={numBedrooms}
+            setNumItems={setPositiveNumBedrooms}
+          />
         </FormControl>
 
         <FormControl w={0.9 * width}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16} pb={1}>
+            <Text style={styles.text} marginRight={2} pb={1}>
               Number of Baths:
             </Text>
           </FormControl.Label>
-          <NumberToggle numItems={numBaths} setNumItems={setNumBaths} />
+          <NumberToggle numItems={numBaths} setNumItems={setPositiveNumBaths} />
         </FormControl>
 
         <BooleanToggle
@@ -259,12 +344,45 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
           hasItem={hasKitchen}
           setHasItem={setHasKitchen}
         />
+
+        <FormControl
+          w={0.9 * width}
+          justifyItems={"center"}
+          alignItems={"center"}
+        >
+          <Button
+            h={0.06 * height}
+            w={0.5 * width}
+            backgroundColor={"#FFAF87"}
+            borderRadius={20}
+            marginTop={10}
+            onPress={() => handleUpload()}
+          >
+            <Text style={styles.button}>Submit</Text>
+          </Button>
+        </FormControl>
       </VStack>
-      <Button h={0.1 * height} onPress={() => handleUpload()}>
-        Submit
-      </Button>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 25,
+    marginTop: 20,
+    opacity: 0.6,
+  },
+  text: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 16,
+    opacity: 0.6,
+  },
+  button: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 16,
+    color: "white",
+  },
+});
 
 export default AccommodationInputs;

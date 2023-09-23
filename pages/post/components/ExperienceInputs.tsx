@@ -5,13 +5,13 @@ import {
   Input,
   Text,
   Heading,
-  View,
+  ScrollView,
   Button,
 } from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { Dimensions } from "react-native";
+import { Dimensions, StyleSheet, Image } from "react-native";
 import NumberToggle from "./NumberToggle";
 import { Timestamp } from "firebase/firestore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -106,81 +106,163 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   };
 
   return (
-    <View
-      h={0.75 * height}
-      style={{ flex: 1 }}
-      py={4}
-      backgroundColor={"#FAF8F0"}
-    >
-      <VStack px={4}>
-        <Heading>Upload Experience</Heading>
+    <ScrollView py={4}>
+      <VStack px={4} space={4}>
+        <Heading style={styles.title}>Upload Experience</Heading>
 
-        <FormControl w={0.9 * width} p={2}>
-          <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Title:
+        <FormControl w={0.9 * width}>
+          {/* <FormControl.Label>
+            <Text fontFamily={"Bitter-Regular"} fontSize={16}>
+              Title
             </Text>
-          </FormControl.Label>
+          </FormControl.Label> */}
           <Input
             value={title}
-            placeholder="Enter.."
+            placeholder="Add a title"
+            borderBottomColor={"muted.300"}
+            borderTopColor={"text.100"}
+            borderLeftColor={"text.100"}
+            borderRightColor={"text.100"}
+            style={{
+              fontFamily: "Bitter-Bold",
+              fontSize: 25,
+              opacity: 0.6,
+            }}
             onChangeText={(text) => setTitle(text)}
           />
         </FormControl>
 
-        <FormControl w={0.9 * width} p={2}>
-          <FormControl.Label>
+        <FormControl w={0.9 * width}>
+          {/* <FormControl.Label>
             <Text fontFamily={"Bitter-Medium"} fontSize={16}>
               Description:
             </Text>
-          </FormControl.Label>
+          </FormControl.Label> */}
           <Input
             value={description}
-            placeholder="Enter.."
+            placeholder="Add description"
+            borderWidth={0}
+            style={{
+              fontFamily: "Bitter-Bold",
+              fontSize: 20,
+              opacity: 0.6,
+            }}
             onChangeText={(text) => setDescription(text)}
           />
         </FormControl>
 
+        <FormControl w={0.9 * width} justifyItems={"center"}>
+          <Button
+            h={0.05 * height}
+            w={0.5 * width}
+            backgroundColor={"#FFAF87"}
+            onPress={() => addImages()}
+            borderRadius={20}
+          >
+            <Text style={styles.button}>Upload Images</Text>
+          </Button>
+        </FormControl>
+
+        <ScrollView horizontal>
+          {images.map((imageUri, index) => (
+            <Image
+              key={index}
+              source={{ uri: imageUri }}
+              style={{ width: 200, height: 200, marginRight: 10 }}
+            />
+          ))}
+        </ScrollView>
+
         <FormControl w={0.9 * width} p={2}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
+            <Text style={styles.text} fontSize={16}>
               Address:
             </Text>
           </FormControl.Label>
           <Input
             value={address}
             placeholder="Enter.."
+            borderWidth={0}
+            borderRadius={20}
             onChangeText={(text) => setAddress(text)}
+            style={{
+              fontFamily: "Bitter-Regular",
+              fontSize: 16,
+              opacity: 0.6,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
           />
         </FormControl>
 
         <FormControl w={0.9 * width} p={2}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
+            <Text style={styles.text} fontSize={16}>
               Price/person:
             </Text>
           </FormControl.Label>
           <Input
             value={price.toString()}
-            placeholder="Enter.."
+            width={100}
+            borderWidth={0}
+            borderRadius={20}
             onChangeText={(text) => setPrice(Number(text))}
+            style={{
+              fontFamily: "Bitter-Regular",
+              fontSize: 16,
+              opacity: 0.6,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
           />
         </FormControl>
 
         <FormControl w={0.9 * width} p={2}>
           <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16} pb={1}>
+            <Text style={styles.text} fontSize={16} pb={1}>
               How many pax per booking:
             </Text>
           </FormControl.Label>
           <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
         </FormControl>
+        <FormControl
+          w={0.9 * width}
+          justifyItems={"center"}
+          alignItems={"center"}
+        >
+          <Button
+            h={0.06 * height}
+            w={0.5 * width}
+            backgroundColor={"#FFAF87"}
+            borderRadius={20}
+            marginTop={10}
+            onPress={() => handleUpload()}
+          >
+            <Text style={styles.button}>Submit</Text>
+          </Button>
+        </FormControl>
       </VStack>
-      <Button h={0.1 * height} onPress={() => handleUpload()}>
-        Submit
-      </Button>
-    </View>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 25,
+    marginTop: 20,
+    opacity: 0.6,
+  },
+  text: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 16,
+    opacity: 0.6,
+  },
+  button: {
+    fontFamily: "Bitter-Bold",
+    fontSize: 16,
+    color: "white",
+  },
+});
 
 export default ExperienceInputs;

@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get("window");
 const PostExperience = ({ navigation }: PostExperienceProps) => {
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={{ backgroundColor: "#E5E8D9" }}>
+      <SafeAreaView>
         <ScrollView h={height}>
           <ExperienceInputs navigation={navigation} />
         </ScrollView>

@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get("window");
 const PostAccommodation = ({ navigation }: PostAccommodationProps) => {
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={{ backgroundColor: "#E5E8D9" }}>
+      <SafeAreaView>
         <ScrollView>
           <AccommodationInputs navigation={navigation} />
         </ScrollView>
