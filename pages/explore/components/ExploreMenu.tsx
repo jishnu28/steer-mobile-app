@@ -4,16 +4,16 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import CATEGORIES from "../../../config/CATEGORIES";
 
 interface ExploreMenuProps {
-  setActiveCategory: any;
+  updateActiveCategory: any;
   activeCategory: number;
 }
 
-function ExploreMenu({ setActiveCategory, activeCategory }: ExploreMenuProps) {
+function ExploreMenu({ updateActiveCategory, activeCategory }: ExploreMenuProps) {
   return (
     <View style={styles.categoryButton}>
       {CATEGORIES.map((category, index) => (
         <TouchableOpacity
-          onPress={() => setActiveCategory(index)}
+          onPress={() => updateActiveCategory(index)}
           key={category.id}
           style={[
             activeCategory == index

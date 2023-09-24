@@ -18,13 +18,16 @@ interface ExploreProps {
 
 function Explore({ navigation }: ExploreProps) {
   const [activeCategory, setActiveCategory] = useState(0);
+  const updateActiveCategory = (index: number) => {
+    setActiveCategory(index);
+  };
 
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.background}>
         <View style={styles.container}>
           <ExploreMenu
-            setActiveCategory={setActiveCategory}
+            updateActiveCategory={updateActiveCategory}
             activeCategory={activeCategory}
           />
           <ExploreItemCarousel
