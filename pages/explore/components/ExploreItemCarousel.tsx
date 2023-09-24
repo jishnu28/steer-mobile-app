@@ -88,13 +88,13 @@ function ExploreItemCarousel({
             </Pressable>
 
             <ImageCarousel
-                width={cardWidth}
-                height={cardHeight}
-                imagesToShow={item.images ?? []}
-                navigation={navigation}
-                item={item}
-                page={false}
-              />
+              width={cardWidth}
+              height={cardHeight}
+              imagesToShow={item.images ?? []}
+              navigation={navigation}
+              item={item}
+              page={false}
+            />
           </View>
         </View>
       ))}
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#343135",
+    flexWrap: "wrap",
   },
 
   price: {

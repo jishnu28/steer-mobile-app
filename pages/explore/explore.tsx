@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,7 +10,6 @@ import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
-
 import ExploreMenu from "./components/ExploreMenu";
 
 interface ExploreProps {
@@ -18,23 +17,20 @@ interface ExploreProps {
 }
 
 function Explore({ navigation }: ExploreProps) {
-  const [activeCategory, setActiveCategory] = React.useState(0);
-  const updateActiveCategory = (index: number) => {
-    setActiveCategory(index);
-  };
+  const [activeCategory, setActiveCategory] = useState(0);
 
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.background}>
         <View style={styles.container}>
           <ExploreMenu
-            updateActiveCategory={updateActiveCategory}
+            setActiveCategory={setActiveCategory}
             activeCategory={activeCategory}
           />
           <ExploreItemCarousel
             activeCategory={activeCategory}
-            collectionName={CATEGORIES[activeCategory].dbName}
             navigation={navigation}
+            collectionName={CATEGORIES[activeCategory].dbName}
           />
         </View>
       </SafeAreaView>
