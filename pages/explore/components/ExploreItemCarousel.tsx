@@ -61,8 +61,8 @@ function ExploreItemCarousel({
 
       {dbItems.map((item, index) => (
         <View key={index}>
-          <View style={styles.heartButtonContainer}>
-            <HeartButton />
+          <View style={styles.heartButtonContainer}> 
+            <HeartButton item={item}/>
           </View>
 
           <View style={styles.card}>

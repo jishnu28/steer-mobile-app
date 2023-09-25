@@ -7,21 +7,15 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface UploadInfoProps {
   name: string;
-  email: string;
   isUserModalVisible: boolean;
   setUserModalVisible(isVisible: boolean): any;
-  isEmailModalVisible: boolean;
-  setEmailModalVisible(isVisible: boolean): any;
   navigation: NativeStackNavigationProp<any>;
 }
 
 function UploadInfo({
   name,
-  email,
   isUserModalVisible,
   setUserModalVisible,
-  isEmailModalVisible,
-  setEmailModalVisible,
   navigation,
 }: UploadInfoProps) {
   const handleSignOut = () => {
@@ -40,16 +34,6 @@ function UploadInfo({
         </Text>
         <TouchableOpacity
           onPress={() => setUserModalVisible(!isUserModalVisible)}
-        >
-          <MaterialCommunityIcons name="pencil" size={20} color="#88838A" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.profileText} numberOfLines={2}>
-          {email}
-        </Text>
-        <TouchableOpacity
-          onPress={() => setEmailModalVisible(!isEmailModalVisible)}
         >
           <MaterialCommunityIcons name="pencil" size={20} color="#88838A" />
         </TouchableOpacity>

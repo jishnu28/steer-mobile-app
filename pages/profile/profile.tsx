@@ -49,9 +49,7 @@ const ProfilePage = ({ navigation }: Props) => {
     const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
     //Used to set user info
     const [username, setUsername]= React.useState('');
-    const [email, setEmail]= React.useState('');
     const [usernameModal, setUsernameModal]= React.useState(false);
-    const [emailModal, setEmailModal]= React.useState(false);
 
     //Retrieves profile info when page first rendered
     const getProfile= async () => {
@@ -138,18 +136,6 @@ const ProfilePage = ({ navigation }: Props) => {
         }
     };
 
-    const saveEmail = async () => {
-        try {
-            const docRef = doc(firestore, "users", user!.uid);
-            await updateDoc(docRef, {
-                email: email,
-            });
-            getProfile();
-        } catch (error) {
-            console.error("Error updating email to users collection:", error);
-        }
-    };
-
     return (
         <NativeBaseProvider>
             <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
@@ -161,11 +147,8 @@ const ProfilePage = ({ navigation }: Props) => {
                     />
                     <UploadInfo
                         name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
-                        email={profileInfo ? profileInfo["email"] : "Placeholder email"}
                         isUserModalVisible={usernameModal}
                         setUserModalVisible={setUsernameModal}
-                        isEmailModalVisible={emailModal}
-                        setEmailModalVisible={setEmailModal}
                         navigation={navigation}
                     />
                 </View>
@@ -180,15 +163,6 @@ const ProfilePage = ({ navigation }: Props) => {
                     setModalVisibility={setUsernameModal}
                 />
 
-                <PopupModal
-                    inputName="email"
-                    inputValue={email}
-                    setInputValue={setEmail}
-                    saveValue={saveEmail}
-                    isModalVisible={emailModal}
-                    setModalVisibility={setEmailModal}
-                />
-
                 {/* Posts */}
                 {/* marginBottom to leave space for the NavBar */}
                 <View style={[styles.posts, { flex: 5, marginBottom: 0 }]}>
@@ -201,8 +175,8 @@ const ProfilePage = ({ navigation }: Props) => {
                     </View>
 
                     <SavedItemCarousel
-                        collectionName="accommodations"
-                        // collectionName="experiences"
+                        // collectionName= {`savedPosts/${user?.uid}`}
+                        collectionName="experiences"
                     />
                 </View>
             </SafeAreaView>
