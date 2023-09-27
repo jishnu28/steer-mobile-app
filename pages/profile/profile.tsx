@@ -175,8 +175,8 @@ const ProfilePage = ({ navigation }: Props) => {
                     </View>
 
                     <SavedItemCarousel
-                        // collectionName= {`savedPosts/${user?.uid}`}
-                        collectionName="experiences"
+                        collectionName= "savedPosts"
+                        // collectionName="experiences"
                     />
                 </View>
             </SafeAreaView>

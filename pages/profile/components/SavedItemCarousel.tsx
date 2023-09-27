@@ -3,9 +3,10 @@ import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "../../explore/components/HeartButton";
 import ImageCarousel from "../../explore/components/ImageCarousel";
-import { getDocs, collection, DocumentData } from "firebase/firestore";
-import { firestore } from "../../../firebaseConfig";
+import { getDoc, collection, DocumentData, doc } from "firebase/firestore";
+import { firestore, firebaseAuth } from "../../../firebaseConfig";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface SavedItemCarouselProps {
   // activeCategory: number;
@@ -25,28 +26,33 @@ function SavedItemCarousel({
   collectionName,
 }: SavedItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
+  const [user, loading, error]= useAuthState(firebaseAuth);
 
   useEffect(() => {
     async function fetchData() {
       const currItems: DocumentData[] = [];
-      const querySnapshot = await getDocs(
-        collection(firestore, collectionName)
-      );
-      // console.log("querySnapshot", querySnapshot.docs);
-      querySnapshot.docs.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data());
-        currItems.push(doc.data());
-      });
-      setDbItems(currItems);
+      // console.log("user?.uid", user?.uid);
+      try {
+        const docSnapshot = await getDoc(doc(firestore, collectionName, user?.uid as any));
+        const savedData = docSnapshot.get("posts");
+        // console.log("Saved Data", savedData);
+        savedData.forEach((item: any) => {
+          // console.log("item", item);
+          currItems.push(item);
+        })
+        setDbItems(currItems);
+      } catch (error) {
+        console.log("Error getting document:", error);
+      }
     }
 
     fetchData();
-    // console.log("dbItems", dbItems);
   }, []);
 
   if (dbItems.length != 0) {
     return (
       <ScrollView
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         snapToInterval={height * 0.55}
         decelerationRate="fast"
