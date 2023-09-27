@@ -2,24 +2,21 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 
 // Type declarations for the fields in the accommodations collection
-interface ExperienceData {
+export interface ExperienceData {
   isActive: boolean;
-  owner: string; // use id to link to post owner's profile
+  owner: string; // TODO: use id to link to post owner's profile
   title: string;
   description: string;
-  images: string[]; // these are download URLs obtained from cloud storage
+  images: string[]; // image URLs are fetched from cloud storage and stored as strings here
   price: number; // assumed price per person
   address: string; // replace with location coordinates so that potentially a map can be embedded in the future
   experienceTags: string[]; // for use in search and itinerary generation
   postingDate: Timestamp;
-  // TODO: @Ryan, for your reviews feature, add in the 'reviews' collection as a subcollection here
+  // TODO: Add in the 'reviews' collection as a subcollection here
 }
 
-export default async function createExperience() {
-  // TODO: @Jishnu, add image saving process, and pass in the download URLs to the image field below
-
-  // TODO: @Celeste, Replace these test values with user input from an upload page, passed in as props
-  const data: ExperienceData = {
+export default async function createExperience(newData: ExperienceData) {
+  const sampleData: ExperienceData = {
     isActive: true,
     owner: "testOwner - this should be replaced with the user's UID",
     title: "Terrific testing tricycling",
@@ -32,16 +29,12 @@ export default async function createExperience() {
   };
 
   try {
-    const docRef = await addDoc(collection(firestore, "experiences"), data);
-    console.log(
-      "Document written in experiences collection with ID: ",
-      docRef.id
-    );
+    const docRef = await addDoc(collection(firestore, "experiences"), newData);
   } catch (error) {
     console.error(
       "Error creating new document in experiences collection:",
       error
     );
-    // Handle error or show error message to the user
+    // TODO: Handle error or show error message to the user
   }
 }

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "../../explore/components/HeartButton";
 import ImageCarousel from "../../explore/components/ImageCarousel";
 import { getDoc, collection, DocumentData, doc } from "firebase/firestore";

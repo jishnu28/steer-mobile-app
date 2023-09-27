@@ -39,14 +39,12 @@ function ExploreItemCarousel({
         collection(firestore, collectionName)
       );
       querySnapshot.docs.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
         currItems.push(doc.data());
       });
       setDbItems(currItems);
     }
 
     fetchData();
-    console.log("dbItems", dbItems);
   }, []);
 
   return (

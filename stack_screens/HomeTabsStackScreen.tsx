@@ -5,6 +5,7 @@ import ItineraryLanding from "../pages/itinerary/itineraryLanding";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
+import PostStack from "./PostStackScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -50,6 +51,21 @@ export default function HomeTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Post"
+        component={PostStack}
+        options={{
+          tabBarColor: "#FFAF87",
+          tabBarIcon: ({ focused, color }) => (
+            <MaterialCommunityIcons
+              name={focused ? "plus-circle" : "plus-circle-outline"}
+              color={focused ? color : "#FFFFFF"}
+              size={30}
+            />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Chat"
         component={ChatStack}

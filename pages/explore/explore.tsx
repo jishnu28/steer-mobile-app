@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,33 +9,9 @@ import {
 import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
-import createAccommodation from "./functions/createAccommodation";
-import createExperience from "./functions/createExperience";
 import CATEGORIES from "../../config/CATEGORIES";
 
 import ExploreMenu from "./components/ExploreMenu";
-
-const handleCreateAccommodation = async () => {
-  try {
-    await createAccommodation();
-    console.log("Accommodation post created successfully!");
-    // Add any navigation or UI updates you want here
-  } catch (error) {
-    console.error("Error creating accommodation post:", error);
-    // Handle error or show error message to the user
-  }
-};
-
-const handleCreateExperience = async () => {
-  try {
-    await createExperience();
-    console.log("Experience post created successfully!");
-    // Add any navigation or UI updates you want here
-  } catch (error) {
-    console.error("Error creating experience post:", error);
-    // Handle error or show error message to the user
-  }
-};
 
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;

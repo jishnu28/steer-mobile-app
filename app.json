@@ -1,15 +1,15 @@
 {
   "expo": {
     "name": "steer-mobile-app",
-    "slug": "steer-mobile-app",
+    "slug": "steer-dev",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/steer-logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/welcome.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#E5E8D9"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,12 +19,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/steer-app-icon.png",
+        "backgroundColor": "#E5E8D9"
+      },
+      "package": "com.jishnu28.steerdev"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
-    }
+      "favicon": "./assets/images/steer-app-icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "299a01a3-6167-4bda-956c-9c9d18d70a91"
+      }
+    },
+    "owner": "jishnu28"
   }
 }

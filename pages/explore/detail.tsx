@@ -37,7 +37,6 @@ interface DetailProps {
 
 function Detail({ route, navigation }: DetailProps) {
   const { item } = route.params;
-  console.log("item", item);
   const { isOpen, onOpen, onClose } = useDisclose();
   const [data, setData] = useState<DocumentData | undefined>(item);
 
@@ -77,7 +76,7 @@ function Detail({ route, navigation }: DetailProps) {
                     <HostSection />
                     <ReviewSection />
                   </ScrollView>
-                  <ChatButton navigation={navigation} />
+                  <ChatButton navigation={navigation} hostID={data.owner} />
                 </Actionsheet.Content>
               </Actionsheet>
               <BackButton onPress={() => navigation.goBack()} />
@@ -87,7 +86,7 @@ function Detail({ route, navigation }: DetailProps) {
             <>
               <BackButton onPress={() => navigation.goBack()} />
               <InfoButton onPress={onOpen} />
-              <ChatButton navigation={navigation} />
+              <ChatButton navigation={navigation} hostID={data.owner} />
             </>
           )}
         </SafeAreaView>
