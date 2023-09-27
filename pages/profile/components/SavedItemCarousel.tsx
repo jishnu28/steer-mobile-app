@@ -61,9 +61,9 @@ function SavedItemCarousel({
       >
         {dbItems.map((item, index) => (
           <View key={index}>
-            <View style={styles.heartButtonContainer}>
+            {/* <View style={styles.heartButtonContainer}>
               <HeartButton />
-            </View>
+            </View> */}
 
             <View style={styles.card}>
               <View style={styles.descriptionBackground}>
