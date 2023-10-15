@@ -51,6 +51,9 @@ function Detail({ route, navigation }: DetailProps) {
             width={width}
             height={height}
             imagesToShow={data.images}
+            navigation={navigation}
+            item={item}
+            page={true}    
           />
           {isOpen ? (
             <>

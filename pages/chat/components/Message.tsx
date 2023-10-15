@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   owner: {
     alignSelf: "flex-end",
-    backgroundColor: "#A4A0A6",
+    backgroundColor: "#FFAF87",
   },
   otherUser: {
     alignSelf: "flex-start",
