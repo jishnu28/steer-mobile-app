@@ -13,9 +13,9 @@ function HeartButton(item: any) {
 
   async function setSavedPost() {
     try {
-      const savedRef= doc(firestore, "savedPosts", user?.uid as any)
+      const savedRef= doc(firestore, "users", user?.uid as any)
       await updateDoc(savedRef, {
-        posts: arrayUnion(item.item)
+        favouritedPosts: arrayUnion(item.item.firestoreID)
       });
     }
     catch (error) {
@@ -28,9 +28,9 @@ function HeartButton(item: any) {
 
   async function removeSavedPost() {
     try {
-      const savedRef= doc(firestore, "savedPosts", user?.uid as any)
+      const savedRef= doc(firestore, "users", user?.uid as any)
       await updateDoc(savedRef, {
-        posts: arrayRemove(item.item)
+        favouritedPosts: arrayRemove(item.item.firestoreID)
       });
     }
     catch (error) {
@@ -45,7 +45,7 @@ function HeartButton(item: any) {
     <TouchableOpacity
       // TODO: implement feature to save the liked experience to a database
       onPress={() => {
-        console.log(item.item)
+        // console.log(item)
         if (isLiked) {
           removeSavedPost();
         }

@@ -1,4 +1,4 @@
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, addDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 
 // Type declarations for the fields in the accommodations collection
@@ -25,11 +25,14 @@ export default async function createExperience(newData: ExperienceData) {
     price: 1,
     address: "456 Testing Avenue",
     experienceTags: ["testing", "terrific", "tricycling"],
-    postingDate: Timestamp.fromDate(new Date()),
+    postingDate: Timestamp.fromDate(new Date()), 
   };
 
   try {
     const docRef = await addDoc(collection(firestore, "experiences"), newData);
+    await updateDoc(doc(firestore, "experiences", docRef.id), {
+      firestoreID: docRef.id,
+    });
   } catch (error) {
     console.error(
       "Error creating new document in experiences collection:",
