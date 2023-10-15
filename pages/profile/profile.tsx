@@ -171,8 +171,8 @@ const ProfilePage = ({ navigation }: Props) => {
           </View>
 
                     <SavedItemCarousel
-                        collectionName= "savedPosts"
-                        // collectionName="experiences"
+                        // collectionName= "savedPosts"
+                        collectionName="accommodations"
                     />
                 </View>
             </SafeAreaView>
