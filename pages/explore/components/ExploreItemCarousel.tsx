@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   Pressable,
@@ -12,6 +12,7 @@ import HeartButton from "./HeartButton";
 import ImageCarousel from "./ImageCarousel";
 import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
+import { RefreshControl } from "react-native-gesture-handler";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
@@ -25,25 +26,30 @@ const height = Dimensions.get("screen").height;
 const cardWidth: number = width * 0.8;
 const cardHeight: number = height * 0.6;
 
+// RefreshControl triggers a onRefresh event - executes code to fetch new data from server and add it to the screen
+// RefreshControl requires you to handle state of component ie. if refresh is active or not (set to true when fetching data, false once updated)
+
 function ExploreItemCarousel({
   activeCategory,
   navigation,
   collectionName,
 }: ExploreItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
+  const [refreshing, setRefreshing] = useState(true);
+
+  async function fetchData() {
+    const currItems: DocumentData[] = [];
+    const querySnapshot = await getDocs(
+      collection(firestore, collectionName)
+    );
+    querySnapshot.docs.forEach((doc) => {
+      currItems.push(doc.data());
+    });
+    setDbItems(currItems);
+    setRefreshing(false)
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const currItems: DocumentData[] = [];
-      const querySnapshot = await getDocs(
-        collection(firestore, collectionName)
-      );
-      querySnapshot.docs.forEach((doc) => {
-        currItems.push(doc.data());
-      });
-      setDbItems(currItems);
-    }
-
     fetchData();
   }, []);
 
@@ -51,6 +57,11 @@ function ExploreItemCarousel({
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ marginVertical: 20 }}
+      refreshControl={
+        <RefreshControl 
+          refreshing={refreshing} 
+          onRefresh={fetchData}/> 
+      }
     >
       {dbItems.map((item, index) => (
         <View key={index}>
