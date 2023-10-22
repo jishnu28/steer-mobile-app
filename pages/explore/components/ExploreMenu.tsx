@@ -37,7 +37,7 @@ function ExploreMenu({ updateActiveCategory, activeCategory }: ExploreMenuProps)
 export default ExploreMenu;
 const styles = StyleSheet.create({
   categoryButton: {
-    height: 50,
+    height: 60,
     backgroundColor: "white",
     borderRadius: 20,
     borderWidth: 1,
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   inactiveCategory: {
     padding: 5,
     paddingVertical: 10,
-
     borderRadius: 20,
     flex: 1,
     justifyContent: "center",
@@ -72,11 +71,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontFamily: "Bitter-Bold",
     fontSize: 20,
+    padding: 5,
   },
 
   inactiveText: {
     color: "#88838A",
     fontFamily: "Bitter-Bold",
     fontSize: 20,
+    padding: 5,
   },
 });

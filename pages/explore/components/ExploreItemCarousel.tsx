@@ -26,11 +26,7 @@ const height = Dimensions.get("screen").height;
 const cardWidth: number = width * 0.8;
 const cardHeight: number = height * 0.6;
 
-// RefreshControl triggers a onRefresh event - executes code to fetch new data from server and add it to the screen
-// RefreshControl requires you to handle state of component ie. if refresh is active or not (set to true when fetching data, false once updated)
-
 function ExploreItemCarousel({
-  activeCategory,
   navigation,
   collectionName,
 }: ExploreItemCarouselProps) {
@@ -46,7 +42,7 @@ function ExploreItemCarousel({
       currItems.push(doc.data());
     });
     setDbItems(currItems);
-    setRefreshing(false)
+    setRefreshing(false);
   }
 
   useEffect(() => {
@@ -87,7 +83,9 @@ function ExploreItemCarousel({
               // })}
             >
               <View style={styles.descriptionContainer}>
-                <Text style={styles.title}> {item.title} </Text>
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}> {item.title} </Text>
+                </View>
                 <Text style={styles.price}>
                   {" "}
                   ${item.price}
@@ -97,15 +95,25 @@ function ExploreItemCarousel({
                 </Text>
               </View>
             </Pressable>
-
-            <ImageCarousel
-              width={cardWidth}
-              height={cardHeight}
-              imagesToShow={item.images ?? []}
-              navigation={navigation}
-              item={item}
-              page={false}
-            />
+            <Pressable
+              key={index}
+              onPress={() =>
+                navigation.navigate("Detail", {
+                  item: item,
+                  navigation: navigation,
+                })
+              }
+            >
+              <ImageCarousel
+                width={cardWidth}
+                height={cardHeight}
+                imagesToShow={item.images ?? []}
+                navigation={navigation}
+                item={item}
+                page={false}
+              />
+            </Pressable>
+            
           </View>
         </View>
       ))}
@@ -122,6 +130,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 30,
     marginBottom: 10,
+  },
+
+  titleContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+    paddingRight: 5,
   },
 
   title: {
@@ -157,8 +171,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: "100%",
     height: 87,
-    backgroundColor: "#E5E8D9",
-    opacity: 0.8,
+    backgroundColor: "#FFAF87",
   },
 
   heartButtonContainer: {
