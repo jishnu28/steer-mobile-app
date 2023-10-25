@@ -35,9 +35,7 @@ function ExploreItemCarousel({
 
   async function fetchData() {
     const currItems: DocumentData[] = [];
-    const querySnapshot = await getDocs(
-      collection(firestore, collectionName)
-    );
+    const querySnapshot = await getDocs(collection(firestore, collectionName));
     querySnapshot.docs.forEach((doc) => {
       currItems.push(doc.data());
     });
@@ -54,9 +52,7 @@ function ExploreItemCarousel({
       showsVerticalScrollIndicator={false}
       style={{ marginVertical: 20 }}
       refreshControl={
-        <RefreshControl 
-          refreshing={refreshing} 
-          onRefresh={fetchData}/> 
+        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
       }
     >
       {dbItems.map((item, index) => (
@@ -84,16 +80,20 @@ function ExploreItemCarousel({
             >
               <View style={styles.descriptionContainer}>
                 <View style={styles.titleContainer}>
-                  <Text 
+                  <Text
                     style={styles.title}
                     numberOfLines={2}
                     ellipsizeMode="tail"
-                  > {item.title} </Text>
+                  >
+                    {" "}
+                    {item.title}{" "}
+                  </Text>
                 </View>
                 <Text style={styles.price}>
                   ${item.price}
                   <Text style={[styles.price, { fontSize: 14 }]}>
-                    {" "}/ night
+                    {" "}
+                    / night
                   </Text>{" "}
                 </Text>
               </View>
@@ -110,7 +110,11 @@ function ExploreItemCarousel({
               <ImageCarousel
                 width={cardWidth}
                 height={cardHeight}
-                imagesToShow={item.images ?? ['../../../assets/images/default-listing-image.png']}
+                imagesToShow={
+                  item.images ?? [
+                    "../../../assets/images/default-listing-image.png",
+                  ]
+                }
                 navigation={navigation}
                 item={item}
                 page={false}
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
 
   titleContainer: {
     flex: 1,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     paddingRight: 5,
   },
 
