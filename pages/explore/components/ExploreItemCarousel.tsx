@@ -84,13 +84,16 @@ function ExploreItemCarousel({
             >
               <View style={styles.descriptionContainer}>
                 <View style={styles.titleContainer}>
-                  <Text style={styles.title}> {item.title} </Text>
+                  <Text 
+                    style={styles.title}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  > {item.title} </Text>
                 </View>
                 <Text style={styles.price}>
-                  {" "}
                   ${item.price}
                   <Text style={[styles.price, { fontSize: 14 }]}>
-                    /night
+                    {" "}/ night
                   </Text>{" "}
                 </Text>
               </View>
@@ -107,13 +110,12 @@ function ExploreItemCarousel({
               <ImageCarousel
                 width={cardWidth}
                 height={cardHeight}
-                imagesToShow={item.images ?? []}
+                imagesToShow={item.images ?? ['../../../assets/images/default-listing-image.png']}
                 navigation={navigation}
                 item={item}
                 page={false}
               />
             </Pressable>
-            
           </View>
         </View>
       ))}
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
-    color: "#343135",
+    color: "#FFFFFF",
     flexWrap: "wrap",
   },
 
