@@ -52,6 +52,7 @@ function ImageCarousel({
           </Text>
         ))}
       </View>
+
       <ScrollView
         horizontal
         pagingEnabled

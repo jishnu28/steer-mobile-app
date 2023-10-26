@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 
   container: {
     alignItems: "center",
+    paddingBottom: 50,
   },
 
   image: {

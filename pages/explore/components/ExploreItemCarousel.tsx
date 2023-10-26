@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   Pressable,
@@ -12,6 +12,7 @@ import HeartButton from "./HeartButton";
 import ImageCarousel from "./ImageCarousel";
 import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
+import { RefreshControl } from "react-native-gesture-handler";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
@@ -26,24 +27,23 @@ const cardWidth: number = width * 0.8;
 const cardHeight: number = height * 0.6;
 
 function ExploreItemCarousel({
-  activeCategory,
   navigation,
   collectionName,
 }: ExploreItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
+  const [refreshing, setRefreshing] = useState(true);
+
+  async function fetchData() {
+    const currItems: DocumentData[] = [];
+    const querySnapshot = await getDocs(collection(firestore, collectionName));
+    querySnapshot.docs.forEach((doc) => {
+      currItems.push(doc.data());
+    });
+    setDbItems(currItems);
+    setRefreshing(false);
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const currItems: DocumentData[] = [];
-      const querySnapshot = await getDocs(
-        collection(firestore, collectionName)
-      );
-      querySnapshot.docs.forEach((doc) => {
-        currItems.push(doc.data());
-      });
-      setDbItems(currItems);
-    }
-
     fetchData();
   }, []);
 
@@ -51,6 +51,9 @@ function ExploreItemCarousel({
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{ marginVertical: 20 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={fetchData} />
+      }
     >
       {dbItems.map((item, index) => (
         <View key={index}>
@@ -76,25 +79,47 @@ function ExploreItemCarousel({
               // })}
             >
               <View style={styles.descriptionContainer}>
-                <Text style={styles.title}> {item.title} </Text>
+                <View style={styles.titleContainer}>
+                  <Text
+                    style={styles.title}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {" "}
+                    {item.title}{" "}
+                  </Text>
+                </View>
                 <Text style={styles.price}>
-                  {" "}
                   ${item.price}
                   <Text style={[styles.price, { fontSize: 14 }]}>
-                    /night
+                    {" "}
+                    / night
                   </Text>{" "}
                 </Text>
               </View>
             </Pressable>
-
-            <ImageCarousel
-              width={cardWidth}
-              height={cardHeight}
-              imagesToShow={item.images ?? []}
-              navigation={navigation}
-              item={item}
-              page={false}
-            />
+            <Pressable
+              key={index}
+              onPress={() =>
+                navigation.navigate("Detail", {
+                  item: item,
+                  navigation: navigation,
+                })
+              }
+            >
+              <ImageCarousel
+                width={cardWidth}
+                height={cardHeight}
+                imagesToShow={
+                  item.images ?? [
+                    "../../../assets/images/default-listing-image.png",
+                  ]
+                }
+                navigation={navigation}
+                item={item}
+                page={false}
+              />
+            </Pressable>
           </View>
         </View>
       ))}
@@ -113,11 +138,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
+  titleContainer: {
+    flex: 1,
+    alignItems: "flex-start",
+    paddingRight: 5,
+  },
+
   title: {
     fontSize: 24,
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
-    color: "#343135",
+    color: "#FFFFFF",
     flexWrap: "wrap",
   },
 
@@ -146,8 +177,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: "100%",
     height: 87,
-    backgroundColor: "#E5E8D9",
-    opacity: 0.8,
+    backgroundColor: "#FFAF87",
   },
 
   heartButtonContainer: {
