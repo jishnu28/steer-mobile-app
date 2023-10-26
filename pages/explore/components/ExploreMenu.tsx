@@ -8,7 +8,10 @@ interface ExploreMenuProps {
   activeCategory: number;
 }
 
-function ExploreMenu({ updateActiveCategory, activeCategory }: ExploreMenuProps) {
+function ExploreMenu({
+  updateActiveCategory,
+  activeCategory,
+}: ExploreMenuProps) {
   return (
     <View style={styles.categoryButton}>
       {CATEGORIES.map((category, index) => (
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   activeCategory: {
     backgroundColor: "#FFAF87",
     padding: 5,
-    paddingVertical: 10,
+    paddingVertical: 2,
     borderRadius: 20,
     flex: 1,
     justifyContent: "center",
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
 
   inactiveCategory: {
     padding: 5,
-    paddingVertical: 10,
+    paddingVertical: 2,
     borderRadius: 20,
     flex: 1,
     justifyContent: "center",
