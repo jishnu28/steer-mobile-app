@@ -40,14 +40,13 @@ interface ProfileData {
 }
 
 const ProfilePage = ({ navigation }: Props) => {
-  //Used for user info retrieval
-  const [user, loading, error] = useAuthState(firebaseAuth);
-  const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
-  //Used to set user info
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [usernameModal, setUsernameModal] = React.useState(false);
-  const [emailModal, setEmailModal] = React.useState(false);
+
+    //Used for user info retrieval
+    const [user, loading, error]= useAuthState(firebaseAuth);
+    const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
+    //Used to set user info
+    const [username, setUsername]= React.useState('');
+    const [usernameModal, setUsernameModal]= React.useState(false);
 
   //Retrieves profile info when page first rendered
   const getProfile = async () => {
@@ -120,69 +119,45 @@ const ProfilePage = ({ navigation }: Props) => {
     }
   };
 
-  //Code for profile info upload
-  const saveUsername = async () => {
-    try {
-      const docRef = doc(firestore, "users", user!.uid);
-      await updateDoc(docRef, {
-        displayName: username,
-      });
-      getProfile();
-    } catch (error) {
-      console.error("Error updating username to users collection:", error);
-    }
-  };
+    //Code for profile info upload
+    const saveUsername = async () => {
+        try {
+            const docRef = doc(firestore, "users", user!.uid);
+            await updateDoc(docRef, {
+                displayName: username,
+            });
+            getProfile();
+        } catch (error) {
+            console.error("Error updating username to users collection:", error);
+        }
+    };
 
-  const saveEmail = async () => {
-    try {
-      const docRef = doc(firestore, "users", user!.uid);
-      await updateDoc(docRef, {
-        email: email,
-      });
-      getProfile();
-    } catch (error) {
-      console.error("Error updating email to users collection:", error);
-    }
-  };
+    return (
+        <NativeBaseProvider>
+            <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
+                {/* Profile Info */}
+                <View style={[styles.profile, { flex: 2 }]}>
+                    <UploadPic
+                        url={profileInfo ? profileInfo["profilePic"] : ""} //sets placeholder in case user data does not exist
+                        addImage={addImage}
+                    />
+                    <UploadInfo
+                        name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
+                        isUserModalVisible={usernameModal}
+                        setUserModalVisible={setUsernameModal}
+                        navigation={navigation}
+                    />
+                </View>
 
-  return (
-    <NativeBaseProvider>
-      <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
-        {/* Profile Info */}
-        <View style={[styles.profile, { flex: 2 }]}>
-          <UploadPic
-            url={profileInfo ? profileInfo["profilePic"] : ""} //sets placeholder in case user data does not exist
-            addImage={addImage}
-          />
-          <UploadInfo
-            name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
-            email={profileInfo ? profileInfo["email"] : "Placeholder email"}
-            isUserModalVisible={usernameModal}
-            setUserModalVisible={setUsernameModal}
-            isEmailModalVisible={emailModal}
-            setEmailModalVisible={setEmailModal}
-            navigation={navigation}
-          />
-        </View>
-
-        {/* Modals */}
-        <PopupModal
-          inputName="username"
-          inputValue={username}
-          setInputValue={setUsername}
-          saveValue={saveUsername}
-          isModalVisible={usernameModal}
-          setModalVisibility={setUsernameModal}
-        />
-
-        <PopupModal
-          inputName="email"
-          inputValue={email}
-          setInputValue={setEmail}
-          saveValue={saveEmail}
-          isModalVisible={emailModal}
-          setModalVisibility={setEmailModal}
-        />
+                {/* Modals */}
+                <PopupModal
+                    inputName="username"
+                    inputValue={username}
+                    setInputValue={setUsername}
+                    saveValue={saveUsername}
+                    isModalVisible={usernameModal}
+                    setModalVisibility={setUsernameModal}
+                />
 
         {/* Posts */}
         {/* marginBottom to leave space for the NavBar */}
@@ -195,15 +170,15 @@ const ProfilePage = ({ navigation }: Props) => {
             </Text>
           </View>
 
-          <SavedItemCarousel
-            collectionName="accommodations"
-            // collectionName="experiences"
-          />
-        </View>
-      </SafeAreaView>
-    </NativeBaseProvider>
-  );
-};
+                    <SavedItemCarousel
+                        // collectionName= "savedPosts"
+                        collectionName="accommodations"
+                    />
+                </View>
+            </SafeAreaView>
+        </NativeBaseProvider>
+    );
+    };
 
 export default ProfilePage;
 

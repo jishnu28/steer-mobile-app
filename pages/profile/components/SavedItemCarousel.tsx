@@ -1,10 +1,18 @@
 import React, { useEffect } from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import { 
+  Dimensions, 
+  Pressable,
+  ScrollView, 
+  StyleSheet, 
+  Text, 
+  View 
+} from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "../../explore/components/HeartButton";
-import ImageCarousel from "../../explore/components/ImageCarousel";
-import { getDocs, collection, DocumentData } from "firebase/firestore";
-import { firestore } from "../../../firebaseConfig";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import SavedImageCarousel from "./SavedImageCarousel";
+import { getDoc, getDocs, collection, DocumentData, doc } from "firebase/firestore";
+import { firestore, firebaseAuth } from "../../../firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface SavedItemCarouselProps {
   // activeCategory: number;
@@ -24,80 +32,73 @@ function SavedItemCarousel({
   collectionName,
 }: SavedItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
+  const [user, loading, error]= useAuthState(firebaseAuth);
 
   useEffect(() => {
     async function fetchData() {
       const currItems: DocumentData[] = [];
+
+      const userRef= doc(firestore, "users", user?.uid as any);
+      const userDoc= await getDoc(userRef);
+      const savedItems= userDoc.data()?.favouritedPosts;
+      // console.log(savedItems);
+
       const querySnapshot = await getDocs(
         collection(firestore, collectionName)
       );
-      // console.log("querySnapshot", querySnapshot.docs);
       querySnapshot.docs.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data());
-        currItems.push(doc.data());
+        if (savedItems?.includes(doc.id)){
+          currItems.push(doc.data());
+        }
       });
       setDbItems(currItems);
     }
 
     fetchData();
-    // console.log("dbItems", dbItems);
   }, []);
 
-  if (dbItems.length != 0) {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        snapToInterval={height * 0.55}
-        decelerationRate="fast"
-        pagingEnabled
-        style={{ marginVertical: 10 }}
-      >
-        {dbItems.map((item, index) => (
-          <View key={index}>
-            <View style={styles.heartButtonContainer}>
-              <HeartButton />
-            </View>
-
-            <View style={styles.card}>
-              <View style={styles.descriptionBackground}>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.title}> {item.title} </Text>
-                  <Text style={styles.price}>
-                    {" "}
-                    ${item.price}
-                    <Text style={[styles.price, { fontSize: 14 }]}>
-                      /night
-                    </Text>{" "}
-                  </Text>
-                </View>
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ marginVertical: 20 }}
+    >
+      {dbItems.map((item, index) => (
+        <View key={index}>
+          <View style={styles.card}>
+            <Pressable
+              key={index}
+              style={styles.descriptionBackground}
+              // onPress={() =>
+              //   navigation.navigate("Detail", {
+              //     item: item,
+              //     navigation: navigation,
+              //   })
+              // }
+            >
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.title}> {item.title} </Text>
+                <Text style={styles.price}>
+                  {" "}
+                  ${item.price}
+                  <Text style={[styles.price, { fontSize: 14 }]}>
+                    /night
+                  </Text>{" "}
+                </Text>
               </View>
-              <ImageCarousel
-                width={cardWidth}
-                height={cardHeight}
-                imagesToShow={item.images ?? []}
-              />
-            </View>
+            </Pressable>
+
+            <SavedImageCarousel
+              width={cardWidth}
+              height={cardHeight}
+              imagesToShow={item.images ?? []}
+              item={item}
+              page={false}
+            />
           </View>
-        ))}
-      </ScrollView>
-    );
-  } else {
-    return (
-      <View
-        style={[
-          styles.card,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <MaterialCommunityIcons
-          name="emoticon-dead-outline"
-          size={cardWidth * 0.8}
-          color="#88838A"
-        />
-        <Text style={styles.title}>No Items Saved</Text>
-      </View>
-    );
-  }
+        </View>
+      ))}
+    </ScrollView>
+  );
 }
 
 export default SavedItemCarousel;
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
     fontFamily: "Bitter-Bold",
     fontWeight: "800",
     color: "#343135",
+    flexWrap: "wrap",
   },
 
   price: {
