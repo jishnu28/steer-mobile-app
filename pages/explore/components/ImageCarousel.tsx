@@ -1,15 +1,35 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Pressable, Image, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "native-base";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface ImageCarouselProps {
   width: number;
   height: number;
   imagesToShow: string[];
+  navigation: NativeStackNavigationProp<any>;
+  item: any;
+  page: boolean;
 }
 
-function ImageCarousel({ width, height, imagesToShow }: ImageCarouselProps) {
+function ImageCarousel({
+  width,
+  height,
+  imagesToShow,
+  navigation,
+  item,
+  page,
+}: ImageCarouselProps) {
   const [count, setCount] = useState(0);
+  const handlePress = () => {
+    if (!page) {
+      navigation.navigate("Detail", {
+        item: item,
+        navigation: navigation,
+      });
+    }
+  };
+
   const updatePaging = (event: any) => {
     const slide = Math.ceil(
       event.nativeEvent.contentOffset.x /
@@ -32,6 +52,7 @@ function ImageCarousel({ width, height, imagesToShow }: ImageCarouselProps) {
           </Text>
         ))}
       </View>
+
       <ScrollView
         horizontal
         pagingEnabled
@@ -39,11 +60,13 @@ function ImageCarousel({ width, height, imagesToShow }: ImageCarouselProps) {
         onScroll={updatePaging}
       >
         {imagesToShow.map((item: any, index: number) => (
-          <Image
-            key={index}
-            source={{ uri: item }}
-            style={{ width: width, height: height }}
-          />
+          <Pressable onPress={handlePress}>
+            <Image
+              key={index}
+              source={{ uri: item }}
+              style={{ width: width, height: height }}
+            />
+          </Pressable>
         ))}
       </ScrollView>
     </View>
@@ -63,12 +86,14 @@ const styles = StyleSheet.create({
   },
 
   pagingInactive: {
+    fontSize: 10,
     color: "#88838A",
     margin: 2,
     opacity: 0.5,
   },
 
   pagingActive: {
+    fontSize: 10,
     color: "#657B70",
     margin: 2,
   },

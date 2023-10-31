@@ -34,7 +34,7 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
 
   const handleSelectLaunchChat = async () => {
     const hostInfo = {
-      uid: hostID ?? "bQeden5g87gzkD7CTz5R950gHcE3",
+      uid: hostID 
     };
 
     const hostId = hostInfo.uid;
@@ -57,14 +57,14 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
         });
 
         // Update the user's "chats" array in the "userChats" collection
-        const userChatsDocRef = doc(firestore, "userChats", currentUserId);
-        const userChatsDoc = await getDoc(userChatsDocRef);
+        const currentUserChatsDocRef = doc(firestore, "userChats", currentUserId);
+        const currentUserChatsDoc = await getDoc(currentUserChatsDocRef);
 
-        if (userChatsDoc.exists()) {
-          const userChatsData = userChatsDoc.data();
+        if (currentUserChatsDoc.exists()) {
+          const currentUserChatsData = currentUserChatsDoc.data();
 
           const updatedChats = [
-            ...userChatsData.chats,
+            ...currentUserChatsData.chats,
             {
               chatId: chatId,
               ["userInfo"]: {
@@ -73,7 +73,7 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
             },
           ];
 
-          await updateDoc(userChatsDocRef, {
+          await updateDoc(currentUserChatsDocRef, {
             chats: updatedChats,
           });
 
@@ -86,6 +86,29 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
           console.log("Chat created and user updated.");
         } else {
           console.log("User document not found.");
+        }
+
+        const hostChatsDocRef = doc(firestore, "userChats", hostId);
+        const hostChatsDoc = await getDoc(hostChatsDocRef);
+        
+        if(hostChatsDoc.exists()){
+          const hostChatsData = hostChatsDoc.data();
+
+          const updatedHostChats = [
+            ...hostChatsData.chats,
+            {
+              chatId: chatId,
+              ["userInfo"]:{
+                uid: currentUserId
+              }
+            }
+          ];
+
+          await updateDoc(hostChatsDocRef, {
+            chats: updatedHostChats
+          });
+        } else {
+          console.log("Host document not found.");
         }
 
         // const userChatsDocRef = doc(firestore, "userChats", currentUserId);

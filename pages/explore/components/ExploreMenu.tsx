@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import CATEGORIES from "../../../config/CATEGORIES";
 
 interface ExploreMenuProps {
@@ -13,42 +13,74 @@ function ExploreMenu({
   activeCategory,
 }: ExploreMenuProps) {
   return (
-    <ScrollView horizontal>
+    <View style={styles.categoryButton}>
       {CATEGORIES.map((category, index) => (
         <TouchableOpacity
           onPress={() => updateActiveCategory(index)}
-          style={{ marginRight: 10, paddingTop: 5 }}
           key={category.id}
+          style={[
+            activeCategory == index
+              ? styles.activeCategory
+              : styles.inactiveCategory,
+          ]}
         >
           <Text
             style={[
-              activeCategory == index
-                ? styles.activeCategory
-                : styles.inactiveCategory,
+              activeCategory == index ? styles.activeText : styles.inactiveText,
             ]}
           >
             {category.title}
           </Text>
         </TouchableOpacity>
       ))}
-    </ScrollView>
+    </View>
   );
 }
 
 export default ExploreMenu;
 const styles = StyleSheet.create({
+  categoryButton: {
+    height: 60,
+    backgroundColor: "white",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#FFAF87",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 5,
+  },
+
   activeCategory: {
-    color: "#FFAF87",
-    fontFamily: "Bitter-Black",
-    fontSize: 20,
-    fontWeight: "800",
-    textDecorationLine: "underline",
+    backgroundColor: "#FFAF87",
+    padding: 5,
+    paddingVertical: 2,
+    borderRadius: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   inactiveCategory: {
-    color: "#88838A",
-    fontFamily: "Bitter-Black",
+    padding: 5,
+    paddingVertical: 2,
+    borderRadius: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  activeText: {
+    color: "#FFFFFF",
+    fontFamily: "Bitter-Bold",
     fontSize: 20,
-    fontWeight: "800",
+    padding: 5,
+  },
+
+  inactiveText: {
+    color: "#88838A",
+    fontFamily: "Bitter-Bold",
+    fontSize: 20,
+    padding: 5,
   },
 });

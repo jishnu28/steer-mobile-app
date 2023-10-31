@@ -1,4 +1,4 @@
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, doc, addDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 
 // Type declarations for the fields in the accommodations collection
@@ -41,7 +41,7 @@ export default async function createAccommodation(newData: AccommodationData) {
     hasHeating: true,
     hasWaterheater: true,
     accommodationTags: ["testing", "tiny", "tent"],
-    postingDate: Timestamp.fromDate(new Date()),
+    postingDate: Timestamp.fromDate(new Date()), 
   };
 
   try {
@@ -49,6 +49,9 @@ export default async function createAccommodation(newData: AccommodationData) {
       collection(firestore, "accommodations"),
       newData
     );
+    await updateDoc(doc(firestore, "accommodations", docRef.id), {
+      firestoreID: docRef.id,
+    });
   } catch (error) {
     console.error(
       "Error creating new document in accommodations collection:",

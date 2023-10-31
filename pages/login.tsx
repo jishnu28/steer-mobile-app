@@ -61,8 +61,14 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           email: user.email,
           uid: user.uid,
           profilePic: "",
+          favouritedPosts: [],
         }
       );
+      await setDoc(doc(firestore, "savedPosts", user.uid), 
+        {
+          posts: []
+        }
+    );
 
     } catch (error: any) {
       const errorMessage = error.message;
