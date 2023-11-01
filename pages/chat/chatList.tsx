@@ -15,6 +15,7 @@ import { Unsubscribe } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeBaseProvider, View } from "native-base";
 import SearchBar from "./components/SearchBar";
+import BookingCard from "../bookings/components/BookingCard";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -146,8 +147,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#E5E8D9",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // marginLeft: 16,
-    // marginRight: 16,
   },
   container: {
     flexDirection: "row", // Arrange children horizontally

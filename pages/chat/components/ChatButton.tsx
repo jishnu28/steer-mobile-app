@@ -130,19 +130,13 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
         console.error("Error while creating chat or updating user:", error);
       }
     }
-    // navigation.navigate("Chat", {
-    //   screen: "ChatScreen",
-    //   params: { chatId },
-    // });
 
     dispatch({
       type: "GET_CHAT_ID",
-      payload: hostInfo, // or replace with the actual value
-      // ... other info about the other user
+      payload: hostInfo, 
+
     });
 
-    // navigation.navigate("ChatScreen");
-    // console.log(chatId);
     navigation.navigate("Chat", {
       screen: "ChatScreen",
       params: { chatId },
