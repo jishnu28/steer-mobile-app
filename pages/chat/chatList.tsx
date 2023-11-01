@@ -15,7 +15,6 @@ import { Unsubscribe } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeBaseProvider, View } from "native-base";
 import SearchBar from "./components/SearchBar";
-import BookingCard from "../bookings/components/BookingCard";
 
 type RootStackParamList = {
   ChatList: undefined;

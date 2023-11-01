@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, SafeAreaView } from 'react-native';
 
 
-const BookingButton: React.FC = () => {
+const BookButton: React.FC = () => {
 
   const handleReservePress = () => {
     // to implement reservation logic
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: "Bitter-Regular",
       },
-  // Add more styles as needed
 });
 
-export default BookingButton;
+export default BookButton;

@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, SafeAreaView } from 'react-native';
 import DateSelection from './DateSelection';
 import RoomGuestSelector from './RoomGuestSelector';
-import BookingButton from './BookButton';
+import BookButton from './BookButton';
 
 const BookingCard: React.FC = () => {
-  const [rooms, setRooms] = useState(1);
-  const [guests, setGuests] = useState(1);
-  const [showRoomsGuestsModal, setShowRoomsGuestsModal] = useState(false);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -20,26 +17,6 @@ const BookingCard: React.FC = () => {
   //   fetchTotalPrice();
   // }, []);
 
-  const handleRoomsGuestsPress = () => {
-    setShowRoomsGuestsModal(true);
-  };
-
-  const handleRoomsGuestsModalClose = () => {
-    setShowRoomsGuestsModal(false); 
-  };
-
-  const handleRoomsChange = (value: number) => {
-    setRooms(value);
-  };
-
-  const handleGuestsChange = (value: number) => {
-    setGuests(value);
-  };
-
-  const handleReservePress = () => {
-    // to implement reservation logic 
-  };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,7 +24,7 @@ const BookingCard: React.FC = () => {
       <RoomGuestSelector/>
       <Text style={styles.headingText}>Total Price: </Text>
       <Text style={styles.totalPriceText}> ${totalPrice}</Text>
-      <BookingButton/>
+      <BookButton/>
     </SafeAreaView>
   );
 };
@@ -77,7 +54,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     padding: 5
   },
-  // Add more styles as needed
 });
 
 export default BookingCard;

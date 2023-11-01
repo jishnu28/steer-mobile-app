@@ -25,7 +25,7 @@ const RoomGuestSelector: React.FC = () => {
   return (
     <>
       <TouchableOpacity onPress={handleRoomsGuestsPress}>
-        <Text style={styles.headingText}>Rooms and Guests: </Text>
+        <Text style={styles.headingText}>Rooms & Guests: </Text>
         <Text style={styles.inputText}> {rooms} rooms, {guests} guests</Text>
       </TouchableOpacity>
 
