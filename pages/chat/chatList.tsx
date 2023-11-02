@@ -146,8 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#E5E8D9",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    // marginLeft: 16,
-    // marginRight: 16,
   },
   container: {
     flexDirection: "row", // Arrange children horizontally
