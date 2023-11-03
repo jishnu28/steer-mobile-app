@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import {
-  FormControl,
-  VStack,
-  Input,
-  Text,
-  Heading,
-  ScrollView,
-  Button,
-} from "native-base";
+import { Input } from "@rneui/themed";
+import H1 from "../../../custom_components/typography/H1";
+import H3 from "../../../custom_components/typography/H3";
 import * as ImagePicker from "expo-image-picker";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Image,
+  Pressable,
+  ScrollView,
+  View,
+} from "react-native";
 import NumberToggle from "./NumberToggle";
 import { Timestamp } from "firebase/firestore";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -25,8 +26,11 @@ import {
   getDownloadURL,
   uploadBytes,
 } from "firebase/storage";
+import COLORS from "../../../config/COLORS";
+import ICONSIZES from "../../../config/ICONSIZES";
+import SPACINGS from "../../../config/SPACINGS";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 interface ExperienceInputsProps {
   navigation: NativeStackNavigationProp<any>;
@@ -100,154 +104,96 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   };
 
   return (
-    <ScrollView py={4}>
-      <VStack px={4} space={4}>
-        <Heading style={styles.title}>Upload Experience</Heading>
-
-        <FormControl w={0.9 * width}>
-          {/* <FormControl.Label>
-            <Text fontFamily={"Bitter-Regular"} fontSize={16}>
-              Title
-            </Text>
-          </FormControl.Label> */}
-          <Input
-            value={title}
-            placeholder="Add a title"
-            borderBottomColor={"muted.300"}
-            borderTopColor={"text.100"}
-            borderLeftColor={"text.100"}
-            borderRightColor={"text.100"}
-            style={{
-              fontFamily: "Bitter-Bold",
-              fontSize: 25,
-              opacity: 0.6,
-            }}
-            onChangeText={(text) => setTitle(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width}>
-          {/* <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Description:
-            </Text>
-          </FormControl.Label> */}
-          <Input
-            value={description}
-            placeholder="Add description"
-            borderWidth={0}
-            style={{
-              fontFamily: "Bitter-Bold",
-              fontSize: 20,
-              opacity: 0.6,
-            }}
-            onChangeText={(text) => setDescription(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width} justifyItems={"center"}>
-          <Button
-            h={0.05 * height}
-            w={0.5 * width}
-            backgroundColor={"#FFAF87"}
-            onPress={() => addImages()}
-            borderRadius={20}
-          >
-            <Text style={styles.button}>Upload Images</Text>
-          </Button>
-        </FormControl>
-
-        <ScrollView horizontal>
-          {images.map((imageUri, index) => (
-            <Image
-              key={index}
-              source={{ uri: imageUri }}
-              style={{ width: 200, height: 200, marginRight: 10 }}
+    <View>
+      <H1 style={{ textAlign: "center" }}>Upload Experience</H1>
+      <ScrollView>
+        <View style={styles.mainContainer}>
+          <View style={styles.questionBox}>
+            <H3>Title</H3>
+            <Input
+              value={title}
+              placeholder="Add a title"
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 25,
+                opacity: 0.6,
+                borderBottomColor: COLORS.DARKACCENT,
+              }}
+              onChangeText={(text) => setTitle(text)}
             />
-          ))}
-        </ScrollView>
+          </View>
 
-        <FormControl w={0.9 * width} p={2}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16}>
-              Address:
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={address}
-            placeholder="Enter.."
-            borderWidth={0}
-            borderRadius={20}
-            onChangeText={(text) => setAddress(text)}
-            style={{
-              fontFamily: "Bitter-Regular",
-              fontSize: 16,
-              opacity: 0.6,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 20,
-            }}
-          />
-        </FormControl>
+          <View style={styles.questionBox}>
+            <H3>Description:</H3>
+            <Input
+              value={description}
+              placeholder="Add description"
+              style={{
+                borderWidth: 0,
+                fontFamily: "Bitter-Regular",
+                fontSize: 20,
+                opacity: 0.6,
+              }}
+              onChangeText={(text) => setDescription(text)}
+            />
+          </View>
 
-        <FormControl w={0.9 * width} p={2}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16}>
-              Price/person:
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={price.toString()}
-            width={100}
-            borderWidth={0}
-            borderRadius={20}
-            onChangeText={(text) => setPrice(Number(text))}
-            style={{
-              fontFamily: "Bitter-Regular",
-              fontSize: 16,
-              opacity: 0.6,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 20,
-            }}
-          />
-        </FormControl>
+          <Pressable style={styles.button} onPress={() => addImages()}>
+            <H3 style={styles.buttonText}>Upload Images</H3>
+          </Pressable>
 
-        <FormControl w={0.9 * width} justifyItems={"center"}>
-          <Button
-            h={0.05 * height}
-            w={0.5 * width}
-            backgroundColor={"#FFAF87"}
-            onPress={() => addImages()}
-          >
-            Upload Images
-          </Button>
-        </FormControl>
+          <ScrollView horizontal>
+            {images.map((imageUri, index) => (
+              <Image
+                key={index}
+                source={{ uri: imageUri }}
+                style={{ width: 200, height: 200, marginRight: 10 }}
+              />
+            ))}
+          </ScrollView>
 
-        <FormControl w={0.9 * width} p={2}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16} pb={1}>
+          <View style={styles.questionBox}>
+            <H3>Address:</H3>
+            <Input
+              value={address}
+              placeholder="Enter.."
+              onChangeText={(text) => setAddress(text)}
+              style={{
+                borderWidth: 0,
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+              }}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Price/person:</H3>
+            <Input
+              value={price.toString()}
+              onChangeText={(text) => setPrice(Number(text))}
+              style={{
+                width: 0.4 * width,
+                borderWidth: 0,
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+              }}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3 style={{ marginBottom: SPACINGS.SM }}>
               How many pax per booking:
-            </Text>
-          </FormControl.Label>
-          <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
-        </FormControl>
-        <FormControl
-          w={0.9 * width}
-          justifyItems={"center"}
-          alignItems={"center"}
-        >
-          <Button
-            h={0.06 * height}
-            w={0.5 * width}
-            backgroundColor={"#FFAF87"}
-            borderRadius={20}
-            marginTop={10}
-            onPress={() => handleUpload()}
-          >
-            <Text style={styles.button}>Submit</Text>
-          </Button>
-        </FormControl>
-      </VStack>
-    </ScrollView>
+            </H3>
+            <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Pressable style={styles.button} onPress={() => handleUpload()}>
+              <H3 style={styles.buttonText}>Submit</H3>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -258,15 +204,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
     opacity: 0.6,
   },
-  text: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 16,
-    opacity: 0.6,
-  },
   button: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 16,
-    color: "white",
+    backgroundColor: COLORS.PRIMARY,
+    borderRadius: ICONSIZES.LG,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: SPACINGS.MD,
+    paddingVertical: SPACINGS.SM,
+    maxWidth: 0.5 * width,
+  },
+  buttonText: {
+    color: COLORS.LIGHTBG,
+  },
+  questionBox: {
+    flexDirection: "column",
+    padding: SPACINGS.SM,
+  },
+  mainContainer: {
+    flexDirection: "column",
+    padding: SPACINGS.MD,
   },
 });
 

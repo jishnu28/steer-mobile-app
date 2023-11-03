@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import {
-  FormControl,
-  VStack,
-  Input,
-  Text,
-  Heading,
-  ScrollView,
-  Button,
-  HStack,
-} from "native-base";
+import { Input } from "@rneui/themed";
+import H1 from "../../../custom_components/typography/H1";
 import * as ImagePicker from "expo-image-picker";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Image,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
 import createAccommodation, {
@@ -27,7 +26,11 @@ import {
 } from "firebase/storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-const { width, height } = Dimensions.get("window");
+import COLORS from "../../../config/COLORS";
+import SPACINGS from "../../../config/SPACINGS";
+import H3 from "../../../custom_components/typography/H3";
+import ICONSIZES from "../../../config/ICONSIZES";
+const { width } = Dimensions.get("window");
 
 interface AccommodationInputsProps {
   navigation: NativeStackNavigationProp<any>;
@@ -140,225 +143,168 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   };
 
   return (
-    <ScrollView py={4}>
-      <VStack px={4} space={4}>
-        <Heading style={styles.title}>Upload Accommodation</Heading>
-        <FormControl w={0.9 * width}>
-          {/* <FormControl.Label>
-            <Text fontFamily={"Bitter-Regular"} fontSize={16}>
-              Title
-            </Text>
-          </FormControl.Label> */}
-          <Input
-            value={title}
-            placeholder="Add a title"
-            borderBottomColor={"muted.300"}
-            borderTopColor={"text.100"}
-            borderLeftColor={"text.100"}
-            borderRightColor={"text.100"}
-            style={{
-              fontFamily: "Bitter-Bold",
-              fontSize: 25,
-              opacity: 0.6,
-            }}
-            onChangeText={(text) => setTitle(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width}>
-          {/* <FormControl.Label>
-            <Text fontFamily={"Bitter-Medium"} fontSize={16}>
-              Description:
-            </Text>
-          </FormControl.Label> */}
-          <Input
-            value={description}
-            placeholder="Add description"
-            borderWidth={0}
-            style={{
-              fontFamily: "Bitter-Bold",
-              fontSize: 20,
-              opacity: 0.6,
-            }}
-            onChangeText={(text) => setDescription(text)}
-          />
-        </FormControl>
-
-        <FormControl w={0.9 * width} justifyItems={"center"}>
-          <Button
-            h={0.05 * height}
-            w={0.5 * width}
-            backgroundColor={"#FFAF87"}
-            onPress={() => addImages()}
-            borderRadius={20}
-          >
-            <Text style={styles.button}>Upload Images</Text>
-          </Button>
-        </FormControl>
-
-        <ScrollView horizontal>
-          {images.map((imageUri, index) => (
-            <Image
-              key={index}
-              source={{ uri: imageUri }}
-              style={{ width: 200, height: 200, marginRight: 10 }}
+    <View>
+      <H1 style={{ textAlign: "center" }}>Upload Accommodation</H1>
+      <ScrollView>
+        <View style={styles.mainContainer}>
+          <View style={styles.questionBox}>
+            <H3>Title</H3>
+            <Input
+              value={title}
+              placeholder="Add a title"
+              style={{
+                borderBottomColor: COLORS.DARKACCENT,
+                fontFamily: "Bitter-Bold",
+                fontSize: 25,
+                opacity: 0.6,
+              }}
+              onChangeText={(text) => setTitle(text)}
             />
-          ))}
-        </ScrollView>
+          </View>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16}>
-              Tags
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={accommodationTags}
-            placeholder="Enter tags separated by commas.."
-            borderWidth={0}
-            borderRadius={20}
-            onChangeText={(text) => setAccommodationTags(text)}
-            style={{
-              fontFamily: "Bitter-Regular",
-              fontSize: 16,
-              opacity: 0.6,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 20,
-            }}
-          />
-        </FormControl>
+          <View style={styles.questionBox}>
+            <H3>Description:</H3>
+            <Input
+              value={description}
+              placeholder="Add description"
+              style={{
+                borderWidth: 0,
+                fontFamily: "Bitter-Bold",
+                fontSize: 20,
+                opacity: 0.6,
+              }}
+              onChangeText={(text) => setDescription(text)}
+            />
+          </View>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16}>
-              Address
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={address}
-            placeholder="Enter address"
-            borderWidth={0}
-            borderRadius={20}
-            onChangeText={(text) => setAddress(text)}
-            style={{
-              fontFamily: "Bitter-Regular",
-              fontSize: 16,
-              opacity: 0.6,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 20,
-            }}
-          />
-        </FormControl>
+          <Pressable style={styles.button} onPress={() => addImages()}>
+            <H3 style={styles.buttonText}>Upload Images</H3>
+          </Pressable>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} fontSize={16}>
-              Price/night
-            </Text>
-          </FormControl.Label>
-          <Input
-            value={price.toString()}
-            width={100}
-            borderWidth={0}
-            borderRadius={20}
-            onChangeText={(text) => setPrice(Number(text))}
-            style={{
-              fontFamily: "Bitter-Regular",
-              fontSize: 16,
-              opacity: 0.6,
-              backgroundColor: "#FFFFFF",
-              borderRadius: 20,
-            }}
-          />
-        </FormControl>
+          <ScrollView horizontal>
+            {images.map((imageUri, index) => (
+              <Image
+                key={index}
+                source={{ uri: imageUri }}
+                style={{ width: 200, height: 200, marginRight: 10 }}
+              />
+            ))}
+          </ScrollView>
 
-        <FormControl w={0.9 * width}>
-          <HStack>
-            <Text style={styles.text} marginRight={2}>
-              I can host
-            </Text>
+          <View style={styles.questionBox}>
+            <H3>Tags</H3>
+            <Input
+              value={accommodationTags}
+              placeholder="Enter tags separated by commas.."
+              onChangeText={(text) => setAccommodationTags(text)}
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+                opacity: 0.6,
+                borderWidth: 0,
+              }}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Address</H3>
+            <Input
+              value={address}
+              placeholder="Enter address"
+              onChangeText={(text) => setAddress(text)}
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+                opacity: 0.6,
+                borderWidth: 0,
+              }}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Price/night</H3>
+            <Input
+              value={price.toString()}
+              onChangeText={(text) => setPrice(Number(text))}
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+                opacity: 0.6,
+                borderWidth: 0,
+                width: 0.4 * width,
+              }}
+            />
+          </View>
+
+          <View style={[styles.questionBox, { flexDirection: "row" }]}>
+            <H3>I can host</H3>
             <NumberToggle
+              style={{ paddingHorizontal: SPACINGS.SM }}
               numItems={numGuests}
               setNumItems={setPositiveNumGuests}
             />
-            <Text style={styles.text} marginLeft={2}>
-              visitors
-            </Text>
-          </HStack>
-        </FormControl>
+            <H3>visitors</H3>
+          </View>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} marginRight={2} pb={1}>
-              Number of Beds:
-            </Text>
-          </FormControl.Label>
-          <NumberToggle numItems={numBeds} setNumItems={setPositiveNumBeds} />
-        </FormControl>
+          <View style={styles.questionBox}>
+            <H3>Number of Beds:</H3>
+            <NumberToggle
+              style={{ marginVertical: SPACINGS.SM }}
+              numItems={numBeds}
+              setNumItems={setPositiveNumBeds}
+            />
+          </View>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} marginRight={2} pb={1}>
-              Number of Bedrooms:
-            </Text>
-          </FormControl.Label>
-          <NumberToggle
-            numItems={numBedrooms}
-            setNumItems={setPositiveNumBedrooms}
+          <View style={styles.questionBox}>
+            <H3>Number of Bedrooms:</H3>
+            <NumberToggle
+              style={{ marginVertical: SPACINGS.SM }}
+              numItems={numBedrooms}
+              setNumItems={setPositiveNumBedrooms}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Number of Baths:</H3>
+            <NumberToggle
+              style={{ marginVertical: SPACINGS.SM }}
+              numItems={numBaths}
+              setNumItems={setPositiveNumBaths}
+            />
+          </View>
+
+          <BooleanToggle
+            title={"Has Wifi?"}
+            hasItem={hasWifi}
+            setHasItem={setHasWifi}
           />
-        </FormControl>
 
-        <FormControl w={0.9 * width}>
-          <FormControl.Label>
-            <Text style={styles.text} marginRight={2} pb={1}>
-              Number of Baths:
-            </Text>
-          </FormControl.Label>
-          <NumberToggle numItems={numBaths} setNumItems={setPositiveNumBaths} />
-        </FormControl>
+          <BooleanToggle
+            title={"Has Heating?"}
+            hasItem={hasHeating}
+            setHasItem={setHasHeating}
+          />
 
-        <BooleanToggle
-          title={"Has Wifi?"}
-          hasItem={hasWifi}
-          setHasItem={setHasWifi}
-        />
+          <BooleanToggle
+            title={"Has Waterheater?"}
+            hasItem={hasWaterheater}
+            setHasItem={setHasWaterheater}
+          />
 
-        <BooleanToggle
-          title={"Has Heating?"}
-          hasItem={hasHeating}
-          setHasItem={setHasHeating}
-        />
+          <BooleanToggle
+            title={"Has Kitchen?"}
+            hasItem={hasKitchen}
+            setHasItem={setHasKitchen}
+          />
 
-        <BooleanToggle
-          title={"Has Waterheater?"}
-          hasItem={hasWaterheater}
-          setHasItem={setHasWaterheater}
-        />
-
-        <BooleanToggle
-          title={"Has Kitchen?"}
-          hasItem={hasKitchen}
-          setHasItem={setHasKitchen}
-        />
-
-        <FormControl
-          w={0.9 * width}
-          justifyItems={"center"}
-          alignItems={"center"}
-        >
-          <Button
-            h={0.06 * height}
-            w={0.5 * width}
-            backgroundColor={"#FFAF87"}
-            borderRadius={20}
-            marginTop={10}
-            onPress={() => handleUpload()}
-          >
-            <Text style={styles.button}>Submit</Text>
-          </Button>
-        </FormControl>
-      </VStack>
-    </ScrollView>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Pressable style={styles.button} onPress={() => handleUpload()}>
+              <H3 style={styles.buttonText}>Submit</H3>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -375,9 +321,24 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   button: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 16,
-    color: "white",
+    backgroundColor: COLORS.PRIMARY,
+    borderRadius: ICONSIZES.LG,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: SPACINGS.MD,
+    paddingVertical: SPACINGS.SM,
+    maxWidth: 0.5 * width,
+  },
+  buttonText: {
+    color: COLORS.LIGHTBG,
+  },
+  questionBox: {
+    flexDirection: "column",
+    padding: SPACINGS.SM,
+  },
+  mainContainer: {
+    flexDirection: "column",
+    padding: SPACINGS.MD,
   },
 });
 

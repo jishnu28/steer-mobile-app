@@ -1,6 +1,6 @@
 import { View, StyleSheet, Switch } from "react-native";
-import BodyText from "../../../custom_components/typography/BodyText";
 import SPACINGS from "../../../config/SPACINGS";
+import H3 from "../../../custom_components/typography/H3";
 
 interface BooleanToggleProps {
   title: string;
@@ -11,7 +11,7 @@ interface BooleanToggleProps {
 const BooleanToggle = ({ title, hasItem, setHasItem }: BooleanToggleProps) => {
   return (
     <View style={styles.mainContainer}>
-      <BodyText>{title}</BodyText>
+      <H3>{title}</H3>
       <Switch
         style={styles.switchToggle}
         value={hasItem}

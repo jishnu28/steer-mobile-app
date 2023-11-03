@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { Platform, StyleSheet } from "react-native";
 import ItineraryLanding from "../pages/itinerary/itineraryLanding";
+import InTheWorks from "../pages/inTheWorks";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
@@ -52,7 +53,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name="Itinerary"
-        component={ItineraryLanding}
+        component={InTheWorks}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons

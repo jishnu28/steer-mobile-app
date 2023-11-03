@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 45,
     borderWidth: 1,
-    borderColor: COLORS.ACCENT,
-    backgroundColor: COLORS.ACCENT,
+    borderColor: COLORS.LIGHTACCENT,
+    backgroundColor: COLORS.LIGHTACCENT,
     borderRadius: 40, // Rounded input box
     paddingHorizontal: 12,
     fontFamily: "Bitter-Regular",
