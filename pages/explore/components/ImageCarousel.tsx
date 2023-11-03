@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ViewStyle,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SPACINGS from "../../../config/SPACINGS";
@@ -19,6 +20,7 @@ interface ImageCarouselProps {
   navigation: NativeStackNavigationProp<any>;
   item: any;
   page: boolean;
+  style?: ViewStyle;
 }
 
 function ImageCarousel({
@@ -28,6 +30,7 @@ function ImageCarousel({
   navigation,
   item,
   page,
+  style,
 }: ImageCarouselProps) {
   const [count, setCount] = useState(0);
   const handlePress = () => {
@@ -50,7 +53,7 @@ function ImageCarousel({
   };
 
   return (
-    <View>
+    <View style={style}>
       <View style={styles.paginator}>
         {imagesToShow.map((item, index) => (
           <Text

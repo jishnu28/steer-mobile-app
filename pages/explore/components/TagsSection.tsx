@@ -2,6 +2,7 @@ import { View, StyleSheet } from "react-native";
 import SPACINGS from "../../../config/SPACINGS";
 import BodyText from "../../../custom_components/typography/BodyText";
 import COLORS from "../../../config/COLORS";
+import H2 from "../../../custom_components/typography/H2";
 
 interface TagsSectionProps {
   accommodationTags: string[];
@@ -10,11 +11,14 @@ interface TagsSectionProps {
 const TagsSection: React.FC<TagsSectionProps> = ({ accommodationTags }) => {
   return (
     <View style={styles.mainContainer}>
-      {accommodationTags.map((tag) => (
-        <View key={tag} style={styles.badgeStyle}>
-          <BodyText>{tag}</BodyText>
-        </View>
-      ))}
+      <H2>Tags</H2>
+      <View style={styles.innerContainer}>
+        {accommodationTags.map((tag) => (
+          <View key={tag} style={styles.badgeStyle}>
+            <BodyText>{tag}</BodyText>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
@@ -23,9 +27,12 @@ export default TagsSection;
 
 const styles = StyleSheet.create({
   mainContainer: {
+    padding: SPACINGS.MD,
+  },
+  innerContainer: {
     flexWrap: "wrap",
     flexDirection: "row",
-    padding: SPACINGS.MD,
+    marginTop: SPACINGS.SM,
   },
   badgeStyle: {
     marginRight: SPACINGS.MD,

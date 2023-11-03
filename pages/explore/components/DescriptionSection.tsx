@@ -25,11 +25,9 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           <BodyText>{address}</BodyText>
         </View>
         <View style={styles.pricecontainer}>
-          <BodyText>
-            <BodyText>$</BodyText>
-            <H1>{price}</H1>
-            <BodyText>/night</BodyText>
-          </BodyText>
+          <BodyText>$</BodyText>
+          <H1>{price}</H1>
+          <BodyText>/night</BodyText>
         </View>
       </View>
       <View style={styles.descriptionContainer}>
@@ -61,10 +59,13 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   pricecontainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     width: "20%",
     alignItems: "center",
+    justifyContent: "center",
   },
   descriptionContainer: {
-    paddingVertical: SPACINGS.SM,
+    paddingVertical: SPACINGS.MD,
   },
 });
