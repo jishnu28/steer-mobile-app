@@ -11,12 +11,12 @@ import {
   Dimensions,
 } from "react-native";
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { firebaseAuth, firestore } from "../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 
-interface LoginProps {
+interface SignupProps {
   navigation: NativeStackNavigationProp<any>;
 }
 
@@ -24,8 +24,9 @@ const auth = firebaseAuth;
 
 const { width, height } = Dimensions.get("screen");
 
-const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
+const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -38,19 +39,46 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log("Registered with:", user.email);
 
-  const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Logged in with:", user.email);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-      });
+      await setDoc(doc(firestore, "userChats", user.uid), 
+        {
+          myName: username,
+          chats: []
+        }
+      );
+      await setDoc(doc(firestore, "users", user.uid), 
+        {
+          displayName: username,
+          email: user.email,
+          uid: user.uid,
+          profilePic: "",
+          favouritedPosts: [],
+        }
+      );
+      await setDoc(doc(firestore, "savedPosts", user.uid), 
+        {
+          posts: []
+        }
+    );
+
+    } catch (error: any) {
+      const errorMessage = error.message;
+      alert(errorMessage);
+    }
+
+
   };
+
+
 
   return (
     <KeyboardAvoidingView
@@ -72,6 +100,12 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
           style={styles.input}
         />
         <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+          style={styles.input}
+        />
+        <TextInput
           placeholder="Password"
           value={password}
           onChangeText={(text) => setPassword(text)}
@@ -81,20 +115,23 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity
+          onPress={handleSignUp}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Signup")}>
-        <Text style={styles.redirectText}> No account? Sign up here </Text>
+      <TouchableOpacity onPress={()=>navigation.goBack()}>
+        <Text style={styles.redirectText}> Have an account? Login here </Text>
       </TouchableOpacity>
 
     </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -138,5 +175,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     padding: 10, 
   },
-
 });
