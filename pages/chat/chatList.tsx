@@ -3,18 +3,20 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Platform,
   StatusBar,
+  View,
 } from "react-native";
+import { Avatar } from "@rneui/themed";
 import { onSnapshot, doc, collection, getDoc } from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../firebaseConfig";
 import { ChatContext } from "./ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Unsubscribe } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NativeBaseProvider, View } from "native-base";
 import SearchBar from "./components/SearchBar";
+import SPACING from "../../config/SPACINGS";
+import H3 from "../../custom_components/typography/H3";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -80,7 +82,8 @@ const ChatList = ({ navigation }: ChatListProps) => {
   }, []);
 
   const imageUrl =
-    "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png"; //to replace with code to retrieve profile pic from db
+    "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png";
+  //TODO: replace with code to retrieve profile pic from db
 
   const [recipientDisplayNames, setRecipientDisplayNames] = useState<
     Record<string, string>
@@ -105,39 +108,39 @@ const ChatList = ({ navigation }: ChatListProps) => {
   }, [chats]);
 
   return (
-    <NativeBaseProvider>
-      <SafeAreaView style={styles.background}>
-        <SearchBar />
-        {chats.length === 0 ? (
-          <View style={styles.noChatsContainer}>
-            <Text style={styles.noChatsText}>You have no active chats.</Text>
-          </View>
-        ) : (
-          chats.map((chat) => {
-            const recipientUid = chat.userInfo.uid;
-            const recipientDisplayName =
-              recipientDisplayNames[recipientUid] || "Loading...";
+    <SafeAreaView style={styles.background}>
+      <SearchBar />
+      {chats.length === 0 ? (
+        <View style={styles.noChatsContainer}>
+          <Text style={styles.noChatsText}>You have no active chats.</Text>
+        </View>
+      ) : (
+        chats.map((chat) => {
+          const recipientUid = chat.userInfo.uid;
+          const recipientDisplayName =
+            recipientDisplayNames[recipientUid] || "Loading...";
 
-            return (
-              <TouchableOpacity
-                style={styles.container}
-                key={chat.chatId}
-                onPress={() => handleSelectChat(chat)}
-              >
-                <Image source={{ uri: imageUrl }} style={styles.image} />
-
-                <View style={styles.textContainer}>
-                  <Text style={styles.displayNameText}>
-                    {recipientDisplayName}
-                  </Text>
-                  <Text style={styles.messageText}>{chat.lastMessage}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })
-        )}
-      </SafeAreaView>
-    </NativeBaseProvider>
+          return (
+            <TouchableOpacity
+              style={styles.chatContainer}
+              key={chat.chatId}
+              onPress={() => handleSelectChat(chat)}
+            >
+              <Avatar
+                source={{ uri: imageUrl }}
+                rounded
+                size={64}
+                containerStyle={styles.avatar}
+              />
+              <View style={styles.textContainer}>
+                <H3>{recipientDisplayName}</H3>
+                <Text style={styles.messageText}>{chat.lastMessage}</Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -147,14 +150,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E8D9",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
-  container: {
+  chatContainer: {
     flexDirection: "row", // Arrange children horizontally
     alignItems: "center",
-    padding: 15,
+    padding: SPACING.MD,
     backgroundColor: "#E5E8D9",
   },
   textContainer: {
-    flex: 1, // Take remaining available space
+    flex: 1,
   },
   displayNameText: {
     fontFamily: "Bitter-Bold",
@@ -165,11 +168,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#88838A",
   },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 100,
-    marginRight: 12,
+  avatar: {
+    marginRight: SPACING.LG,
   },
   noChatsText: {
     fontFamily: "Bitter-Bold",
@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
   },
-
   noChatsContainer: {
     flex: 1,
     justifyContent: "center",

@@ -1,5 +1,12 @@
 import { useContext, useState } from "react";
-import { View, TextInput, Button, StyleSheet, Platform, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
 import { firestore } from "../../../firebaseConfig";
 import {
   updateDoc,
@@ -12,7 +19,6 @@ import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import uuidRandom from "uuid-random";
 import COLORS from "../../../config/COLORS";
-import { ScrollView } from "native-base";
 
 const auth = firebaseAuth;
 

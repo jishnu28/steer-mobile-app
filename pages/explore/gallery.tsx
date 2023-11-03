@@ -1,6 +1,5 @@
 import React from "react";
 import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
-import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ImageCarousel from "./components/ImageCarousel";
 import ReturnButton from "./components/ReturnButton";
@@ -18,14 +17,12 @@ const height = Dimensions.get("screen").height;
  */
 function Gallery({ navigation }: GalleryProps) {
   return (
-    <NativeBaseProvider>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <ReturnButton navigation={navigation} />
-        </View>
-        <ImageCarousel width={width} height={height} resizeMode="center" />
-      </SafeAreaView>
-    </NativeBaseProvider>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <ReturnButton navigation={navigation} />
+      </View>
+      <ImageCarousel width={width} height={height} resizeMode="center" />
+    </SafeAreaView>
   );
 }
 

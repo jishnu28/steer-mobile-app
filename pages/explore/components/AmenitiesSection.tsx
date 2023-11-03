@@ -1,6 +1,7 @@
-import { Flex } from "native-base";
+import { StyleSheet, View } from "react-native";
 import AmenitiesCard from "./AmenitiesCard";
 import React from "react";
+import SPACINGS from "../../../config/SPACINGS";
 
 interface AmenitiesSectionProps {
   hasWifi: boolean;
@@ -70,7 +71,7 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
   ]);
 
   return (
-    <Flex flexWrap="wrap" flexDirection="row" p={4}>
+    <View style={styles.mainContainer}>
       {finalAmenitiesList.map((amenity) => (
         <AmenitiesCard
           key={amenity[0]}
@@ -78,8 +79,18 @@ const AmenitiesSection: React.FC<AmenitiesSectionProps> = ({
           text={amenity[1]}
         />
       ))}
-    </Flex>
+    </View>
   );
 };
 
 export default AmenitiesSection;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: SPACINGS.SM,
+  },
+});

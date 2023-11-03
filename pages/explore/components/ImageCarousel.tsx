@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { Pressable, Image, StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "native-base";
+import {
+  Pressable,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import SPACINGS from "../../../config/SPACINGS";
+import FONTSIZES from "../../../config/FONTSIZES";
+import COLORS from "../../../config/COLORS";
 
 interface ImageCarouselProps {
   width: number;
@@ -60,9 +69,8 @@ function ImageCarousel({
         onScroll={updatePaging}
       >
         {imagesToShow.map((item: any, index: number) => (
-          <Pressable onPress={handlePress}>
+          <Pressable key={`${index}-${item}`} onPress={handlePress}>
             <Image
-              key={index}
               source={{ uri: item }}
               style={{ width: width, height: height }}
             />
@@ -81,20 +89,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "absolute",
     alignSelf: "center",
-    padding: 5,
+    padding: SPACINGS.XS,
     zIndex: 1,
   },
 
   pagingInactive: {
-    fontSize: 10,
-    color: "#88838A",
-    margin: 2,
+    fontSize: FONTSIZES.XS,
+    color: COLORS.LIGHTACCENT,
+    margin: SPACINGS.XXS,
     opacity: 0.5,
   },
 
   pagingActive: {
-    fontSize: 10,
-    color: "#657B70",
-    margin: 2,
+    fontSize: FONTSIZES.XS,
+    color: COLORS.LIGHTBG,
+    margin: SPACINGS.XXS,
   },
 });

@@ -17,7 +17,6 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     <Flex flexWrap="wrap" flexDirection="row" p="4">
       <HStack
         w="100%"
-        px={4}
         justifyContent="center"
         pb={2}
         borderBottomColor="#767C77"

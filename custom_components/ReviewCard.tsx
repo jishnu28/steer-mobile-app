@@ -1,33 +1,44 @@
 import React from "react";
-import { Avatar, Box, Flex, HStack, Text } from "native-base";
-import { Dimensions } from "react-native";
+import { Avatar } from "@rneui/themed";
+import { View, StyleSheet } from "react-native";
+import BodyText from "./typography/BodyText";
+import COLORS from "../config/COLORS";
+import SPACING from "../config/SPACINGS";
 
 interface ReviewsCardProps {
   avatarUri: string;
   text: string;
 }
 
-const { width, height } = Dimensions.get("screen");
-
 const ReviewCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
   return (
-    <HStack
-      bg={"#FFF8F5"}
-      px={4}
-      my={2}
-      py={4}
-      borderRadius="xl"
-      w="100%"
-      shadow={"2"}
-    >
-      <Box>
-        <Avatar source={{ uri: avatarUri }} mr={4} />
-      </Box>
-      <Box pr="20%">
-        <Text fontFamily={"Bitter-Light"}>{text}</Text>
-      </Box>
-    </HStack>
+    <View style={styles.mainContainer}>
+      <View style={styles.avatarContainer}>
+        <Avatar source={{ uri: avatarUri }} rounded size={44} />
+      </View>
+      <View style={styles.textContainer}>
+        <BodyText>{text}</BodyText>
+      </View>
+    </View>
   );
 };
 
 export default ReviewCard;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: COLORS.LIGHTACCENT,
+    paddingHorizontal: SPACING.MD,
+    paddingVertical: SPACING.MD,
+    marginVertical: SPACING.XS,
+    borderRadius: SPACING.LG,
+    flexDirection: "row",
+    width: "100%",
+  },
+  avatarContainer: {
+    width: "20%",
+  },
+  textContainer: {
+    width: "80%",
+  },
+});
