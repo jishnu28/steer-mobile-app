@@ -1,12 +1,10 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {
-  CheckCircleIcon,
-  Heading,
-  NativeBaseProvider,
-  VStack,
-} from "native-base";
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View, StyleSheet } from "react-native";
+import { Icon } from "@rneui/themed";
+import COLORS from "../../config/COLORS";
+import H1 from "../../custom_components/typography/H1";
+import SPACINGS from "../../config/SPACINGS";
 
 interface PostConfirmationProps {
   navigation: NativeStackNavigationProp<any>;
@@ -14,23 +12,33 @@ interface PostConfirmationProps {
 
 const PostConfirmation = ({ navigation }: PostConfirmationProps) => {
   return (
-    <NativeBaseProvider>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#F8FAF0",
-          justifyContent: "center",
-        }}
-      >
-        <VStack space={5} alignItems={"center"}>
-          <Heading justifyContent={"center"}>
-            Your post has been uploaded!
-          </Heading>
-          <CheckCircleIcon size="20" color="#9CADA4" />
-        </VStack>
-      </SafeAreaView>
-    </NativeBaseProvider>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.LIGHTBG,
+        justifyContent: "center",
+      }}
+    >
+      <View style={styles.mainContainer}>
+        <H1 style={{ textAlign: "center" }}>Your post has been uploaded!</H1>
+        <Icon
+          color={COLORS.PRIMARY}
+          type="material-community"
+          name="check-circle"
+          size={70}
+          style={{ marginTop: SPACINGS.LG }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 export default PostConfirmation;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

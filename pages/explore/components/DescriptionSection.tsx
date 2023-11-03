@@ -1,4 +1,8 @@
-import { Flex, Text, HStack, Box } from "native-base";
+import { View, StyleSheet } from "react-native";
+import COLORS from "../../../config/COLORS";
+import SPACINGS from "../../../config/SPACINGS";
+import BodyText from "../../../custom_components/typography/BodyText";
+import H1 from "../../../custom_components/typography/H1";
 
 interface DescriptionSectionProps {
   title: string;
@@ -14,43 +18,53 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   description,
 }) => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" p="4">
-      <HStack
-        w="100%"
-        justifyContent="center"
-        pb={2}
-        borderBottomColor="#767C77"
-        borderBottomWidth={1}
-      >
-        <Box w="70%" display="flex" justifyContent="center">
-          <Text fontFamily={"Bitter-ExtraBold"} fontSize="3xl">
-            {title}
-          </Text>
-          <Text fontFamily="Bitter-Medium" fontSize="md">
-            {address}
-          </Text>
-        </Box>
-        <Box w="30%" display="flex" justifyContent="center">
-          <Text fontFamily="Bitter-Medium" fontSize="2xl">
-            <Text fontFamily="Bitter-Medium" fontSize="md">
-              $
-            </Text>
-            <Text fontFamily={"Bitter-ExtraBold"} fontSize="4xl">
-              {price}
-            </Text>
-            <Text fontFamily="Bitter-Medium" fontSize="md">
-              /night
-            </Text>
-          </Text>
-        </Box>
-      </HStack>
-      <Box p={4}>
-        <Text fontFamily="Bitter-Regular" fontSize={"md"}>
-          {description}
-        </Text>
-      </Box>
-    </Flex>
+    <View style={styles.mainContainer}>
+      <View style={styles.topContainer}>
+        <View style={styles.titleContainer}>
+          <H1>{title}</H1>
+          <BodyText>{address}</BodyText>
+        </View>
+        <View style={styles.pricecontainer}>
+          <BodyText>
+            <BodyText>$</BodyText>
+            <H1>{price}</H1>
+            <BodyText>/night</BodyText>
+          </BodyText>
+        </View>
+      </View>
+      <View style={styles.descriptionContainer}>
+        <BodyText>{description}</BodyText>
+      </View>
+    </View>
   );
 };
 
 export default DescriptionSection;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: SPACINGS.MD,
+  },
+  topContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingBottom: SPACINGS.SM,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.DARKACCENT,
+  },
+  titleContainer: {
+    width: "80%",
+  },
+  pricecontainer: {
+    width: "20%",
+    alignItems: "center",
+  },
+  descriptionContainer: {
+    paddingVertical: SPACINGS.SM,
+  },
+});

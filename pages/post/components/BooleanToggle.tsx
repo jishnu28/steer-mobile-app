@@ -1,4 +1,6 @@
-import { HStack, Text, Switch } from "native-base";
+import { View, StyleSheet, Switch } from "react-native";
+import BodyText from "../../../custom_components/typography/BodyText";
+import SPACINGS from "../../../config/SPACINGS";
 
 interface BooleanToggleProps {
   title: string;
@@ -8,13 +10,25 @@ interface BooleanToggleProps {
 
 const BooleanToggle = ({ title, hasItem, setHasItem }: BooleanToggleProps) => {
   return (
-    <HStack p={2} space={4} alignContent={"center"}>
-      <Text fontFamily="Bitter-Medium" fontSize={16}>
-        {title}
-      </Text>
-      <Switch value={hasItem} onToggle={() => setHasItem(!hasItem)} size="md" />
-    </HStack>
+    <View style={styles.mainContainer}>
+      <BodyText>{title}</BodyText>
+      <Switch
+        style={styles.switchToggle}
+        value={hasItem}
+        onChange={() => setHasItem(!hasItem)}
+      />
+    </View>
   );
 };
 
 export default BooleanToggle;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  switchToggle: {
+    marginLeft: SPACINGS.MD,
+  },
+});

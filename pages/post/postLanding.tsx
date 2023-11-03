@@ -1,17 +1,19 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HStack, Heading, Icon, NativeBaseProvider, VStack } from "native-base";
 import React, { useState } from "react";
 import {
-  Text,
-  Image,
   StyleSheet,
   SafeAreaView,
   Dimensions,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Icon } from "@rneui/themed";
+import COLORS from "../../config/COLORS";
+import H1 from "../../custom_components/typography/H1";
+import H3 from "../../custom_components/typography/H3";
+import SPACINGS from "../../config/SPACINGS";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 interface PostLandingProps {
   navigation: NativeStackNavigationProp<any>;
@@ -33,64 +35,67 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
   };
 
   return (
-    <NativeBaseProvider>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#F8FAF0",
-          justifyContent: "center",
-        }}
-      >
-        <VStack space={10} alignItems={"center"}>
-          <Heading justifyContent={"center"} style={styles.titleText}>I'm posting an...</Heading>
-          <HStack space={8} style={[styles.container]}>
-            <TouchableOpacity
-              onPress={() => handlePress("Accommodations")}
-              style={[
-                styles.button,
-                isAccommodationsSelected && styles.selectedButton,
-              ]}
-            >
-              <Icon
-                paddingTop="5%"
-                as={<MaterialCommunityIcons name="home-group" />}
-                color="#88838A"
-                size={70}
-                my={2}
-              />
-              <Text style={styles.text}>Accommodation</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handlePress("Experiences")}
-              style={[
-                styles.button,
-                isExperiencesSelected && styles.selectedButton,
-              ]}
-            >
-              <Icon
-                paddingTop="5%"
-                as={<MaterialCommunityIcons name="forest" />}
-                color="#88838A"
-                size={70}
-                my={2}
-              />
-              <Text style={styles.text}>Experience</Text>
-            </TouchableOpacity>
-          </HStack>
-        </VStack>
-      </SafeAreaView>
-    </NativeBaseProvider>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#F8FAF0",
+        justifyContent: "center",
+      }}
+    >
+      <View style={styles.mainContainer}>
+        <H1 style={{ color: COLORS.DARKBG }}>I'm posting an...</H1>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            onPress={() => handlePress("Accommodations")}
+            style={[
+              styles.button,
+              isAccommodationsSelected && styles.selectedButton,
+            ]}
+          >
+            <Icon
+              color={COLORS.DARKACCENT}
+              type="material-community"
+              name="home-group"
+              size={70}
+            />
+            <H3 style={{ color: COLORS.DARKBG, width: "80%" }}>
+              Accommodation
+            </H3>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handlePress("Experiences")}
+            style={[
+              styles.button,
+              isExperiencesSelected && styles.selectedButton,
+            ]}
+          >
+            <Icon
+              color={COLORS.DARKACCENT}
+              type="material-community"
+              name="forest"
+              size={70}
+            />
+            <H3 style={{ color: COLORS.DARKBG }}>Experience</H3>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    marginTop: SPACINGS.LG,
   },
   button: {
     width: 0.4 * width,
     height: 0.4 * width,
+    marginHorizontal: SPACINGS.MD,
     alignItems: "center",
     backgroundColor: "#E5E8D9",
     justifyContent: "center",
@@ -99,21 +104,6 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: "#E5E8D9",
   },
-  image: {
-    width: 0.25 * width,
-    height: 0.25 * width,
-  },
-  titleText: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 25,
-    opacity: 0.6,
-  },
-  text: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 16,
-    fontWeight: "bold",
-    opacity: 0.5,
-  }
 });
 
 export default PostLanding;

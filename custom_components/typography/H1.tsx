@@ -14,7 +14,7 @@ const H1: React.FC<H1Props> = ({ style, children }) => {
 const styles = StyleSheet.create({
   bodyText: {
     fontSize: FONTSIZES.XXL,
-    fontFamily: "Bitter-Black",
+    fontFamily: "Bitter-ExtraBold",
   },
 });
 

@@ -5,6 +5,7 @@ import ReviewsCard from "./ReviewCard";
 import COLORS from "../config/COLORS";
 import ICONSIZES from "../config/ICONSIZES";
 import SPACING from "../config/SPACINGS";
+import SPACINGS from "../config/SPACINGS";
 const reviewList: string[][] = [
   [
     "https://picsum.photos/200/200",
@@ -59,14 +60,14 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flexDirection: "column",
-    padding: SPACING.SM,
+    padding: SPACING.MD,
   },
   headingContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    marginBottom: 10,
+    marginBottom: SPACINGS.SM,
   },
   reviewsContainer: {
     flexDirection: "column",
