@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: SPACING.LG,
+    borderWidth: 1,
+    borderColor: COLORS.DARKACCENT,
   },
   noChatsText: {
     textAlign: "center",

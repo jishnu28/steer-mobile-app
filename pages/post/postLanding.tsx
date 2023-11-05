@@ -38,7 +38,7 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F8FAF0",
+        backgroundColor: COLORS.LIGHTACCENT,
         justifyContent: "center",
       }}
     >
@@ -97,12 +97,12 @@ const styles = StyleSheet.create({
     height: 0.4 * width,
     marginHorizontal: SPACINGS.MD,
     alignItems: "center",
-    backgroundColor: "#E5E8D9",
+    backgroundColor: COLORS.LIGHTBG,
     justifyContent: "center",
     borderRadius: 20,
   },
   selectedButton: {
-    backgroundColor: "#E5E8D9",
+    backgroundColor: COLORS.LIGHTBG,
   },
 });
 
