@@ -3,18 +3,18 @@ import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
   Image,
   Dimensions,
 } from "react-native";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth, firestore } from "../firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+import COLORS from "../config/COLORS";
+import SPACINGS from "../config/SPACINGS";
+import H3 from "../custom_components/typography/H3";
+import FONTSIZES from "../config/FONTSIZES";
 
 interface LoginProps {
   navigation: NativeStackNavigationProp<any>;
@@ -37,7 +37,6 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
     return unsubscribe;
   }, []);
-
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -82,14 +81,13 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
+          <H3 style={styles.buttonText}>Login</H3>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.navigate("Signup")}>
-        <Text style={styles.redirectText}> No account? Sign up here </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+        <H3 style={styles.redirectText}>No account? Sign up here</H3>
       </TouchableOpacity>
-
     </KeyboardAvoidingView>
   );
 };
@@ -99,7 +97,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8FAF0",
+    backgroundColor: COLORS.LIGHTBG,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -108,35 +106,32 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   input: {
-    backgroundColor: "#E5E8D9",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
+    backgroundColor: COLORS.LIGHTACCENT,
+    paddingHorizontal: SPACINGS.LG,
+    paddingVertical: SPACINGS.MD,
+    borderRadius: SPACINGS.LG,
+    marginTop: SPACINGS.SM,
   },
   buttonContainer: {
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: SPACINGS.XL,
   },
   button: {
-    backgroundColor: "#FFAF87",
+    backgroundColor: COLORS.PRIMARY,
     width: "100%",
-    padding: 15,
-    borderRadius: 100,
+    padding: SPACINGS.LG,
+    borderRadius: SPACINGS.LG,
     alignItems: "center",
   },
   buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 18,
+    color: COLORS.WHITE,
   },
   redirectText: {
-    color: "#FFAF87",
-    fontWeight: "700",
-    fontSize: 18,
-    padding: 10, 
+    color: COLORS.PRIMARY,
+    fontFamily: "Bitter-Medium",
+    fontSize: FONTSIZES.MD,
+    marginTop: SPACINGS.SM,
   },
-
 });

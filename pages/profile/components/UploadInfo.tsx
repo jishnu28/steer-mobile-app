@@ -4,6 +4,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth";
 import { firebaseAuth } from "../../../firebaseConfig";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import ICONSIZES from "../../../config/ICONSIZES";
+import COLORS from "../../../config/COLORS";
+import FONTSIZES from "../../../config/FONTSIZES";
+import SPACINGS from "../../../config/SPACINGS";
 
 interface UploadInfoProps {
   name: string;
@@ -35,7 +39,11 @@ function UploadInfo({
         <TouchableOpacity
           onPress={() => setUserModalVisible(!isUserModalVisible)}
         >
-          <MaterialCommunityIcons name="pencil" size={20} color="#88838A" />
+          <MaterialCommunityIcons
+            name="pencil"
+            size={ICONSIZES.XXS}
+            color={COLORS.DARKBG}
+          />
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
@@ -49,41 +57,37 @@ export default UploadInfo;
 
 const styles = StyleSheet.create({
   profileText: {
-    fontFamily: "Bitter-Regular",
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#343135",
+    fontFamily: "Bitter-Medium",
+    fontSize: FONTSIZES.MD,
+    color: COLORS.DARKBG,
     maxWidth: "80%",
-    marginVertical: 1,
-    marginHorizontal: 5,
+    marginHorizontal: SPACINGS.XS,
   },
 
   button: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 20,
-    marginVertical: 5,
+    borderRadius: SPACINGS.XL,
+    marginVertical: SPACINGS.SM,
     width: 200,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: "#F8FAF0",
+    paddingVertical: SPACINGS.SM,
+    paddingHorizontal: SPACINGS.SM,
+    backgroundColor: COLORS.LIGHTBG,
   },
 
   signOutButton: {
-    backgroundColor: "#FFAF87",
+    backgroundColor: COLORS.PRIMARY,
     width: "60%",
-    padding: 5,
-    paddingVertical: 10,
-    borderRadius: 20,
+    padding: SPACINGS.XS,
+    paddingVertical: SPACINGS.SM,
+    borderRadius: SPACINGS.LG,
     alignItems: "center",
-    marginTop: 5,
   },
 
   buttonText: {
-    color: "white",
+    color: COLORS.WHITE,
     fontFamily: "Bitter-Bold",
-    fontWeight: "700",
-    fontSize: 16,
+    fontSize: FONTSIZES.MD,
   },
 });

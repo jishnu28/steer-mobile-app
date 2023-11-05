@@ -17,6 +17,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "./components/SearchBar";
 import SPACING from "../../config/SPACINGS";
 import H3 from "../../custom_components/typography/H3";
+import COLORS from "../../config/COLORS";
+import BodyText from "../../custom_components/typography/BodyText";
+import SPACINGS from "../../config/SPACINGS";
+import H1 from "../../custom_components/typography/H1";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -112,7 +116,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
       <SearchBar />
       {chats.length === 0 ? (
         <View style={styles.noChatsContainer}>
-          <Text style={styles.noChatsText}>You have no active chats.</Text>
+          <H1 style={styles.noChatsText}>You have no active chats.</H1>
         </View>
       ) : (
         chats.map((chat) => {
@@ -134,7 +138,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
               />
               <View style={styles.textContainer}>
                 <H3>{recipientDisplayName}</H3>
-                <Text style={styles.messageText}>{chat.lastMessage}</Text>
+                <BodyText>{chat.lastMessage ?? "..."}</BodyText>
               </View>
             </TouchableOpacity>
           );
@@ -147,35 +151,29 @@ const ChatList = ({ navigation }: ChatListProps) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#E5E8D9",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: COLORS.LIGHTACCENT,
+    paddingTop:
+      Platform.OS === "android"
+        ? (StatusBar.currentHeight ?? 0) + SPACINGS.SM
+        : 0,
   },
   chatContainer: {
     flexDirection: "row", // Arrange children horizontally
     alignItems: "center",
     padding: SPACING.MD,
-    backgroundColor: "#E5E8D9",
+    backgroundColor: COLORS.LIGHTBG,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.DARKACCENT,
   },
   textContainer: {
     flex: 1,
-  },
-  displayNameText: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 26,
-  },
-  messageText: {
-    fontFamily: "Bitter-Regular",
-    fontSize: 20,
-    color: "#88838A",
   },
   avatar: {
     marginRight: SPACING.LG,
   },
   noChatsText: {
-    fontFamily: "Bitter-Bold",
-    fontSize: 25,
     textAlign: "center",
-    marginVertical: 20,
+    marginVertical: SPACINGS.XL,
   },
   noChatsContainer: {
     flex: 1,

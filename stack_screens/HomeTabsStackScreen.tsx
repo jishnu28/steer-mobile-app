@@ -8,6 +8,7 @@ import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
 import PostStack from "./PostStackScreen";
+import COLORS from "../config/COLORS";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,9 +19,9 @@ export default function HomeTabs() {
       backBehavior="history"
       screenOptions={{
         tabBarActiveTintColor: "#FF691F",
-        tabBarInactiveTintColor: "#FFFFFF",
-        tabBarActiveBackgroundColor: "#FFAF87",
-        tabBarInactiveBackgroundColor: "#FFAF87",
+        tabBarInactiveTintColor: COLORS.WHITE,
+        tabBarActiveBackgroundColor: COLORS.PRIMARY,
+        tabBarInactiveBackgroundColor: COLORS.PRIMARY,
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 64,
@@ -44,7 +45,7 @@ export default function HomeTabs() {
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={focused ? "map-search" : "map-search-outline"}
-              color={focused ? color : "#FFFFFF"}
+              color={focused ? color : COLORS.WHITE}
               size={30}
               style={focused ? styles.focusedIcon : styles.unfocusedIcon}
             />
@@ -58,7 +59,7 @@ export default function HomeTabs() {
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={focused ? "calendar-month" : "calendar-month-outline"}
-              color={focused ? color : "#FFFFFF"}
+              color={focused ? color : COLORS.WHITE}
               size={30}
               style={focused ? styles.focusedIcon : styles.unfocusedIcon}
             />
@@ -72,7 +73,7 @@ export default function HomeTabs() {
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={focused ? "plus-circle" : "plus-circle-outline"}
-              color={focused ? color : "#FFFFFF"}
+              color={focused ? color : COLORS.WHITE}
               size={30}
               style={focused ? styles.focusedIcon : styles.unfocusedIcon}
             />
@@ -87,7 +88,7 @@ export default function HomeTabs() {
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={focused ? "message-text" : "message-text-outline"}
-              color={focused ? color : "#FFFFFF"}
+              color={focused ? color : COLORS.WHITE}
               size={30}
               style={focused ? styles.focusedIcon : styles.unfocusedIcon}
             />
@@ -101,7 +102,7 @@ export default function HomeTabs() {
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
               name={focused ? "account" : "account-outline"}
-              color={focused ? color : "#FFFFFF"}
+              color={focused ? color : COLORS.WHITE}
               size={30}
               style={focused ? styles.focusedIcon : styles.unfocusedIcon}
             />

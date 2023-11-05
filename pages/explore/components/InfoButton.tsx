@@ -6,6 +6,8 @@ import {
   ViewStyle,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ICONSIZES from "../../../config/ICONSIZES";
+import COLORS from "../../../config/COLORS";
 
 interface InfoButtonProps {
   onPress: () => void;
@@ -17,8 +19,8 @@ const InfoButton: React.FC<InfoButtonProps> = ({ onPress, style }) => {
     <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
       <MaterialCommunityIcons
         name="information-outline"
-        size={24}
-        color="black"
+        size={ICONSIZES.XS}
+        color={COLORS.PRIMARY}
       />
     </TouchableOpacity>
   );
@@ -31,11 +33,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: height * 0.08,
     right: width * 0.05,
-    width: 48,
-    height: 48,
+    width: ICONSIZES.XL,
+    height: ICONSIZES.XL,
     opacity: 0.75,
-    borderRadius: 24,
-    backgroundColor: "white",
+    borderRadius: ICONSIZES.XS,
+    backgroundColor: COLORS.WHITE,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -2,6 +2,10 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
+import SPACINGS from "../../../config/SPACINGS";
+import ICONSIZES from "../../../config/ICONSIZES";
+import BodyText from "../../../custom_components/typography/BodyText";
+import COLORS from "../../../config/COLORS";
 
 interface MessageProps {
   message: {
@@ -30,7 +34,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
           isCurrentUser ? styles.owner : styles.otherUser,
         ]}
       >
-        <Text style={styles.textMessage}>{message.text}</Text>
+        <BodyText style={styles.textMessage}>{message.text}</BodyText>
       </View>
     </View>
   );
@@ -38,24 +42,22 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
 const styles = StyleSheet.create({
   messageContainer: {
-    borderRadius: 40,
-    padding: 10,
-    marginBottom: 8,
-    minHeight: 40,
+    borderRadius: SPACINGS.XL,
+    padding: SPACINGS.MD,
+    marginBottom: SPACINGS.MD,
+    minHeight: ICONSIZES.LG,
   },
   owner: {
     alignSelf: "flex-end",
-    backgroundColor: "#FFAF87",
+    backgroundColor: COLORS.PRIMARY,
+    borderBottomRightRadius: 0,
   },
   otherUser: {
     alignSelf: "flex-start",
-    backgroundColor: "#D7D5D7",
+    backgroundColor: COLORS.LIGHTACCENT,
+    borderTopLeftRadius: 0,
   },
-  textMessage: {
-    color: "black",
-    fontSize: 16,
-    fontFamily: "Bitter-Regular",
-  },
+  textMessage: {},
 });
 
 export default Message;

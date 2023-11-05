@@ -92,20 +92,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "absolute",
     alignSelf: "center",
-    padding: SPACINGS.XS,
+    padding: SPACINGS.MD,
     zIndex: 1,
   },
 
   pagingInactive: {
     fontSize: FONTSIZES.XS,
-    color: COLORS.LIGHTACCENT,
+    color: COLORS.WHITE,
     margin: SPACINGS.XXS,
-    opacity: 0.5,
+    opacity: 0.6,
   },
 
   pagingActive: {
     fontSize: FONTSIZES.XS,
-    color: COLORS.LIGHTBG,
+    color: COLORS.PRIMARY,
     margin: SPACINGS.XXS,
   },
 });

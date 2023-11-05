@@ -3,6 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CATEGORIES from "../../../config/CATEGORIES";
 import SPACING from "../../../config/SPACINGS";
+import SPACINGS from "../../../config/SPACINGS";
+import COLORS from "../../../config/COLORS";
+import FONTSIZES from "../../../config/FONTSIZES";
+import ICONSIZES from "../../../config/ICONSIZES";
 
 interface ExploreMenuProps {
   updateActiveCategory: any;
@@ -42,47 +46,46 @@ export default ExploreMenu;
 
 const styles = StyleSheet.create({
   categoryButton: {
-    height: 60,
-    backgroundColor: "white",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#FFAF87",
+    height: ICONSIZES.XL,
+    backgroundColor: COLORS.LIGHTACCENT,
+    borderRadius: SPACINGS.XL,
+    borderWidth: 0,
+    borderColor: COLORS.PRIMARY,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    padding: SPACING.SM,
   },
 
   activeCategory: {
-    backgroundColor: "#FFAF87",
-    padding: 5,
-    paddingVertical: 2,
-    borderRadius: 20,
+    backgroundColor: COLORS.PRIMARY,
+    padding: SPACINGS.SM,
+    paddingVertical: SPACINGS.XXS,
+    borderRadius: SPACINGS.LG,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 
   inactiveCategory: {
-    padding: 5,
-    paddingVertical: 2,
-    borderRadius: 20,
+    padding: SPACINGS.SM,
+    paddingVertical: SPACINGS.XXS,
+    borderRadius: SPACINGS.LG,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 
   activeText: {
-    color: "#FFFFFF",
+    color: COLORS.WHITE,
     fontFamily: "Bitter-Bold",
-    fontSize: 20,
-    padding: 5,
+    fontSize: FONTSIZES.MD,
+    padding: SPACINGS.SM,
   },
 
   inactiveText: {
-    color: "#88838A",
+    color: COLORS.DARKBG,
     fontFamily: "Bitter-Bold",
-    fontSize: 20,
-    padding: 5,
+    fontSize: FONTSIZES.MD,
+    padding: SPACINGS.SM,
   },
 });
