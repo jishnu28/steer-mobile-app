@@ -57,13 +57,12 @@ function ExploreItemCarousel({
     >
       {dbItems.map((item, index) => (
         <View key={index}>
-          <View style={styles.heartButtonContainer}> 
-            <HeartButton item={item}/>
+          <View style={styles.heartButtonContainer}>
+            <HeartButton item={item} />
           </View>
 
           <View style={styles.card}>
             <Pressable
-              key={index}
               style={styles.descriptionBackground}
               onPress={() =>
                 navigation.navigate("Detail", {
@@ -99,7 +98,6 @@ function ExploreItemCarousel({
               </View>
             </Pressable>
             <Pressable
-              key={index}
               onPress={() =>
                 navigation.navigate("Detail", {
                   item: item,

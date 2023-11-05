@@ -6,7 +6,6 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import { NativeBaseProvider } from "native-base";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
@@ -23,21 +22,19 @@ function Explore({ navigation }: ExploreProps) {
   };
 
   return (
-    <NativeBaseProvider>
-      <SafeAreaView style={styles.background}>
-        <View style={styles.container}>
-          <ExploreMenu
-            updateActiveCategory={updateActiveCategory}
-            activeCategory={activeCategory}
-          />
-          <ExploreItemCarousel
-            activeCategory={activeCategory}
-            navigation={navigation}
-            collectionName={CATEGORIES[activeCategory].dbName}
-          />
-        </View>
-      </SafeAreaView>
-    </NativeBaseProvider>
+    <SafeAreaView style={styles.background}>
+      <View style={styles.container}>
+        <ExploreMenu
+          updateActiveCategory={updateActiveCategory}
+          activeCategory={activeCategory}
+        />
+        <ExploreItemCarousel
+          activeCategory={activeCategory}
+          navigation={navigation}
+          collectionName={CATEGORIES[activeCategory].dbName}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 

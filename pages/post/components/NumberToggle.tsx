@@ -1,47 +1,68 @@
-import { HStack, IconButton, Text } from "native-base";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Pressable, View, ViewStyle } from "react-native";
+import { Icon } from "@rneui/themed";
+import BodyText from "../../../custom_components/typography/BodyText";
+import COLORS from "../../../config/COLORS";
+import ICONSIZES from "../../../config/ICONSIZES";
+import FONTSIZES from "../../../config/FONTSIZES";
+import SPACINGS from "../../../config/SPACINGS";
 
 interface NumberToggleProps {
   numItems: number;
   setNumItems: (value: number) => void;
+  style?: ViewStyle;
 }
 
-const NumberToggle = ({ numItems, setNumItems }: NumberToggleProps) => {
+const NumberToggle = ({ numItems, setNumItems, style }: NumberToggleProps) => {
   return (
-    <HStack alignContent="center" space={4}>
-      <IconButton
-        w={6}
-        h={6}
-        borderRadius={100}
-        backgroundColor={"#FFAF87"}
-        variant="solid"
-        _icon={{
-          as: MaterialCommunityIcons,
-          name: "minus",
-        }}
+    <View style={[styles.mainContainer, style]}>
+      <Pressable
+        style={styles.button}
         onPress={() => {
           setNumItems(numItems - 1);
         }}
-      />
-      <Text fontFamily="Bitter-Medium" fontSize={16}>
-        {numItems.toString()}
-      </Text>
-      <IconButton
-        w={6}
-        h={6}
-        borderRadius={100}
-        backgroundColor={"#FFAF87"}
-        variant="solid"
-        _icon={{
-          as: MaterialCommunityIcons,
-          name: "plus",
-        }}
+      >
+        <Icon
+          color={COLORS.LIGHTBG}
+          type="material-community"
+          name="minus"
+          size={ICONSIZES.XS}
+        />
+      </Pressable>
+      <BodyText style={styles.numberText}>{numItems.toString()}</BodyText>
+      <Pressable
+        style={styles.button}
         onPress={() => {
           setNumItems(numItems + 1);
         }}
-      />
-    </HStack>
+      >
+        <Icon
+          color={COLORS.LIGHTBG}
+          type="material-community"
+          name="plus"
+          size={ICONSIZES.XS}
+        />
+      </Pressable>
+    </View>
   );
 };
 
 export default NumberToggle;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: COLORS.PRIMARY,
+    width: ICONSIZES.XS,
+    height: ICONSIZES.XS,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  numberText: {
+    fontSize: FONTSIZES.MD,
+    paddingHorizontal: SPACINGS.MD,
+  },
+});

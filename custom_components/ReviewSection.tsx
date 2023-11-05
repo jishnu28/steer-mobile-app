@@ -1,7 +1,11 @@
-import { Box, Button, Center, Flex, Heading, Icon } from "native-base";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Icon } from "@rneui/themed";
+import H2 from "./typography/H2";
 import ReviewsCard from "./ReviewCard";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import COLORS from "../config/COLORS";
+import ICONSIZES from "../config/ICONSIZES";
+import SPACING from "../config/SPACINGS";
+import SPACINGS from "../config/SPACINGS";
 const reviewList: string[][] = [
   [
     "https://picsum.photos/200/200",
@@ -19,41 +23,56 @@ const reviewList: string[][] = [
 
 const ReviewSection = () => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" justifyContent="center" p={4}>
-      <Box w="75%" pb={2} justifyContent={"center"}>
-        <Heading>Reviews</Heading>
-      </Box>
-      <Box w="25%" pb={2}>
-        <Button
-          bg="#FFAF87"
-          borderRadius={100}
+    <View style={styles.mainContainer}>
+      <View style={styles.headingContainer}>
+        <H2>Reviews</H2>
+        <Pressable
+          style={styles.button}
           onPress={() => console.log("add review button pressed")}
-          leftIcon={
-            <Icon
-              color="black"
-              as={MaterialCommunityIcons}
-              name="plus-circle-outline"
-              size="8"
-            />
-          }
-        />
-      </Box>
-      <Flex
-        flexWrap="wrap"
-        flexDirection="row"
-        px="4"
-        py="4"
-        justifyContent="center"
-        bg="#E5E8D9"
-        w="100%"
-        borderRadius="xl"
-      >
+        >
+          <Icon
+            color={COLORS.LIGHTBG}
+            type="material-community"
+            name="plus"
+            size={ICONSIZES.MD}
+          />
+        </Pressable>
+      </View>
+      <View style={styles.reviewsContainer}>
         {reviewList.map((review) => (
           <ReviewsCard key={review[1]} avatarUri={review[0]} text={review[1]} />
         ))}
-      </Flex>
-    </Flex>
+      </View>
+    </View>
   );
 };
 
 export default ReviewSection;
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: COLORS.PRIMARY,
+    width: ICONSIZES.LG,
+    height: ICONSIZES.LG,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  mainContainer: {
+    flexDirection: "column",
+    padding: SPACING.MD,
+  },
+  headingContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: SPACINGS.SM,
+  },
+  reviewsContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+});

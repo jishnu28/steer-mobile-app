@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CATEGORIES from "../../../config/CATEGORIES";
+import SPACING from "../../../config/SPACINGS";
 
 interface ExploreMenuProps {
   updateActiveCategory: any;
@@ -38,6 +39,7 @@ function ExploreMenu({
 }
 
 export default ExploreMenu;
+
 const styles = StyleSheet.create({
   categoryButton: {
     height: 60,
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    padding: 5,
+    padding: SPACING.SM,
   },
 
   activeCategory: {

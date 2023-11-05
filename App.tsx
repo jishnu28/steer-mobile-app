@@ -10,7 +10,7 @@ import HomeTabs from "./stack_screens/HomeTabsStackScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  useFonts({
     "Bitter-Black": require("./assets/fonts/Bitter-Black.ttf"),
     "Bitter-ExtraBold": require("./assets/fonts/Bitter-ExtraBold.ttf"),
     "Bitter-Bold": require("./assets/fonts/Bitter-Bold.ttf"),

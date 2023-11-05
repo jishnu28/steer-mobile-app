@@ -1,24 +1,17 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { SafeAreaView, Dimensions } from "react-native";
-import { NativeBaseProvider, ScrollView } from "native-base";
+import { SafeAreaView } from "react-native";
 import ExperienceInputs from "./components/ExperienceInputs";
 
 interface PostExperienceProps {
   navigation: NativeStackNavigationProp<any>;
 }
 
-const { width, height } = Dimensions.get("window");
-
 const PostExperience = ({ navigation }: PostExperienceProps) => {
   return (
-    <NativeBaseProvider>
-      <SafeAreaView>
-        <ScrollView h={height}>
-          <ExperienceInputs navigation={navigation} />
-        </ScrollView>
-      </SafeAreaView>
-    </NativeBaseProvider>
+    <SafeAreaView>
+      <ExperienceInputs navigation={navigation} />
+    </SafeAreaView>
   );
 };
 

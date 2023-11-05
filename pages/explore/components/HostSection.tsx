@@ -1,54 +1,79 @@
-import { Avatar, Box, Flex, HStack, Heading, Icon, Text } from "native-base";
+import { StyleSheet, View } from "react-native";
+import { Avatar, Icon } from "@rneui/themed";
 import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ICONSIZES from "../../../config/ICONSIZES";
+import COLORS from "../../../config/COLORS";
+import SPACINGS from "../../../config/SPACINGS";
+import H3 from "../../../custom_components/typography/H3";
+import FONTSIZES from "../../../config/FONTSIZES";
+import H2 from "../../../custom_components/typography/H2";
+
+//TODO: Fetch host info from database
 
 const HostSection = () => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" justifyContent="center" p={4}>
-      <Box w="100%" pb={2}>
-        <Heading fontFamily={"Bitter-ExtraBold"}>Host</Heading>
-      </Box>
-      <HStack
-        flexWrap="wrap"
-        justifyContent="center"
-        borderRadius={"xl"}
-        bg="#E5E8D9"
-        w="100%"
-        mx={4}
-        py={4}
-      >
-        <Box w="50%" justifyContent="center" alignItems="center">
+    <View style={styles.mainContainer}>
+      <View style={styles.headerContainer}>
+        <H2>Host</H2>
+      </View>
+      <View style={styles.innerContainer}>
+        <View style={styles.avatarContainer}>
           <Avatar
+            rounded
             source={{ uri: "https://picsum.photos/200/200" }}
-            mr={4}
-            size="xl"
+            size={64}
           />
-        </Box>
-        <Box w="50%">
-          <Heading
-            w="80%"
-            borderBottomWidth={0.5}
-            fontFamily={"Bitter-Bold"}
-            fontSize="2xl"
-          >
-            HostName
-          </Heading>
-          <HStack pt={2}>
-            <Text fontFamily={"Bitter-Bold"} fontSize="3xl">
-              4.8
-            </Text>
+        </View>
+        <View style={styles.textContainer}>
+          <H3 style={{ fontSize: FONTSIZES.XL }}>HostName</H3>
+          <View style={styles.ratingContainer}>
+            <H3>4.8</H3>
             <Icon
-              as={<MaterialCommunityIcons name={"star"} />}
-              color="#FFAF87"
-              size="2xl"
-              my={1}
-              mr={2}
+              color={COLORS.PRIMARY}
+              type="material-community"
+              name="star"
+              size={ICONSIZES.MD}
             />
-          </HStack>
-        </Box>
-      </HStack>
-    </Flex>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
 
 export default HostSection;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: SPACINGS.MD,
+  },
+  headerContainer: {
+    width: "100%",
+    marginBottom: SPACINGS.SM,
+  },
+  innerContainer: {
+    backgroundColor: COLORS.LIGHTACCENT,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    paddingVertical: SPACINGS.SM,
+    borderRadius: SPACINGS.LG,
+  },
+  avatarContainer: {
+    width: "30%",
+    justifyContent: "center",
+    padding: SPACINGS.MD,
+  },
+  textContainer: {
+    width: "70%",
+    justifyContent: "center",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: SPACINGS.XS,
+  },
+});

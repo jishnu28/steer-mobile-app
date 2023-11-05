@@ -1,37 +1,46 @@
-import { Badge, Flex } from "native-base";
+import { View, StyleSheet } from "react-native";
+import SPACINGS from "../../../config/SPACINGS";
+import BodyText from "../../../custom_components/typography/BodyText";
+import COLORS from "../../../config/COLORS";
+import H2 from "../../../custom_components/typography/H2";
 
 interface TagsSectionProps {
   accommodationTags: string[];
 }
 
-const tagList: string[] = [
-  "Cosy",
-  "Budget-friendly",
-  "Has wi-fi",
-  "Kid-friendly",
-  "Rustic",
-];
-
 const TagsSection: React.FC<TagsSectionProps> = ({ accommodationTags }) => {
   return (
-    <Flex flexWrap="wrap" flexDirection="row" p={4}>
-      {accommodationTags.map((tag) => (
-        <Badge
-          size={"2xl"}
-          key={tag}
-          mr="4"
-          minHeight="8"
-          mb="2"
-          variant="outline"
-          borderColor="#767C77"
-          borderRadius="md"
-          fontFamily={"Bitter-Medium"}
-        >
-          {tag}
-        </Badge>
-      ))}
-    </Flex>
+    <View style={styles.mainContainer}>
+      <H2>Tags</H2>
+      <View style={styles.innerContainer}>
+        {accommodationTags.map((tag) => (
+          <View key={tag} style={styles.badgeStyle}>
+            <BodyText>{tag}</BodyText>
+          </View>
+        ))}
+      </View>
+    </View>
   );
 };
 
 export default TagsSection;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    padding: SPACINGS.MD,
+  },
+  innerContainer: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    marginTop: SPACINGS.SM,
+  },
+  badgeStyle: {
+    marginRight: SPACINGS.MD,
+    marginBottom: SPACINGS.SM,
+    paddingVertical: SPACINGS.XS,
+    paddingHorizontal: SPACINGS.SM,
+    borderWidth: 1,
+    borderColor: COLORS.DARKBG,
+    borderRadius: SPACINGS.SM,
+  },
+});

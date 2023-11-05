@@ -1,11 +1,9 @@
 export default {
     // to be modified depending on the final design style and color profile
-    ORANGE: '#F0AA81',
-    BROWN: '#8F8685',
-    BEIGE: '#F9FAF0',
-    GREY: '#7C787E',
-    ACCENT: '#E1E3D5',
-    
-    WHITE: '#FFFFFF',
-    TRANSPARENT: 'rgba(0, 0, 0, 0.5)',    
-}
+    LIGHTBG: "#F8FAF0", //"#F1F5F4",
+    LIGHTACCENT: "#E5E8D9",// "#9FA4A7",
+    PRIMARY: "#FFAF87",
+    DARKACCENT: "#9CADA4", // "#D66B69",
+    DARKBG: "#767C77", // "#955A64",
+    BLACK: "#141514", 
+};

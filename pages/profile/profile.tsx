@@ -1,5 +1,4 @@
 import React from "react";
-import { NativeBaseProvider } from "native-base";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
@@ -40,13 +39,12 @@ interface ProfileData {
 }
 
 const ProfilePage = ({ navigation }: Props) => {
-
-    //Used for user info retrieval
-    const [user, loading, error]= useAuthState(firebaseAuth);
-    const [profileInfo, setProfileInfo]= React.useState<ProfileData | any>({});
-    //Used to set user info
-    const [username, setUsername]= React.useState('');
-    const [usernameModal, setUsernameModal]= React.useState(false);
+  //Used for user info retrieval
+  const [user, loading, error] = useAuthState(firebaseAuth);
+  const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
+  //Used to set user info
+  const [username, setUsername] = React.useState("");
+  const [usernameModal, setUsernameModal] = React.useState(false);
 
   //Retrieves profile info when page first rendered
   const getProfile = async () => {
@@ -119,66 +117,64 @@ const ProfilePage = ({ navigation }: Props) => {
     }
   };
 
-    //Code for profile info upload
-    const saveUsername = async () => {
-        try {
-            const docRef = doc(firestore, "users", user!.uid);
-            await updateDoc(docRef, {
-                displayName: username,
-            });
-            getProfile();
-        } catch (error) {
-            console.error("Error updating username to users collection:", error);
-        }
-    };
+  //Code for profile info upload
+  const saveUsername = async () => {
+    try {
+      const docRef = doc(firestore, "users", user!.uid);
+      await updateDoc(docRef, {
+        displayName: username,
+      });
+      getProfile();
+    } catch (error) {
+      console.error("Error updating username to users collection:", error);
+    }
+  };
 
-    return (
-        <NativeBaseProvider>
-            <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
-                {/* Profile Info */}
-                <View style={[styles.profile, { flex: 2 }]}>
-                    <UploadPic
-                        url={profileInfo ? profileInfo["profilePic"] : ""} //sets placeholder in case user data does not exist
-                        addImage={addImage}
-                    />
-                    <UploadInfo
-                        name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
-                        isUserModalVisible={usernameModal}
-                        setUserModalVisible={setUsernameModal}
-                        navigation={navigation}
-                    />
-                </View>
+  return (
+    <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
+      {/* Profile Info */}
+      <View style={[styles.profile, { flex: 2 }]}>
+        <UploadPic
+          url={profileInfo ? profileInfo["profilePic"] : ""} //sets placeholder in case user data does not exist
+          addImage={addImage}
+        />
+        <UploadInfo
+          name={profileInfo ? profileInfo["displayName"] : "Placeholder name"}
+          isUserModalVisible={usernameModal}
+          setUserModalVisible={setUsernameModal}
+          navigation={navigation}
+        />
+      </View>
 
-                {/* Modals */}
-                <PopupModal
-                    inputName="username"
-                    inputValue={username}
-                    setInputValue={setUsername}
-                    saveValue={saveUsername}
-                    isModalVisible={usernameModal}
-                    setModalVisibility={setUsernameModal}
-                />
+      {/* Modals */}
+      <PopupModal
+        inputName="username"
+        inputValue={username}
+        setInputValue={setUsername}
+        saveValue={saveUsername}
+        isModalVisible={usernameModal}
+        setModalVisibility={setUsernameModal}
+      />
 
-        {/* Posts */}
-        {/* marginBottom to leave space for the NavBar */}
-        <View style={[styles.posts, { flex: 5, marginBottom: 0 }]}>
-          <View style={styles.header}>
-            <Text
-              style={[styles.headerText, { width: 300, textAlign: "center" }]}
-            >
-              Saved
-            </Text>
-          </View>
+      {/* Posts */}
+      {/* marginBottom to leave space for the NavBar */}
+      <View style={[styles.posts, { flex: 5, marginBottom: 0 }]}>
+        <View style={styles.header}>
+          <Text
+            style={[styles.headerText, { width: 300, textAlign: "center" }]}
+          >
+            Saved
+          </Text>
+        </View>
 
-                    <SavedItemCarousel
-                        // collectionName= "savedPosts"
-                        collectionName="accommodations"
-                    />
-                </View>
-            </SafeAreaView>
-        </NativeBaseProvider>
-    );
-    };
+        <SavedItemCarousel
+          // collectionName= "savedPosts"
+          collectionName="accommodations"
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
 
 export default ProfilePage;
 

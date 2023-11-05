@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Fab, Icon } from "native-base";
+import { FAB, Icon } from "@rneui/themed";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import SPACINGS from "../../../config/SPACINGS";
+import COLORS from "../../../config/COLORS";
+import ICONSIZES from "../../../config/ICONSIZES";
 
 type RootStackParamList = {
   ChatButton: undefined;
@@ -34,7 +36,7 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
 
   const handleSelectLaunchChat = async () => {
     const hostInfo = {
-      uid: hostID 
+      uid: hostID,
     };
 
     const hostId = hostInfo.uid;
@@ -57,7 +59,11 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
         });
 
         // Update the user's "chats" array in the "userChats" collection
-        const currentUserChatsDocRef = doc(firestore, "userChats", currentUserId);
+        const currentUserChatsDocRef = doc(
+          firestore,
+          "userChats",
+          currentUserId
+        );
         const currentUserChatsDoc = await getDoc(currentUserChatsDocRef);
 
         if (currentUserChatsDoc.exists()) {
@@ -90,22 +96,22 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
 
         const hostChatsDocRef = doc(firestore, "userChats", hostId);
         const hostChatsDoc = await getDoc(hostChatsDocRef);
-        
-        if(hostChatsDoc.exists()){
+
+        if (hostChatsDoc.exists()) {
           const hostChatsData = hostChatsDoc.data();
 
           const updatedHostChats = [
             ...hostChatsData.chats,
             {
               chatId: chatId,
-              ["userInfo"]:{
-                uid: currentUserId
-              }
-            }
+              ["userInfo"]: {
+                uid: currentUserId,
+              },
+            },
           ];
 
           await updateDoc(hostChatsDocRef, {
-            chats: updatedHostChats
+            chats: updatedHostChats,
           });
         } else {
           console.log("Host document not found.");
@@ -133,8 +139,7 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
 
     dispatch({
       type: "GET_CHAT_ID",
-      payload: hostInfo, 
-
+      payload: hostInfo,
     });
 
     navigation.navigate("Chat", {
@@ -144,26 +149,33 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
   };
 
   return (
-    <Fab
-      renderInPortal={false}
-      shadow={2}
-      placement="bottom-right"
-      bg="#FFAF87"
-      size="lg"
-      label="Message to book"
+    <FAB
+      style={styles.fab}
+      color={COLORS.PRIMARY}
+      placement="right"
+      size="large"
+      title="Contact"
       onPress={handleSelectLaunchChat}
       icon={
         <Icon
-          color="white"
-          as={MaterialCommunityIcons}
+          type="material-community"
           name="chat-outline"
-          size="6"
+          color={COLORS.LIGHTBG}
+          size={ICONSIZES.XS}
         />
       }
     />
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  fab: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: SPACINGS.XS },
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+});
 
 export default ChatButton;
