@@ -160,7 +160,7 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
         <Icon
           type="material-community"
           name="chat-outline"
-          color={COLORS.LIGHTBG}
+          color={COLORS.WHITE}
           size={ICONSIZES.XS}
         />
       }

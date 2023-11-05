@@ -1,66 +1,79 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { doc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
-import { firestore, firebaseAuth } from "../../../firebaseConfig"; 
+import { Icon } from "@rneui/themed";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { firestore, firebaseAuth } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import ICONSIZES from "../../../config/ICONSIZES";
+import COLORS from "../../../config/COLORS";
+import SPACINGS from "../../../config/SPACINGS";
 
 function HeartButton(item: any) {
   const [isLiked, setIsLiked] = React.useState(false);
-  const [user, loading, error]= useAuthState(firebaseAuth);
+  const [user, loading, error] = useAuthState(firebaseAuth);
 
   async function setSavedPost() {
     try {
-      const savedRef= doc(firestore, "users", user?.uid as any)
+      const savedRef = doc(firestore, "users", user?.uid as any);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayUnion(item.item.firestoreID)
+        favouritedPosts: arrayUnion(item.item.firestoreID),
       });
-    }
-    catch (error) {
-      console.error(
-        "Error writing document to savedPosts",
-        error
-      );
+    } catch (error) {
+      console.error("Error writing document to savedPosts", error);
     }
   }
 
   async function removeSavedPost() {
     try {
-      const savedRef= doc(firestore, "users", user?.uid as any)
+      const savedRef = doc(firestore, "users", user?.uid as any);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayRemove(item.item.firestoreID)
+        favouritedPosts: arrayRemove(item.item.firestoreID),
       });
-    }
-    catch (error) {
-      console.error(
-        "Error writing document to savedPosts",
-        error
-      );
+    } catch (error) {
+      console.error("Error writing document to savedPosts", error);
     }
   }
-  
+
   return (
-    <TouchableOpacity
-      // TODO: implement feature to save the liked experience to a database
-      onPress={() => {
-        // console.log(item)
-        if (isLiked) {
-          removeSavedPost();
-        }
-        else {
-          setSavedPost();
-        }
-        setIsLiked(!isLiked);
+    <View
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "flex-end",
       }}
-      style={styles.heartButton}
     >
-      {isLiked 
-        ? <MaterialCommunityIcons name="heart" size={40} color="red" />
-        : <MaterialCommunityIcons name="heart" size={40} color="#FFFFFF" />
-      }
-    </TouchableOpacity>
+      <TouchableOpacity
+        // TODO: implement feature to save the liked experience to a database
+        onPress={() => {
+          // console.log(item)
+          if (isLiked) {
+            removeSavedPost();
+          } else {
+            setSavedPost();
+          }
+          setIsLiked(!isLiked);
+        }}
+        style={styles.heartButton}
+      >
+        {isLiked ? (
+          <Icon
+            color={COLORS.PRIMARY}
+            type="material-community"
+            name="heart"
+            size={ICONSIZES.XL}
+          />
+        ) : (
+          <Icon
+            color={COLORS.WHITE}
+            type="material-community"
+            name="heart"
+            size={ICONSIZES.XL}
+            style={{ opacity: 0.6 }}
+          />
+        )}
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -68,11 +81,9 @@ export default HeartButton;
 
 const styles = StyleSheet.create({
   heartButton: {
-    borderRadius: 100,
-    height: 50,
-    width: 50,
-    padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#E5E8D9",
+    marginTop: SPACINGS.MD,
   },
 });

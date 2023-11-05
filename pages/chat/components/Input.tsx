@@ -19,6 +19,8 @@ import { firebaseAuth } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import uuidRandom from "uuid-random";
 import COLORS from "../../../config/COLORS";
+import SPACINGS from "../../../config/SPACINGS";
+import ICONSIZES from "../../../config/ICONSIZES";
 
 const auth = firebaseAuth;
 
@@ -89,8 +91,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10, // Add horizontal padding
-    paddingBottom: Platform.OS === "android" ? 20 : 0, // Add bottom padding
+    paddingBottom: Platform.OS === "android" ? SPACINGS.LG : 0,
     position: "absolute",
     bottom: 0,
     width: "100%",
@@ -99,23 +100,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    paddingBottom: Platform.OS === "android" ? 20 : 0,
+    paddingBottom: Platform.OS === "android" ? SPACINGS.LG : 0,
     bottom: 0,
     width: "100%",
   },
   textInput: {
     flex: 1,
-    height: 45,
+    height: ICONSIZES.XL,
     borderWidth: 1,
     borderColor: COLORS.LIGHTACCENT,
     backgroundColor: COLORS.LIGHTACCENT,
-    borderRadius: 40, // Rounded input box
-    paddingHorizontal: 12,
+    borderRadius: SPACINGS.XL,
+    paddingHorizontal: SPACINGS.MD,
     fontFamily: "Bitter-Regular",
   },
   send: {
-    marginLeft: 8,
+    marginLeft: SPACINGS.SM,
   },
 });
 

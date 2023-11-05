@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.PRIMARY,
     width: ICONSIZES.LG,
     height: ICONSIZES.LG,
-    borderRadius: 100,
+    borderRadius: ICONSIZES.LG,
     justifyContent: "center",
     alignItems: "center",
   },

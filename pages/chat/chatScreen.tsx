@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChatContext } from "./ChatContext";
@@ -16,6 +18,9 @@ import Message from "./components/Message";
 import Input from "./components/Input";
 import COLORS from "../../config/COLORS";
 import { Ionicons } from "@expo/vector-icons";
+import SPACINGS from "../../config/SPACINGS";
+import H1 from "../../custom_components/typography/H1";
+import ICONSIZES from "../../config/ICONSIZES";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -77,7 +82,7 @@ const ChatScreen = ({ navigation }: MessagesProps) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons style={styles.backArrow} name="arrow-back" />
         </TouchableOpacity>
-        <Text style={styles.username}>{recipientDisplayName}</Text>
+        <H1 style={styles.username}>{recipientDisplayName}</H1>
       </View>
       <ScrollView>
         <View>
@@ -96,26 +101,23 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: COLORS.LIGHTBG,
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: SPACINGS.LG,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   usernameContainer: {
     flexDirection: "row",
     alignItems: "center", // Center the text horizontally
     // justifyContent: "center", // Add this to place the arrow on the left
-    marginBottom: 10,
+    marginBottom: SPACINGS.XL,
   },
   username: {
-    fontSize: 30,
-    fontFamily: "Bitter-Bold",
-    marginBottom: 10,
     flex: 1,
     textAlign: "center", // Center the text horizontally within its space
   },
   backArrow: {
-    fontSize: 30,
+    fontSize: ICONSIZES.SM,
+    color: COLORS.DARKBG,
     // position: 'absolute',
-    left: 0, // Add margin to the right of the arrow icon
   },
 });
 

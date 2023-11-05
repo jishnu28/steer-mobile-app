@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
 import UploadInfo from "./components/UploadInfo";
@@ -15,6 +22,9 @@ import {
   getDownloadURL,
   uploadBytes,
 } from "firebase/storage";
+import SPACINGS from "../../config/SPACINGS";
+import COLORS from "../../config/COLORS";
+import FONTSIZES from "../../config/FONTSIZES";
 
 type RootStackParamList = {
   Profile: undefined;
@@ -131,7 +141,7 @@ const ProfilePage = ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: 10 }]}>
+    <SafeAreaView style={styles.mainContainer}>
       {/* Profile Info */}
       <View style={[styles.profile, { flex: 2 }]}>
         <UploadPic
@@ -179,11 +189,15 @@ const ProfilePage = ({ navigation }: Props) => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: "#E5E8D9",
+    backgroundColor: COLORS.LIGHTACCENT,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop:
+      Platform.OS === "android"
+        ? (StatusBar.currentHeight ?? 0) + SPACINGS.SM
+        : 0,
   },
 
   profile: {
@@ -194,62 +208,59 @@ const styles = StyleSheet.create({
 
   header: {
     alignItems: "center",
-    paddingVertical: 5,
+    paddingVertical: SPACINGS.MD,
     borderBottomWidth: 0.5,
-    borderColor: "#343135",
+    borderColor: COLORS.DARKBG,
   },
 
   headerText: {
-    // fontFamily: 'Bitter',
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#343135",
+    fontFamily: "Bitter-Bold",
+    fontSize: FONTSIZES.LG,
+    color: COLORS.DARKBG,
   },
 
   posts: {
-    backgroundColor: "#F8FAF0",
+    backgroundColor: COLORS.LIGHTBG,
     width: "100%",
-    borderTopRightRadius: 40,
-    borderTopLeftRadius: 40,
+    borderTopRightRadius: SPACINGS.XL,
+    borderTopLeftRadius: SPACINGS.XL,
     justifyContent: "center",
     alignItems: "center",
   },
 
-  modalPopUp: {
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "90%",
-    height: 160,
-    paddingVertical: 10,
-    borderRadius: 20,
-    backgroundColor: "#E5E8D9",
-  },
+  // modalPopUp: {
+  //   justifyContent: "space-around",
+  //   alignItems: "center",
+  //   width: "90%",
+  //   height: 160,
+  //   paddingVertical: SPACINGS.MD,
+  //   borderRadius: SPACINGS.XL,
+  //   backgroundColor: COLORS.LIGHTACCENT,
+  // },
 
-  modalText: {
-    fontSize: 17,
-  },
+  // modalText: {
+  //   fontSize: FONTSIZES.MD,
+  // },
 
-  infoBox: {
-    width: "80%",
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
+  // infoBox: {
+  //   width: "80%",
+  //   height: 40,
+  //   padding: SPACINGS.MD,
+  // },
 
-  modalButtonSection: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    width: "80%",
-  },
+  // modalButtonSection: {
+  //   flexDirection: "row",
+  //   justifyContent: "flex-end",
+  //   width: "80%",
+  // },
 
-  modalButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    width: 80,
-    marginHorizontal: 5,
-    borderWidth: 1,
-    borderRadius: 40,
-  },
+  // modalButton: {
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   height: 40,
+  //   width: 40,
+  //   marginHorizontal: 5,
+  //   borderWidth: 1,
+  //   borderRadius: 40,
+  // },
 });

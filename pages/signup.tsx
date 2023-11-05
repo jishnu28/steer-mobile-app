@@ -3,18 +3,19 @@ import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
   Image,
   Dimensions,
 } from "react-native";
-import {
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { firebaseAuth, firestore } from "../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
+import COLORS from "../config/COLORS";
+import SPACINGS from "../config/SPACINGS";
+import FONTSIZES from "../config/FONTSIZES";
+import H3 from "../custom_components/typography/H3";
 
 interface SignupProps {
   navigation: NativeStackNavigationProp<any>;
@@ -49,36 +50,25 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
       const user = userCredential.user;
       console.log("Registered with:", user.email);
 
-      await setDoc(doc(firestore, "userChats", user.uid), 
-        {
-          myName: username,
-          chats: []
-        }
-      );
-      await setDoc(doc(firestore, "users", user.uid), 
-        {
-          displayName: username,
-          email: user.email,
-          uid: user.uid,
-          profilePic: "",
-          favouritedPosts: [],
-        }
-      );
-      await setDoc(doc(firestore, "savedPosts", user.uid), 
-        {
-          posts: []
-        }
-    );
-
+      await setDoc(doc(firestore, "userChats", user.uid), {
+        myName: username,
+        chats: [],
+      });
+      await setDoc(doc(firestore, "users", user.uid), {
+        displayName: username,
+        email: user.email,
+        uid: user.uid,
+        profilePic: "",
+        favouritedPosts: [],
+      });
+      await setDoc(doc(firestore, "savedPosts", user.uid), {
+        posts: [],
+      });
     } catch (error: any) {
       const errorMessage = error.message;
       alert(errorMessage);
     }
-
-
   };
-
-
 
   return (
     <KeyboardAvoidingView
@@ -115,18 +105,14 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Sign up</Text>
+        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+          <H3 style={styles.buttonText}>Sign up</H3>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={()=>navigation.goBack()}>
-        <Text style={styles.redirectText}> Have an account? Login here </Text>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <H3 style={styles.redirectText}> Have an account? Login here </H3>
       </TouchableOpacity>
-
     </KeyboardAvoidingView>
   );
 };
@@ -136,7 +122,7 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8FAF0",
+    backgroundColor: COLORS.LIGHTBG,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -145,34 +131,32 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   input: {
-    backgroundColor: "#E5E8D9",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
+    backgroundColor: COLORS.LIGHTACCENT,
+    paddingHorizontal: SPACINGS.LG,
+    paddingVertical: SPACINGS.MD,
+    borderRadius: SPACINGS.LG,
+    marginTop: SPACINGS.SM,
   },
   buttonContainer: {
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: SPACINGS.XL,
   },
   button: {
-    backgroundColor: "#FFAF87",
+    backgroundColor: COLORS.PRIMARY,
     width: "100%",
-    padding: 15,
-    borderRadius: 100,
+    padding: SPACINGS.LG,
+    borderRadius: SPACINGS.LG,
     alignItems: "center",
   },
   buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 18,
+    color: COLORS.WHITE,
   },
   redirectText: {
-    color: "#FFAF87",
-    fontWeight: "700",
-    fontSize: 18,
-    padding: 10, 
+    color: COLORS.PRIMARY,
+    fontFamily: "Bitter-Medium",
+    fontSize: FONTSIZES.MD,
+    marginTop: SPACINGS.SM,
   },
 });

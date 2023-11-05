@@ -1,4 +1,5 @@
 export default {
+    XXS: 24,
     XS: 28,
     SM: 32,
     MD: 36,

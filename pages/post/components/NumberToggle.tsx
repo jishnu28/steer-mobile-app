@@ -22,7 +22,7 @@ const NumberToggle = ({ numItems, setNumItems, style }: NumberToggleProps) => {
         }}
       >
         <Icon
-          color={COLORS.LIGHTBG}
+          color={COLORS.WHITE}
           type="material-community"
           name="minus"
           size={ICONSIZES.XS}
@@ -36,7 +36,7 @@ const NumberToggle = ({ numItems, setNumItems, style }: NumberToggleProps) => {
         }}
       >
         <Icon
-          color={COLORS.LIGHTBG}
+          color={COLORS.WHITE}
           type="material-community"
           name="plus"
           size={ICONSIZES.XS}

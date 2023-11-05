@@ -69,7 +69,9 @@ function Detail({ route, navigation }: DetailProps) {
                 style={styles.background}
               ></Pressable>
               <View style={styles.detailCard}>
-                {/* <View
+                {
+                  // to add the drag bar for the detail card
+                  /* <View
                     style={{
                       alignSelf: "center",
                       backgroundColor: COLORS.DARKBG,
@@ -78,7 +80,8 @@ function Detail({ route, navigation }: DetailProps) {
                       marginVertical: SPACINGS.MD,
                       borderRadius: SPACINGS.MD,
                     }}
-                  ></View> */}
+                  ></View> */
+                }
                 <ScrollView style={{ padding: SPACINGS.SM }}>
                   <DescriptionSection
                     title={data.title}

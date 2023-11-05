@@ -13,6 +13,9 @@ import ImageCarousel from "./ImageCarousel";
 import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 import { RefreshControl } from "react-native-gesture-handler";
+import SPACINGS from "../../../config/SPACINGS";
+import FONTSIZES from "../../../config/FONTSIZES";
+import COLORS from "../../../config/COLORS";
 
 interface ExploreItemCarouselProps {
   activeCategory: number;
@@ -132,29 +135,26 @@ const styles = StyleSheet.create({
     width: cardWidth,
     height: cardHeight,
     overflow: "hidden",
-    borderRadius: 30,
-    marginBottom: 10,
+    borderRadius: SPACINGS.XL,
+    marginVertical: SPACINGS.MD,
   },
 
   titleContainer: {
     flex: 1,
     alignItems: "flex-start",
-    paddingRight: 5,
   },
 
   title: {
-    fontSize: 24,
+    fontSize: FONTSIZES.XL,
     fontFamily: "Bitter-Bold",
-    fontWeight: "800",
-    color: "#FFFFFF",
+    color: COLORS.WHITE,
     flexWrap: "wrap",
   },
 
   price: {
-    fontSize: 24,
+    fontSize: FONTSIZES.XL,
     fontFamily: "Bitter-Bold",
-    fontWeight: "800",
-    color: "#FFFFFF",
+    color: COLORS.WHITE,
   },
 
   descriptionContainer: {
@@ -164,9 +164,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
+    padding: SPACINGS.MD,
     width: "100%",
-    height: 87,
+    height: 88,
   },
 
   descriptionBackground: {
@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 1,
     width: "100%",
-    height: 87,
-    backgroundColor: "#FFAF87",
+    height: 88,
+    backgroundColor: COLORS.PRIMARY,
   },
 
   heartButtonContainer: {

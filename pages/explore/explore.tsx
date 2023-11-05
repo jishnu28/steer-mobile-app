@@ -10,6 +10,8 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
 import ExploreMenu from "./components/ExploreMenu";
+import COLORS from "../../config/COLORS";
+import SPACINGS from "../../config/SPACINGS";
 
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;
@@ -41,8 +43,11 @@ function Explore({ navigation }: ExploreProps) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "#E5E8D9",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: COLORS.LIGHTACCENT,
+    paddingTop:
+      Platform.OS === "android"
+        ? (StatusBar.currentHeight ?? 0) + SPACINGS.SM
+        : 0,
   },
 
   container: {
