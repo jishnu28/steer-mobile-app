@@ -5,4 +5,5 @@ export default {
     MD: 12,
     LG: 16,
     XL: 20,
+    XXL: 24,
 };

@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.LIGHTBG,
     paddingHorizontal: SPACINGS.LG,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: 0,
   },
   usernameContainer: {
     flexDirection: "row",

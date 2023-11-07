@@ -44,10 +44,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: COLORS.LIGHTACCENT,
-    paddingTop:
-      Platform.OS === "android"
-        ? (StatusBar.currentHeight ?? 0) + SPACINGS.SM
-        : 0,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight ?? 0 : 0,
   },
 
   container: {
