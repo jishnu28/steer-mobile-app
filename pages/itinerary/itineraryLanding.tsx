@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     margin: SPACINGS.MD,
   },
   simpleStep: {
-    marginVertical: SPACINGS.XXL,
+    marginVertical: SPACINGS.XL,
   },
   button: {
     backgroundColor: COLORS.PRIMARY,

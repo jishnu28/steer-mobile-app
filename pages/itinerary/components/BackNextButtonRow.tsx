@@ -2,22 +2,52 @@ import React from "react";
 import { Pressable, View, StyleSheet, ViewStyle } from "react-native";
 import { Icon } from "@rneui/themed";
 import H3 from "../../../custom_components/typography/H3";
-import BodyText from "../../../custom_components/typography/BodyText";
 import COLORS from "../../../config/COLORS";
-import ICONSIZES from "../../../config/ICONSIZES";
 import SPACINGS from "../../../config/SPACINGS";
+import ICONSIZES from "../../../config/ICONSIZES";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface BackNextButtonRowProps {
   style?: ViewStyle;
+  backDisabled?: boolean;
+  nextDisabled?: boolean;
+  navigation: NativeStackNavigationProp<any>;
+  nextPage: string;
 }
-const BackNextButtonRow = ({ style }: BackNextButtonRowProps) => {
+const BackNextButtonRow = ({
+  style,
+  backDisabled,
+  nextDisabled,
+  navigation,
+  nextPage,
+}: BackNextButtonRowProps) => {
   return (
     <View style={[styles.container, style]}>
-      <Pressable style={styles.button}>
-        <H3>Back</H3>
+      <Pressable
+        disabled={backDisabled}
+        style={styles.button}
+        onPress={() => navigation.goBack()}
+      >
+        <Icon
+          color={COLORS.WHITE}
+          type="material-community"
+          name="arrow-left"
+          size={ICONSIZES.XS}
+        />
+        <H3 style={[styles.buttonText, { marginLeft: SPACINGS.XS }]}>Back</H3>
       </Pressable>
-      <Pressable style={styles.button}>
-        <H3>Next</H3>
+      <Pressable
+        disabled={nextDisabled}
+        style={styles.button}
+        onPress={() => navigation.navigate(nextPage)}
+      >
+        <H3 style={[styles.buttonText, { marginRight: SPACINGS.XS }]}>Next</H3>
+        <Icon
+          color={COLORS.WHITE}
+          type="material-community"
+          name="arrow-right"
+          size={ICONSIZES.XS}
+        />
       </Pressable>
     </View>
   );
@@ -34,6 +64,7 @@ const styles = StyleSheet.create({
     marginVertical: SPACINGS.MD,
   },
   button: {
+    flexDirection: "row",
     backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACINGS.SM,
     paddingHorizontal: SPACINGS.LG,
@@ -46,5 +77,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowOpacity: 0.2,
+  },
+  buttonText: {
+    color: COLORS.WHITE,
   },
 });

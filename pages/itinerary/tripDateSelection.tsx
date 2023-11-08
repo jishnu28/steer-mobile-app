@@ -26,7 +26,7 @@ interface TripDateSelectionProps {
 }
 
 function TripDateSelection({ navigation }: TripDateSelectionProps) {
-  const [date, setDate] = useState<Date | undefined>();
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [mode, setMode] = useState<any>("date");
   const [show, setShow] = useState(false);
   const [dateString, setDateString] = useState("");
@@ -54,7 +54,7 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
     showMode("date");
   };
 
-  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [endMode, setEndMode] = useState<any>("date");
   const [showEndDate, setShowEndDate] = useState(false);
   const [endDateString, setEndDateString] = useState("");
@@ -87,48 +87,58 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
       <View style={styles.container}>
         <H1>When's the trip?</H1>
         <View style={styles.stepsContainer}>
-          <SimpleStep
-            iconName="calendar-month-outline"
-            heading="Start Date"
-            text="When does the trip start?"
-            style={styles.simpleStep}
-          />
-          <View style={styles.datePicker}>
-            <H3 style={{ width: "60%" }}>Start: {dateString}</H3>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date ?? new Date()}
-                mode={mode}
-                onChange={onChange}
-              />
-            )}
-            <Pressable onPress={showDatepicker} style={styles.button}>
-              <H3>Select a date</H3>
-            </Pressable>
+          <View style={styles.innerContainer}>
+            <SimpleStep
+              iconName="calendar-month-outline"
+              heading="Start Date"
+              text="When does the trip start?"
+              style={styles.simpleStep}
+            />
+            <View style={styles.datePicker}>
+              <H3 style={{ width: "60%" }}>Start: {dateString}</H3>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date ?? new Date()}
+                  mode={mode}
+                  onChange={onChange}
+                />
+              )}
+              <Pressable onPress={showDatepicker} style={styles.button}>
+                <H3>Select a date</H3>
+              </Pressable>
+            </View>
           </View>
-          <SimpleStep
-            iconName="calendar-month-outline"
-            heading="End Date"
-            text="When does the trip end?"
-            style={styles.simpleStep}
-          />
-          <View style={styles.datePicker}>
-            <H3 style={{ width: "60%" }}>End: {endDateString}</H3>
-            {showEndDate && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={endDate ?? new Date()}
-                mode={endMode}
-                onChange={onChangeEnd}
-              />
-            )}
-            <Pressable onPress={showEndDatepicker} style={styles.button}>
-              <H3>Select a date</H3>
-            </Pressable>
+          <View style={styles.innerContainer}>
+            <SimpleStep
+              iconName="calendar-month-outline"
+              heading="End Date"
+              text="When does the trip end?"
+              style={styles.simpleStep}
+            />
+            <View style={styles.datePicker}>
+              <H3 style={{ width: "60%" }}>End: {endDateString}</H3>
+              {showEndDate && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={endDate ?? new Date()}
+                  mode={endMode}
+                  onChange={onChangeEnd}
+                />
+              )}
+              <Pressable onPress={showEndDatepicker} style={styles.button}>
+                <H3>Select a date</H3>
+              </Pressable>
+            </View>
           </View>
         </View>
-        <BackNextButtonRow />
+        <BackNextButtonRow
+          nextDisabled={
+            !(date !== undefined && endDate !== undefined && date < endDate)
+          }
+          navigation={navigation}
+          nextPage="TripPeopleSelection"
+        />
       </View>
     </SafeAreaView>
   );
@@ -151,8 +161,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     margin: SPACINGS.MD,
   },
+  innerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: SPACINGS.XL,
+  },
   simpleStep: {
-    marginVertical: SPACINGS.XXL,
+    marginVertical: SPACINGS.XL,
   },
   datePicker: {
     flexDirection: "row",

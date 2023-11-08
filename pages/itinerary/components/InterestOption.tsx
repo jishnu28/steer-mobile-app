@@ -1,0 +1,65 @@
+import React from "react";
+import { Pressable, View, StyleSheet, ViewStyle } from "react-native";
+import { Icon } from "@rneui/themed";
+import SimpleStep from "./SimpleStep";
+import COLORS from "../../../config/COLORS";
+import ICONSIZES from "../../../config/ICONSIZES";
+import SPACINGS from "../../../config/SPACINGS";
+
+interface InterestOptionProps {
+  style?: ViewStyle;
+  isPressed?: boolean;
+  noIcon?: boolean;
+  iconType?: string;
+  iconName: string;
+  heading: string;
+  onPress: () => void;
+}
+const InterestOption = ({
+  style,
+  isPressed,
+  noIcon,
+  iconType,
+  iconName,
+  heading,
+  onPress,
+}: InterestOptionProps) => {
+  return (
+    <Pressable
+      style={[
+        styles.mainContainer,
+        isPressed
+          ? { borderWidth: 2, borderColor: COLORS.PRIMARY }
+          : { borderWidth: 0, borderColor: COLORS.LIGHTACCENT },
+        style,
+      ]}
+      onPress={() => onPress()}
+    >
+      <SimpleStep
+        style={styles.stepContainer}
+        useH3={true}
+        noIcon={noIcon}
+        iconContainerStyle={{ paddingRight: 0 }}
+        iconType={iconType}
+        iconName={iconName}
+        heading={heading}
+      />
+    </Pressable>
+  );
+};
+
+export default InterestOption;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: COLORS.WHITE,
+    flexDirection: "row",
+    width: "45%",
+    padding: SPACINGS.MD,
+    borderRadius: SPACINGS.XL,
+    marginVertical: SPACINGS.SM,
+  },
+  stepContainer: {
+    width: "100%",
+  },
+});
