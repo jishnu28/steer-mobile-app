@@ -1,9 +1,7 @@
 import React from "react";
-import { Pressable, View, StyleSheet, ViewStyle } from "react-native";
-import { Icon } from "@rneui/themed";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
 import SimpleStep from "./SimpleStep";
 import COLORS from "../../../config/COLORS";
-import ICONSIZES from "../../../config/ICONSIZES";
 import SPACINGS from "../../../config/SPACINGS";
 
 interface InterestOptionProps {

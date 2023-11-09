@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,12 +14,11 @@ import DateTimePicker, {
 import COLORS from "../../config/COLORS";
 import SPACINGS from "../../config/SPACINGS";
 import H1 from "../../custom_components/typography/H1";
-import { Icon } from "@rneui/themed";
-import ICONSIZES from "../../config/ICONSIZES";
 import SimpleStep from "./components/SimpleStep";
 import H3 from "../../custom_components/typography/H3";
-import BodyText from "../../custom_components/typography/BodyText";
 import BackNextButtonRow from "./components/BackNextButtonRow";
+import { TripInputsContext } from "./components/TripInputsContext";
+import { LinearProgress } from "@rneui/themed";
 
 interface TripDateSelectionProps {
   navigation: NativeStackNavigationProp<any>;
@@ -30,6 +29,7 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
   const [mode, setMode] = useState<any>("date");
   const [show, setShow] = useState(false);
   const [dateString, setDateString] = useState("");
+  const { setTripLength } = React.useContext(TripInputsContext);
 
   const onChange = (
     event: DateTimePickerEvent,
@@ -82,8 +82,26 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
     showEndMode("date");
   };
 
+  const handleNextPress = () => {
+    if (date !== undefined && endDate !== undefined && date < endDate) {
+      const diffTime = Math.abs(endDate.getTime() - date.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setTripLength(diffDays);
+      navigation.navigate("TripPeopleSelection", {
+        navigation: navigation,
+      });
+    } else {
+      alert("Please select a valid date range.");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.background}>
+      <LinearProgress
+        color={COLORS.PRIMARY}
+        value={0.25}
+        variant="determinate"
+      />
       <View style={styles.container}>
         <H1>When's the trip?</H1>
         <View style={styles.stepsContainer}>
@@ -133,11 +151,9 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
           </View>
         </View>
         <BackNextButtonRow
-          nextDisabled={
-            !(date !== undefined && endDate !== undefined && date < endDate)
-          }
           navigation={navigation}
           nextPage="TripPeopleSelection"
+          onNextPress={handleNextPress}
         />
       </View>
     </SafeAreaView>

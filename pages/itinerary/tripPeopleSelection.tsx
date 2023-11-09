@@ -5,18 +5,15 @@ import {
   View,
   Platform,
   StatusBar,
-  Pressable,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import COLORS from "../../config/COLORS";
 import SPACINGS from "../../config/SPACINGS";
 import H1 from "../../custom_components/typography/H1";
-import { Icon } from "@rneui/themed";
-import ICONSIZES from "../../config/ICONSIZES";
-import SimpleStep from "./components/SimpleStep";
-import H3 from "../../custom_components/typography/H3";
 import BackNextButtonRow from "./components/BackNextButtonRow";
 import PeopleOption from "./components/PeopleOption";
+import { LinearProgress } from "@rneui/themed";
+import { TripInputsContext } from "./components/TripInputsContext";
 
 interface TripPeopleSelectionProps {
   navigation: NativeStackNavigationProp<any>;
@@ -27,6 +24,7 @@ function TripPeopleSelection({ navigation }: TripPeopleSelectionProps) {
   const [couple, setCouple] = useState<boolean>(false);
   const [family, setFamily] = useState<boolean>(false);
   const [friends, setFriends] = useState<boolean>(false);
+  const { setTripPax } = React.useContext(TripInputsContext);
 
   const handlePress = (option: string) => {
     switch (option) {
@@ -35,24 +33,28 @@ function TripPeopleSelection({ navigation }: TripPeopleSelectionProps) {
         setCouple(false);
         setFamily(false);
         setFriends(false);
+        setTripPax("solo");
         break;
       case "couple":
         setSolo(false);
         setCouple(true);
         setFamily(false);
         setFriends(false);
+        setTripPax("couple");
         break;
       case "family":
         setSolo(false);
         setCouple(false);
         setFamily(true);
         setFriends(false);
+        setTripPax("family");
         break;
       case "friends":
         setSolo(false);
         setCouple(false);
         setFamily(false);
         setFriends(true);
+        setTripPax("friends");
         break;
       default:
         break;
@@ -61,6 +63,11 @@ function TripPeopleSelection({ navigation }: TripPeopleSelectionProps) {
 
   return (
     <SafeAreaView style={styles.background}>
+      <LinearProgress
+        color={COLORS.PRIMARY}
+        value={0.5}
+        variant="determinate"
+      />
       <View style={styles.container}>
         <H1>Who's coming?</H1>
         <View style={styles.optionsContainer}>

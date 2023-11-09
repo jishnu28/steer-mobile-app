@@ -13,6 +13,7 @@ interface BackNextButtonRowProps {
   nextDisabled?: boolean;
   navigation: NativeStackNavigationProp<any>;
   nextPage: string;
+  onNextPress?: () => void;
 }
 const BackNextButtonRow = ({
   style,
@@ -20,6 +21,7 @@ const BackNextButtonRow = ({
   nextDisabled,
   navigation,
   nextPage,
+  onNextPress,
 }: BackNextButtonRowProps) => {
   return (
     <View style={[styles.container, style]}>
@@ -34,14 +36,16 @@ const BackNextButtonRow = ({
           name="arrow-left"
           size={ICONSIZES.XS}
         />
-        <H3 style={[styles.buttonText, { marginLeft: SPACINGS.XS }]}>Back</H3>
+        <H3 style={styles.leftButtonText}>Back</H3>
       </Pressable>
       <Pressable
         disabled={nextDisabled}
         style={styles.button}
-        onPress={() => navigation.navigate(nextPage)}
+        onPress={
+          onNextPress ? onNextPress : () => navigation.navigate(nextPage)
+        }
       >
-        <H3 style={[styles.buttonText, { marginRight: SPACINGS.XS }]}>Next</H3>
+        <H3 style={styles.rightButtonText}>Next</H3>
         <Icon
           color={COLORS.WHITE}
           type="material-community"
@@ -78,7 +82,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
   },
-  buttonText: {
+  leftButtonText: {
     color: COLORS.WHITE,
+    marginLeft: SPACINGS.XS,
+  },
+  rightButtonText: {
+    color: COLORS.WHITE,
+    marginRight: SPACINGS.XS,
   },
 });

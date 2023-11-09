@@ -13,6 +13,8 @@ import H1 from "../../custom_components/typography/H1";
 import H3 from "../../custom_components/typography/H3";
 import BackNextButtonRow from "./components/BackNextButtonRow";
 import InterestOption from "./components/InterestOption";
+import { LinearProgress } from "@rneui/themed";
+import { TripInputsContext } from "./components/TripInputsContext";
 
 interface TripInterestSelectionProps {
   navigation: NativeStackNavigationProp<any>;
@@ -27,9 +29,29 @@ function TripInterestSelection({ navigation }: TripInterestSelectionProps) {
   const [hiking, setHiking] = useState<boolean>(false);
   const [relax, setRelax] = useState<boolean>(false);
   const [culture, setCulture] = useState<boolean>(false);
+  const { setTripInterests } = React.useContext(TripInputsContext);
+
+  const handleNextPress = () => {
+    const interests = [];
+    if (outdoors) interests.push("outdoors");
+    if (wildlife) interests.push("wildlife");
+    if (plants) interests.push("plants");
+    if (farms) interests.push("farms");
+    if (food) interests.push("food");
+    if (hiking) interests.push("hiking");
+    if (relax) interests.push("relax");
+    if (culture) interests.push("culture");
+    setTripInterests(interests);
+    navigation.navigate("TripPreferences");
+  };
 
   return (
     <SafeAreaView style={styles.background}>
+      <LinearProgress
+        color={COLORS.PRIMARY}
+        value={0.75}
+        variant="determinate"
+      />
       <View style={styles.container}>
         <H1>What are your interests?</H1>
         <H3>Choose one or more</H3>
@@ -99,6 +121,7 @@ function TripInterestSelection({ navigation }: TripInterestSelectionProps) {
           } // Disable when no option is selected
           navigation={navigation}
           nextPage="TripPreferences"
+          onNextPress={handleNextPress}
         />
       </View>
     </SafeAreaView>

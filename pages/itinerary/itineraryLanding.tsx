@@ -60,7 +60,6 @@ function ItineraryLanding({ navigation }: ItineraryLandingProps) {
               type="material-community"
               name="arrow-right"
               size={ICONSIZES.MD}
-              onPress={() => navigation.navigate("ItineraryDetails")}
             />
           </Pressable>
         </View>

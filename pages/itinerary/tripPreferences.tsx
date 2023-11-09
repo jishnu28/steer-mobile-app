@@ -15,6 +15,8 @@ import H3 from "../../custom_components/typography/H3";
 import BackNextButtonRow from "./components/BackNextButtonRow";
 import BodyText from "../../custom_components/typography/BodyText";
 import PairOptions from "./components/PairOptions";
+import { LinearProgress } from "@rneui/themed";
+import { TripInputsContext } from "./components/TripInputsContext";
 
 interface TripPreferencesProps {
   navigation: NativeStackNavigationProp<any>;
@@ -30,6 +32,8 @@ function TripPreferences({ navigation }: TripPreferencesProps) {
   const [pacePreference, setPacePreference] = useState<string | undefined>(
     undefined
   );
+  const { setTripBudget, setTripPreferences } =
+    React.useContext(TripInputsContext);
 
   const handlePress = (option: string) => {
     switch (option) {
@@ -53,8 +57,21 @@ function TripPreferences({ navigation }: TripPreferencesProps) {
     }
   };
 
+  const handleNextPress = () => {
+    const budget = lowBudget ? 100 : averageBudget ? 250 : 500;
+    const preferences = [];
+    if (timingPreference) preferences.push(timingPreference);
+    if (pacePreference) preferences.push(pacePreference);
+    setTripBudget(budget);
+    setTripPreferences(preferences);
+    navigation.navigate("ItineraryResults", {
+      navigation: navigation,
+    });
+  };
+
   return (
     <SafeAreaView style={styles.background}>
+      <LinearProgress color={COLORS.PRIMARY} value={1} variant="determinate" />
       <View style={styles.container}>
         <H1>Just a few more details!</H1>
         <View style={styles.questionsContainer}>
@@ -115,7 +132,8 @@ function TripPreferences({ navigation }: TripPreferencesProps) {
             pacePreference == undefined
           } // Disable if no option is selected
           navigation={navigation}
-          nextPage="ItineraryLoading"
+          nextPage="ItineraryResults"
+          onNextPress={handleNextPress}
         />
       </View>
     </SafeAreaView>
