@@ -1,9 +1,10 @@
+import { DocumentData } from "firebase/firestore";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface DetailInfoCardProps {
-  item: any;
+  item: DocumentData;
 }
 
 function DetailInfoCard({ item }: DetailInfoCardProps) {

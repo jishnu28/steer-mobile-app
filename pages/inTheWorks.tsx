@@ -15,10 +15,13 @@ import SPACINGS from "../config/SPACINGS";
 const InTheWorks = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <H1>Oops! We're still working on this:</H1>
-        <Image source={require("../assets/animations/coding-cat.gif")} />
-        <BodyText style={{ padding: SPACINGS.MD }}>
+      <View style={styles.innerContainer}>
+        <H1 style={styles.text}>Oops! We're still working on this:</H1>
+        <Image
+          source={require("../assets/animations/coding-cat.gif")}
+          style={styles.image}
+        />
+        <BodyText style={styles.text}>
           In the meantime, feel free to submit your feedback to us at the
           following link:{" "}
           <EmailLink email="steerapprc4@gmail.com">
@@ -36,7 +39,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E8D9",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: 0,
+  },
+  innerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "85%",
+  },
+  image: {
+    margin: SPACINGS.MD,
+    borderRadius: SPACINGS.XL,
+  },
+  text: {
+    textAlign: "center",
   },
 });
 

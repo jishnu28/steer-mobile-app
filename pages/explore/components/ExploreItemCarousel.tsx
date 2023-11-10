@@ -18,8 +18,9 @@ import FONTSIZES from "../../../config/FONTSIZES";
 import COLORS from "../../../config/COLORS";
 
 interface ExploreItemCarouselProps {
-  activeCategory: number;
-  collectionName: string;
+  activeCategory?: number;
+  collectionName?: string;
+  items?: DocumentData[];
   navigation: NativeStackNavigationProp<any>;
 }
 
@@ -32,22 +33,30 @@ const cardHeight: number = height * 0.6;
 function ExploreItemCarousel({
   navigation,
   collectionName,
+  items,
 }: ExploreItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
   const [refreshing, setRefreshing] = useState(true);
 
   async function fetchData() {
-    const currItems: DocumentData[] = [];
-    const querySnapshot = await getDocs(collection(firestore, collectionName));
-    querySnapshot.docs.forEach((doc) => {
-      currItems.push(doc.data());
-    });
-    setDbItems(currItems);
-    setRefreshing(false);
+    if (collectionName) {
+      const currItems: DocumentData[] = [];
+      const querySnapshot = await getDocs(
+        collection(firestore, collectionName)
+      );
+      querySnapshot.docs.forEach((doc) => {
+        currItems.push(doc.data());
+      });
+      setDbItems(currItems);
+      setRefreshing(false);
+    }
   }
 
   useEffect(() => {
-    fetchData();
+    if (collectionName) {
+      fetchData();
+    }
+    setDbItems(items ?? []);
   }, []);
 
   return (

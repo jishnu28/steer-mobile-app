@@ -152,10 +152,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: COLORS.LIGHTACCENT,
-    paddingTop:
-      Platform.OS === "android"
-        ? (StatusBar.currentHeight ?? 0) + SPACINGS.SM
-        : 0,
+    paddingTop: 0,
   },
   chatContainer: {
     flexDirection: "row", // Arrange children horizontally
@@ -170,6 +167,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginRight: SPACING.LG,
+    borderWidth: 1,
+    borderColor: COLORS.DARKACCENT,
   },
   noChatsText: {
     textAlign: "center",

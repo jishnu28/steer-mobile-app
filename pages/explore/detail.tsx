@@ -125,6 +125,7 @@ export default Detail;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: COLORS.LIGHTACCENT,
   },
   detailCard: {
     borderTopLeftRadius: SPACINGS.LG,

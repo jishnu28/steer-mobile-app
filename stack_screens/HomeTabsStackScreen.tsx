@@ -2,13 +2,14 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { Platform, StyleSheet } from "react-native";
-import ItineraryLanding from "../pages/itinerary/itineraryLanding";
 import InTheWorks from "../pages/inTheWorks";
+import ItineraryStack from "./ItineraryStackScreen";
 import ExploreStack from "./ExploreStackScreen";
 import ChatStack from "./ChatStackScreen";
 import ProfileStack from "./ProfileStackScreen";
 import PostStack from "./PostStackScreen";
 import COLORS from "../config/COLORS";
+import SPACINGS from "../config/SPACINGS";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +29,7 @@ export default function HomeTabs() {
           paddingBottom: -8,
         },
         tabBarIconStyle: {
-          paddingBottom: Platform.OS === "ios" ? 12 : 0,
+          paddingBottom: Platform.OS === "ios" ? SPACINGS.MD : 0,
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -54,7 +55,7 @@ export default function HomeTabs() {
       />
       <Tab.Screen
         name="Itinerary"
-        component={InTheWorks}
+        component={ItineraryStack}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <MaterialCommunityIcons
