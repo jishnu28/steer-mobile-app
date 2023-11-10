@@ -113,7 +113,7 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
               style={styles.simpleStep}
             />
             <View style={styles.datePicker}>
-              <H3 style={{ width: "60%" }}>Start: {dateString}</H3>
+              {date && <H3 style={{ width: "60%" }}>Start: {dateString}</H3>}
               {show && (
                 <DateTimePicker
                   testID="dateTimePicker"
@@ -135,7 +135,9 @@ function TripDateSelection({ navigation }: TripDateSelectionProps) {
               style={styles.simpleStep}
             />
             <View style={styles.datePicker}>
-              <H3 style={{ width: "60%" }}>End: {endDateString}</H3>
+              {endDate && (
+                <H3 style={{ width: "60%" }}>End: {endDateString}</H3>
+              )}
               {showEndDate && (
                 <DateTimePicker
                   testID="dateTimePicker"

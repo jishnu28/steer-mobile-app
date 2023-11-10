@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,6 +16,13 @@ import { TripInputsContext } from "./components/TripInputsContext";
 import BodyText from "../../custom_components/typography/BodyText";
 import { Tab, TabView } from "@rneui/themed";
 import H3 from "../../custom_components/typography/H3";
+import { ScrollView } from "react-native-gesture-handler";
+import {
+  getAccommodationOption,
+  getExperiencesOptions,
+} from "./components/itineraryGenerationHelper";
+import { DocumentData } from "firebase/firestore";
+import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
 
 interface ItineraryResultsProps {
   navigation: NativeStackNavigationProp<any>;
@@ -26,15 +33,48 @@ const width = Dimensions.get("window").width;
 function ItineraryResults({ navigation }: ItineraryResultsProps) {
   const { tripLength, tripPax, tripBudget, tripInterests, tripPreferences } =
     React.useContext(TripInputsContext);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [index, setIndex] = React.useState(0);
   const [indicatorX, setIndicatorX] = useState(0); // for fixing translateX bug with tab component
   const tabWidth = width / 3;
+  const [accommodation, setAccommodation] = useState<DocumentData | undefined>(
+    undefined
+  );
+  const [experiences, setExperiences] = useState<DocumentData[] | undefined>(
+    undefined
+  );
 
+  async function fetchAccommodation() {
+    const newAccommodation = await getAccommodationOption(
+      tripBudget,
+      tripInterests
+    );
+    setAccommodation(newAccommodation);
+  }
+  async function fetchExperiences() {
+    const newExperiences = await getExperiencesOptions(
+      tripBudget,
+      tripInterests
+    );
+    setExperiences(newExperiences);
+    setLoading(false);
+  }
+
+  // Database tasks:
   // TODO: fetch filtered options from accommodation database
+  useEffect(() => {
+    fetchAccommodation();
+  }, []);
   // TODO: fetch filtered options from activity database
+  useEffect(() => {
+    fetchExperiences();
+  }, []);
+
+  // Logic tasks:
   // TODO: get timetable start and end timings
   // TODO: get no. of activities per day
+
+  // AI tasks:
   // TODO: get duration and time of day for each activity from AI (morning, afternoon, evening)
   // TODO: get AI generated itinerary summary
 
@@ -45,9 +85,15 @@ function ItineraryResults({ navigation }: ItineraryResultsProps) {
           <H1 style={{ textAlign: "center" }}>
             Hang tight while we plan your trip!
           </H1>
-          <BodyText>This may take up to a few minutes...</BodyText>
-          <View style={styles.stepsContainer}>
-            <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <BodyText
+              style={{ textAlign: "center", marginBottom: SPACINGS.LG }}
+            >
+              We'll be done in just a moment...
+            </BodyText>
+            <View style={styles.stepsContainer}>
+              <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+            </View>
           </View>
         </View>
       )}
@@ -72,32 +118,85 @@ function ItineraryResults({ navigation }: ItineraryResultsProps) {
           >
             <Tab.Item
               title="Overview"
-              titleStyle={styles.tabTitle}
-              containerStyle={[styles.tabContainer]}
+              titleStyle={(active) =>
+                active ? styles.activeTabTitle : styles.inactiveTabTitle
+              }
+              containerStyle={(active) =>
+                active ? styles.activeTabContainer : styles.inactiveTabContainer
+              }
+            />
+            <Tab.Item
+              title="Accomm..."
+              titleStyle={(active) =>
+                active ? styles.activeTabTitle : styles.inactiveTabTitle
+              }
+              containerStyle={(active) =>
+                active ? styles.activeTabContainer : styles.inactiveTabContainer
+              }
             />
             <Tab.Item
               title="Day 1"
-              titleStyle={styles.tabTitle}
-              containerStyle={styles.tabContainer}
-            />
-            <Tab.Item
-              title="Day 2"
-              titleStyle={styles.tabTitle}
-              containerStyle={styles.tabContainer}
+              titleStyle={(active) =>
+                active ? styles.activeTabTitle : styles.inactiveTabTitle
+              }
+              containerStyle={(active) =>
+                active ? styles.activeTabContainer : styles.inactiveTabContainer
+              }
             />
           </Tab>
           <TabView value={index} onChange={setIndex} animationType="spring">
             <TabView.Item style={styles.tabView}>
-              <H3>Overview</H3>
+              <ScrollView>
+                <H3 style={styles.tabViewHeading}>Overview</H3>
+                <BodyText>
+                  This is placeholder text for what will ultimately be an AI
+                  generated summary of the overall itinerary, covering the
+                  accommodation as well as giving a glimpse into some of the
+                  activities that are planned for each day.
+                </BodyText>
+              </ScrollView>
             </TabView.Item>
             <TabView.Item style={styles.tabView}>
-              <H3>Day 1</H3>
+              <ScrollView>
+                <H3 style={styles.tabViewHeading}>Accommodation</H3>
+                {accommodation && (
+                  <View>
+                    <BodyText style={{ marginBottom: SPACINGS.SM }}>
+                      We think the "{accommodation.title}" might be a top
+                      choice, based on your preferences.
+                    </BodyText>
+                    <BodyText>
+                      Tap on their listing below to find out more!
+                    </BodyText>
+                    <View style={{ alignItems: "center" }}>
+                      <ExploreItemCarousel
+                        items={[accommodation]}
+                        navigation={navigation}
+                      />
+                    </View>
+                  </View>
+                )}
+              </ScrollView>
             </TabView.Item>
             <TabView.Item style={styles.tabView}>
-              <H3>Day 2</H3>
+              <ScrollView>
+                <H3 style={styles.tabViewHeading}>Day 1</H3>
+                <BodyText style={{ marginBottom: SPACINGS.SM }}>
+                  This day's itinerary is tailored to your interests in xx and
+                  xx
+                </BodyText>
+                <BodyText>
+                  Here are some suggested activities for the day:
+                </BodyText>
+                <View style={{ alignItems: "center" }}>
+                  <ExploreItemCarousel
+                    items={experiences ?? []}
+                    navigation={navigation}
+                  />
+                </View>
+              </ScrollView>
             </TabView.Item>
           </TabView>
-          <BodyText>hello</BodyText>
         </View>
       )}
     </SafeAreaView>
@@ -138,12 +237,28 @@ const styles = StyleSheet.create({
     color: COLORS.WHITE,
     marginRight: SPACINGS.SM,
   },
-  tabTitle: {
+  activeTabTitle: {
+    color: COLORS.WHITE,
+    paddingVertical: SPACINGS.XS,
+    paddingHorizontal: SPACINGS.XXS,
+    fontFamily: "Bitter-Bold",
+  },
+  inactiveTabTitle: {
     color: COLORS.PRIMARY,
     paddingVertical: SPACINGS.XS,
     paddingHorizontal: SPACINGS.XXS,
+    fontFamily: "Bitter-Medium",
   },
-  tabContainer: {
+  activeTabContainer: {
+    backgroundColor: COLORS.PRIMARY,
+    borderWidth: 1,
+    borderColor: COLORS.PRIMARY,
+    marginHorizontal: SPACINGS.SM,
+    borderRadius: SPACINGS.XL,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  inactiveTabContainer: {
     backgroundColor: COLORS.LIGHTBG,
     borderWidth: 1,
     borderColor: COLORS.PRIMARY,
@@ -153,10 +268,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   tabView: {
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: COLORS.LIGHTBG,
+    borderRadius: SPACINGS.XL,
     flex: 1,
     width: "100%",
     margin: SPACINGS.MD,
+    padding: SPACINGS.MD,
+  },
+  tabViewHeading: {
+    marginBottom: SPACINGS.SM,
   },
 });
 
