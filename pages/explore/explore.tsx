@@ -11,7 +11,6 @@ import ExploreItemCarousel from "./components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
 import ExploreMenu from "./components/ExploreMenu";
 import COLORS from "../../config/COLORS";
-import SPACINGS from "../../config/SPACINGS";
 
 interface ExploreProps {
   navigation: NativeStackNavigationProp<any>;
@@ -19,15 +18,12 @@ interface ExploreProps {
 
 function Explore({ navigation }: ExploreProps) {
   const [activeCategory, setActiveCategory] = useState(0);
-  const updateActiveCategory = (index: number) => {
-    setActiveCategory(index);
-  };
 
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
         <ExploreMenu
-          updateActiveCategory={updateActiveCategory}
+          updateActiveCategory={setActiveCategory}
           activeCategory={activeCategory}
         />
         <ExploreItemCarousel

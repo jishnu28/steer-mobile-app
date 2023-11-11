@@ -9,7 +9,7 @@ import FONTSIZES from "../../../config/FONTSIZES";
 import ICONSIZES from "../../../config/ICONSIZES";
 
 interface ExploreMenuProps {
-  updateActiveCategory: any;
+  updateActiveCategory: (index: number) => void;
   activeCategory: number;
 }
 
