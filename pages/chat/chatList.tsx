@@ -21,6 +21,7 @@ import COLORS from "../../config/COLORS";
 import BodyText from "../../custom_components/typography/BodyText";
 import SPACINGS from "../../config/SPACINGS";
 import H1 from "../../custom_components/typography/H1";
+import { defaultProfilePicURL } from "../../config/CONSTANTS";
 
 type RootStackParamList = {
   ChatList: undefined;
@@ -85,8 +86,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
     return () => unsubscribe();
   }, []);
 
-  const imageUrl =
-    "https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png";
+  const imageUrl = defaultProfilePicURL;
   //TODO: replace with code to retrieve profile pic from db
 
   const [recipientDisplayNames, setRecipientDisplayNames] = useState<

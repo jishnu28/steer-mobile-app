@@ -71,7 +71,7 @@ function ExploreItemCarousel({
       {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
-            <HeartButton itemID={item.firestoreID} />
+            <HeartButton item={item} />
           </View>
 
           <View style={styles.card}>

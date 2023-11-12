@@ -1,11 +1,7 @@
 import React from "react";
-import {
-    StyleSheet, 
-    Image, 
-    View, 
-    TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { defaultProfilePicURL } from "../../../config/CONSTANTS";
 
 interface UploadPicProps {
   url: string;
@@ -23,10 +19,9 @@ function UploadPic({ url, addImage }: UploadPicProps) {
       }}
     >
       {url == "" && (
-        <MaterialCommunityIcons
-          name="account-circle"
-          size={146}
-          color="#B9B5BA"
+        <Image
+          source={{ uri: defaultProfilePicURL }}
+          style={styles.profilePic}
         />
       )}
       {url != "" && <Image source={{ uri: url }} style={styles.profilePic} />}

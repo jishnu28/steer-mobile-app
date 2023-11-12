@@ -48,6 +48,7 @@ const ProfilePage = ({ navigation }: Props) => {
   const [userSavedPosts, setUserSavedPosts] = React.useState<DocumentData[]>(
     []
   );
+  const [isLoading, setIsLoading] = React.useState(true);
   //Used to set user info
   const [username, setUsername] = React.useState("");
   const [usernameModal, setUsernameModal] = React.useState(false);
@@ -77,6 +78,7 @@ const ProfilePage = ({ navigation }: Props) => {
     } catch (error) {
       console.error("Error retrieving profile data:", error);
     }
+    setIsLoading(false);
   };
 
   React.useEffect(() => {
@@ -188,7 +190,9 @@ const ProfilePage = ({ navigation }: Props) => {
           </Text>
         </View>
 
-        <ExploreItemCarousel navigation={navigation} items={userSavedPosts} />
+        {!isLoading && (
+          <ExploreItemCarousel navigation={navigation} items={userSavedPosts} />
+        )}
       </View>
     </SafeAreaView>
   );
