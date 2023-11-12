@@ -70,6 +70,7 @@ function ImageCarousel({
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={updatePaging}
+        scrollEventThrottle={500}
       >
         {imagesToShow.map((item: any, index: number) => (
           <Pressable key={`${index}-${item}`} onPress={handlePress}>

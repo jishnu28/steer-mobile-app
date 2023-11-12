@@ -61,6 +61,7 @@ function SavedImageCarousel({
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={updatePaging}
+        scrollEventThrottle={500}
       >
         {imagesToShow.map((item: any, index: number) => (
           <Pressable onPress={handlePress}>

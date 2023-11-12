@@ -56,6 +56,7 @@ function ExploreItemCarousel({
     if (collectionName) {
       fetchData();
     }
+    setRefreshing(false);
     setDbItems(items ?? []);
   }, []);
 
@@ -70,7 +71,7 @@ function ExploreItemCarousel({
       {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
-            <HeartButton item={item} />
+            <HeartButton itemID={item.firestoreID} />
           </View>
 
           <View style={styles.card}>

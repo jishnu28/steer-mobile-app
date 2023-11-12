@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, Modal, View, StyleSheet } from 'react-native';
-import CalendarPicker from 'react-native-calendar-picker';
-import moment from 'moment';
-import COLORS from '../../../config/COLORS';
+import React, { useState } from "react";
+import { Text, TouchableOpacity, Modal, View, StyleSheet } from "react-native";
+import CalendarPicker from "react-native-calendar-picker";
+import moment from "moment";
+import COLORS from "../../../config/COLORS";
 
 const DateSelection: React.FC = () => {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -16,7 +16,7 @@ const DateSelection: React.FC = () => {
     } else {
       setSelectedEndDate(date);
     }
-  }
+  };
 
   const handleCheckInPress = () => {
     setShowCalendar(true);
@@ -29,7 +29,7 @@ const DateSelection: React.FC = () => {
   };
 
   const formatDate = (date: Date | null) => {
-    return date ? moment(date).format('DD MMM YYYY') : 'Select Dates';
+    return date ? moment(date).format("DD MMM YYYY") : "Select Dates";
   };
 
   var areDatesSelected = selectedStartDate !== null && selectedEndDate !== null;
@@ -49,12 +49,17 @@ const DateSelection: React.FC = () => {
             allowRangeSelection={true}
             minDate={new Date()}
             textStyle={{
-              fontFamily: 'Bitter-Regular',
+              fontFamily: "Bitter-Regular",
             }}
             selectedDayColor="#FFC9AD"
           />
-          <TouchableOpacity onPress={handleCalendarClose} disabled={!areDatesSelected}>
-            <View style={areDatesSelected ? styles.button : styles.disableButton}>
+          <TouchableOpacity
+            onPress={handleCalendarClose}
+            disabled={!areDatesSelected}
+          >
+            <View
+              style={areDatesSelected ? styles.button : styles.disableButton}
+            >
               <Text style={styles.buttonText}>Select dates</Text>
             </View>
           </TouchableOpacity>
@@ -66,23 +71,23 @@ const DateSelection: React.FC = () => {
 
 const styles = StyleSheet.create({
   calendarModal: {
-    backgroundColor: COLORS.BEIGE,
+    backgroundColor: COLORS.BLACK,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   disableButton: {
-    backgroundColor: 'lightgray',
+    backgroundColor: "lightgray",
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     margin: 30,
-    borderRadius: 30
+    borderRadius: 30,
   },
   button: {
-    backgroundColor: '#FFAF87',
+    backgroundColor: "#FFAF87",
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     margin: 30,
-    borderRadius: 30
+    borderRadius: 30,
   },
   buttonText: {
     color: "black",
@@ -100,11 +105,11 @@ const styles = StyleSheet.create({
   inputText: {
     color: "#FF7733",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontFamily: "Bitter-Regular",
     paddingLeft: 10,
-    padding: 5
-  }
+    padding: 5,
+  },
 });
 
 export default DateSelection;

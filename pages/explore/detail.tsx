@@ -9,7 +9,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackButton from "../../custom_components/BackButton";
-import ReviewSection from "../../custom_components/ReviewSection";
+import ReviewSection from "./components/ReviewSection";
 import HostSection from "./components/HostSection";
 import AmenitiesSection from "./components/AmenitiesSection";
 import TagsSection from "./components/TagsSection";
@@ -99,8 +99,8 @@ function Detail({ route, navigation }: DetailProps) {
                     numBedrooms={data.numBedrooms}
                   />
                   <TagsSection accommodationTags={data.accommodationTags} />
-                  <HostSection />
-                  <ReviewSection />
+                  <HostSection hostID={data.owner} />
+                  <ReviewSection parentDocID={data.firestoreID} />
                 </ScrollView>
               </View>
             </View>

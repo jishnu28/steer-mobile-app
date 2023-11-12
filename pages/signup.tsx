@@ -16,6 +16,7 @@ import COLORS from "../config/COLORS";
 import SPACINGS from "../config/SPACINGS";
 import FONTSIZES from "../config/FONTSIZES";
 import H3 from "../custom_components/typography/H3";
+import { defaultProfilePicURL } from "../config/CONSTANTS";
 
 interface SignupProps {
   navigation: NativeStackNavigationProp<any>;
@@ -58,7 +59,7 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
         displayName: username,
         email: user.email,
         uid: user.uid,
-        profilePic: "",
+        profilePic: defaultProfilePicURL,
         favouritedPosts: [],
       });
       await setDoc(doc(firestore, "savedPosts", user.uid), {

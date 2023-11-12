@@ -1,21 +1,13 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
 import UploadInfo from "./components/UploadInfo";
-import SavedItemCarousel from "./components/SavedItemCarousel";
 import PopupModal from "./components/PopupModal";
 import * as ImagePicker from "expo-image-picker";
 import { firebaseAuth, firestore, firebaseStorage } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { DocumentData, doc, getDoc, updateDoc } from "firebase/firestore";
 import "firebase/storage";
 import {
   ref as storageRef,
@@ -25,6 +17,7 @@ import {
 import SPACINGS from "../../config/SPACINGS";
 import COLORS from "../../config/COLORS";
 import FONTSIZES from "../../config/FONTSIZES";
+import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
 
 type RootStackParamList = {
   Profile: undefined;
@@ -52,6 +45,9 @@ const ProfilePage = ({ navigation }: Props) => {
   //Used for user info retrieval
   const [user, loading, error] = useAuthState(firebaseAuth);
   const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
+  const [userSavedPosts, setUserSavedPosts] = React.useState<DocumentData[]>(
+    []
+  );
   //Used to set user info
   const [username, setUsername] = React.useState("");
   const [usernameModal, setUsernameModal] = React.useState(false);
@@ -61,8 +57,23 @@ const ProfilePage = ({ navigation }: Props) => {
     try {
       const profileRef = doc(firestore, "users", user?.uid as any);
       const userProfile = await getDoc(profileRef);
-      console.log(userProfile.data());
-      setProfileInfo(userProfile.data());
+      const currUserDoc = userProfile.data();
+      setProfileInfo(currUserDoc);
+
+      // get posts saved by user
+      const userSavedPostIDs = currUserDoc?.favouritedPosts ?? [];
+      if (userSavedPostIDs.length > 0) {
+        const userSavedPostDocs: DocumentData[] = [];
+        for (let i = 0; i < userSavedPostIDs.length; i++) {
+          const postRef = doc(firestore, "accommodations", userSavedPostIDs[i]);
+          const postDoc = await getDoc(postRef);
+          const postDocData = postDoc.data();
+          if (postDocData) {
+            userSavedPostDocs.push(postDocData);
+          }
+        }
+        setUserSavedPosts(userSavedPostDocs);
+      }
     } catch (error) {
       console.error("Error retrieving profile data:", error);
     }
@@ -177,10 +188,7 @@ const ProfilePage = ({ navigation }: Props) => {
           </Text>
         </View>
 
-        <SavedItemCarousel
-          // collectionName= "savedPosts"
-          collectionName="accommodations"
-        />
+        <ExploreItemCarousel navigation={navigation} items={userSavedPosts} />
       </View>
     </SafeAreaView>
   );

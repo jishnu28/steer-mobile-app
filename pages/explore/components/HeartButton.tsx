@@ -9,15 +9,16 @@ import ICONSIZES from "../../../config/ICONSIZES";
 import COLORS from "../../../config/COLORS";
 import SPACINGS from "../../../config/SPACINGS";
 
-function HeartButton(item: any) {
+function HeartButton(itemID: any) {
   const [isLiked, setIsLiked] = React.useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth);
 
   async function setSavedPost() {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
+      console.log("itemID to be added:", itemID);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayUnion(item.item.firestoreID),
+        favouritedPosts: arrayUnion(itemID),
       });
     } catch (error) {
       console.error("Error writing document to savedPosts", error);
@@ -28,7 +29,7 @@ function HeartButton(item: any) {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayRemove(item.item.firestoreID),
+        favouritedPosts: arrayRemove(itemID),
       });
     } catch (error) {
       console.error("Error writing document to savedPosts", error);
