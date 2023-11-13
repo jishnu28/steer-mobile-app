@@ -11,12 +11,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { defaultProfilePicURL } from "../../../config/CONSTANTS";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import ChatButton from "../../chat/components/ChatButton";
 
 interface HostSectionProps {
+  navigation: NativeStackNavigationProp<any>;
   hostID: string;
 }
 
-const HostSection: React.FC<HostSectionProps> = ({ hostID }) => {
+const HostSection: React.FC<HostSectionProps> = ({ navigation, hostID }) => {
   //Used for user info retrieval
   const [user, loading, error] = useAuthState(firebaseAuth);
   //Used to set user info
@@ -71,6 +74,7 @@ const HostSection: React.FC<HostSectionProps> = ({ hostID }) => {
               size={ICONSIZES.MD}
             />
           </View>
+          <ChatButton navigation={navigation} hostID={hostID} />
         </View>
       </View>
     </View>
@@ -109,6 +113,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     marginTop: SPACINGS.XS,
   },

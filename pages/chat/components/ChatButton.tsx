@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import { ChatContext } from "../ChatContext";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -8,6 +8,8 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import SPACINGS from "../../../config/SPACINGS";
 import COLORS from "../../../config/COLORS";
 import ICONSIZES from "../../../config/ICONSIZES";
+import BodyText from "../../../custom_components/typography/BodyText";
+import FONTSIZES from "../../../config/FONTSIZES";
 
 type RootStackParamList = {
   ChatButton: undefined;
@@ -149,32 +151,33 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
   };
 
   return (
-    <FAB
-      style={styles.fab}
-      color={COLORS.PRIMARY}
-      placement="right"
-      size="large"
-      title="Contact"
-      onPress={handleSelectLaunchChat}
-      icon={
-        <Icon
-          type="material-community"
-          name="chat-outline"
-          color={COLORS.WHITE}
-          size={ICONSIZES.XS}
-        />
-      }
-    />
+    <Pressable style={styles.fab} onPress={handleSelectLaunchChat}>
+      <Icon
+        type="material-community"
+        name="chat-outline"
+        color={COLORS.WHITE}
+        size={ICONSIZES.XS}
+      />
+      <BodyText style={styles.buttonText}>Chat</BodyText>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   fab: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: SPACINGS.XS },
-    margin: 16,
-    right: 0,
-    bottom: 0,
+    backgroundColor: COLORS.PRIMARY,
+    flexDirection: "row",
+    borderRadius: SPACINGS.XL,
+    padding: SPACINGS.SM,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50%",
+    marginVertical: SPACINGS.SM,
+  },
+  buttonText: {
+    color: COLORS.WHITE,
+    marginLeft: SPACINGS.SM,
+    fontSize: FONTSIZES.MD,
   },
 });
 

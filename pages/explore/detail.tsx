@@ -24,6 +24,7 @@ import COLORS from "../../config/COLORS";
 import PopupModal from "../../custom_components/PopupModal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth, firestore } from "../../firebaseConfig";
+import BookButton from "../bookings/components/BookButton";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -119,7 +120,7 @@ function Detail({ route, navigation }: DetailProps) {
                     numBedrooms={data.numBedrooms}
                   />
                   <TagsSection accommodationTags={data.accommodationTags} />
-                  <HostSection hostID={data.owner} />
+                  <HostSection hostID={data.owner} navigation={navigation} />
                   <ReviewSection
                     parentDocID={data.firestoreID}
                     openReviewModal={() => setReviewModal(true)}
@@ -127,9 +128,9 @@ function Detail({ route, navigation }: DetailProps) {
                 </ScrollView>
               </View>
             </View>
-            <ChatButton navigation={navigation} hostID={data.owner} />
             <BackButton onPress={() => navigation.goBack()} />
             <InfoButton onPress={() => setIsOpen(false)} />
+            <BookButton />
             <PopupModal
               inputHeading="Submit a review:"
               inputValue={newReview}
@@ -143,7 +144,7 @@ function Detail({ route, navigation }: DetailProps) {
           <>
             <BackButton onPress={() => navigation.goBack()} />
             <InfoButton onPress={() => setIsOpen(true)} />
-            <ChatButton navigation={navigation} hostID={data.owner} />
+            <BookButton />
           </>
         )}
       </SafeAreaView>

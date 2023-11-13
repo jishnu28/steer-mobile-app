@@ -67,7 +67,21 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
   }, []);
 
   if (isLoading) {
-    return <View style={styles.mainContainer}></View>;
+    return (
+      <View style={[styles.mainContainer, { paddingBottom: 80 }]}>
+        <View style={styles.headingContainer}>
+          <H2>Reviews</H2>
+          <Pressable style={styles.button} onPress={openReviewModal}>
+            <Icon
+              color={COLORS.LIGHTBG}
+              type="material-community"
+              name="plus"
+              size={ICONSIZES.MD}
+            />
+          </Pressable>
+        </View>
+      </View>
+    );
   }
 
   return (
