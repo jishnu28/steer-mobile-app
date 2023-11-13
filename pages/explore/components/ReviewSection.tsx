@@ -6,7 +6,7 @@ import COLORS from "../../../config/COLORS";
 import ICONSIZES from "../../../config/ICONSIZES";
 import SPACING from "../../../config/SPACINGS";
 import SPACINGS from "../../../config/SPACINGS";
-import { doc, collection, addDoc, getDocs, getDoc } from "firebase/firestore";
+import { doc, collection, getDocs, getDoc } from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
 import React, { useEffect } from "react";
 import { defaultProfilePicURL } from "../../../config/CONSTANTS";
@@ -28,30 +28,17 @@ import { defaultProfilePicURL } from "../../../config/CONSTANTS";
 
 interface ReviewSectionProps {
   parentDocID: string;
+  openReviewModal: () => void;
 }
 
-const ReviewSection: React.FC<ReviewSectionProps> = ({ parentDocID }) => {
+const ReviewSection: React.FC<ReviewSectionProps> = ({
+  parentDocID,
+  openReviewModal,
+}) => {
   const [reviews, setReviews] = React.useState<string[][]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  const addNewReview = async () => {
-    console.log("Add new review");
-    const reviewSubcollectionRef = collection(
-      firestore,
-      "accommodations",
-      parentDocID,
-      "reviews"
-    );
-    const newReviewRef = await addDoc(reviewSubcollectionRef, {
-      // TODO: Replace with actual user ID and get actual text from text input
-      userID: "Your ID Here",
-      text: "Your Name Here",
-    });
-    console.log("New review created with ID: ", newReviewRef.id);
-  };
-
   const getReviews = async () => {
-    console.log("Get reviews");
     const querySnapshot = await getDocs(
       collection(firestore, "accommodations", parentDocID, "reviews")
     );
@@ -65,7 +52,6 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ parentDocID }) => {
         currReview.push(reviewUserDoc.profilePic);
       } else {
         currReview.push(defaultProfilePicURL);
-        console.log("No such document!");
         // TODO: Replace with url to default profile pic
       }
       currReview.push(currDoc.text);
@@ -88,7 +74,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ parentDocID }) => {
     <View style={styles.mainContainer}>
       <View style={styles.headingContainer}>
         <H2>Reviews</H2>
-        <Pressable style={styles.button} onPress={addNewReview}>
+        <Pressable style={styles.button} onPress={openReviewModal}>
           <Icon
             color={COLORS.LIGHTBG}
             type="material-community"

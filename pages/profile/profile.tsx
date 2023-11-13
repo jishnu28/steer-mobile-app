@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
 import UploadInfo from "./components/UploadInfo";
-import PopupModal from "./components/PopupModal";
+import PopupModal from "../../custom_components/PopupModal";
 import * as ImagePicker from "expo-image-picker";
 import { firebaseAuth, firestore, firebaseStorage } from "../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -171,7 +171,7 @@ const ProfilePage = ({ navigation }: Props) => {
 
       {/* Modals */}
       <PopupModal
-        inputName="username"
+        inputHeading="Enter your new username below:"
         inputValue={username}
         setInputValue={setUsername}
         saveValue={saveUsername}

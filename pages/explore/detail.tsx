@@ -14,13 +14,16 @@ import HostSection from "./components/HostSection";
 import AmenitiesSection from "./components/AmenitiesSection";
 import TagsSection from "./components/TagsSection";
 import DescriptionSection from "./components/DescriptionSection";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, addDoc, collection } from "firebase/firestore";
 import InfoButton from "./components/InfoButton";
 import ChatButton from "../chat/components/ChatButton";
 import { RouteProp } from "@react-navigation/native";
 import ImageCarousel from "./components/ImageCarousel";
 import SPACINGS from "../../config/SPACINGS";
 import COLORS from "../../config/COLORS";
+import PopupModal from "../../custom_components/PopupModal";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseAuth, firestore } from "../../firebaseConfig";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -40,6 +43,23 @@ function Detail({ route, navigation }: DetailProps) {
   const { item } = route.params;
   const [data, setData] = useState<DocumentData | undefined>(item);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [reviewModal, setReviewModal] = useState<boolean>(false);
+  const [newReview, setNewReview] = useState<string>("");
+  const [user, loading, error] = useAuthState(firebaseAuth);
+
+  const saveNewReview = async () => {
+    const reviewSubcollectionRef = collection(
+      firestore,
+      "accommodations",
+      item.firestoreID,
+      "reviews"
+    );
+    const newReviewRef = await addDoc(reviewSubcollectionRef, {
+      text: newReview,
+      userID: user?.uid ?? "",
+    });
+    setNewReview("");
+  };
 
   if (!data) {
     // Loading state if necessary
@@ -100,13 +120,24 @@ function Detail({ route, navigation }: DetailProps) {
                   />
                   <TagsSection accommodationTags={data.accommodationTags} />
                   <HostSection hostID={data.owner} />
-                  <ReviewSection parentDocID={data.firestoreID} />
+                  <ReviewSection
+                    parentDocID={data.firestoreID}
+                    openReviewModal={() => setReviewModal(true)}
+                  />
                 </ScrollView>
               </View>
             </View>
             <ChatButton navigation={navigation} hostID={data.owner} />
             <BackButton onPress={() => navigation.goBack()} />
             <InfoButton onPress={() => setIsOpen(false)} />
+            <PopupModal
+              inputHeading="Submit a review:"
+              inputValue={newReview}
+              setInputValue={setNewReview}
+              saveValue={saveNewReview}
+              isModalVisible={reviewModal}
+              setModalVisibility={setReviewModal}
+            />
           </>
         ) : (
           <>
