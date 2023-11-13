@@ -44,7 +44,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   const [numGuests, setNumGuests] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
   const [categoryTags, setCategoryTags] = useState<string>("");
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]); // Stores urls for images uploaded to firebase storage
 
   const [user, loading, error] = useAuthState(firebaseAuth);
 
@@ -88,9 +88,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   const handleUpload = () => {
     const newExperience: ExperienceData = {
       isActive: isActive,
-      owner:
-        user?.uid ??
-        "default owner id - an error occurred while uploading this accommodation",
+      owner: user?.uid ?? "owner id could not be obtained",
       title: title,
       description: description,
       images: [],

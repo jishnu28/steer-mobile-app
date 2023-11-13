@@ -1,5 +1,12 @@
-import { collection, doc, addDoc, updateDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  Timestamp,
+} from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
+import { defaultPicURL } from "../../../config/CONSTANTS";
 
 // Type declarations for the fields in the accommodations collection
 export interface AccommodationData {
@@ -24,27 +31,10 @@ export interface AccommodationData {
 }
 
 export default async function createAccommodation(newData: AccommodationData) {
-  const sampleData: AccommodationData = {
-    isActive: true,
-    owner: "testOwner - this should be replaced with the user's UID",
-    title: "Tiny testing tent",
-    description: "This is a tiny testing tent",
-    images: [],
-    numGuests: 1,
-    numBeds: 1,
-    numBaths: 1,
-    numBedrooms: 1,
-    price: 1,
-    address: "123 Testing Street",
-    hasWifi: true,
-    hasKitchen: true,
-    hasHeating: true,
-    hasWaterheater: true,
-    accommodationTags: ["testing", "tiny", "tent"],
-    postingDate: Timestamp.fromDate(new Date()), 
-  };
-
   try {
+    if (newData.images.length === 0) {
+      newData.images.push(defaultPicURL);
+    }
     const docRef = await addDoc(
       collection(firestore, "accommodations"),
       newData

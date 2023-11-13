@@ -1,16 +1,16 @@
 import React from "react";
 import { Avatar } from "@rneui/themed";
 import { View, StyleSheet } from "react-native";
-import BodyText from "./typography/BodyText";
-import COLORS from "../config/COLORS";
-import SPACING from "../config/SPACINGS";
+import BodyText from "../../../custom_components/typography/BodyText";
+import COLORS from "../../../config/COLORS";
+import SPACING from "../../../config/SPACINGS";
 
-interface ReviewsCardProps {
+interface ReviewCardProps {
   avatarUri: string;
   text: string;
 }
 
-const ReviewCard: React.FC<ReviewsCardProps> = ({ avatarUri, text }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ avatarUri, text }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.avatarContainer}>

@@ -1,16 +1,22 @@
 import React, { useEffect } from "react";
-import { 
-  Dimensions, 
+import {
+  Dimensions,
   Pressable,
-  ScrollView, 
-  StyleSheet, 
-  Text, 
-  View 
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import HeartButton from "../../explore/components/HeartButton";
 import SavedImageCarousel from "./SavedImageCarousel";
-import { getDoc, getDocs, collection, DocumentData, doc } from "firebase/firestore";
+import {
+  getDoc,
+  getDocs,
+  collection,
+  DocumentData,
+  doc,
+} from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -32,22 +38,22 @@ function SavedItemCarousel({
   collectionName,
 }: SavedItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
-  const [user, loading, error]= useAuthState(firebaseAuth);
+  const [user, loading, error] = useAuthState(firebaseAuth);
 
   useEffect(() => {
     async function fetchData() {
       const currItems: DocumentData[] = [];
 
-      const userRef= doc(firestore, "users", user?.uid as any);
-      const userDoc= await getDoc(userRef);
-      const savedItems= userDoc.data()?.favouritedPosts;
+      const userRef = doc(firestore, "users", user?.uid as any);
+      const userDoc = await getDoc(userRef);
+      const savedItems = userDoc.data()?.favouritedPosts;
       // console.log(savedItems);
 
       const querySnapshot = await getDocs(
         collection(firestore, collectionName)
       );
       querySnapshot.docs.forEach((doc) => {
-        if (savedItems?.includes(doc.id)){
+        if (savedItems?.includes(doc.id)) {
           currItems.push(doc.data());
         }
       });
@@ -63,7 +69,7 @@ function SavedItemCarousel({
       style={{ marginVertical: 20 }}
     >
       {dbItems.map((item, index) => (
-        <View key={index}>
+        <View key={`${index}-${item.title}`}>
           <View style={styles.card}>
             <Pressable
               key={index}

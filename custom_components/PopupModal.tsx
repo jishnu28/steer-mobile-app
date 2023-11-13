@@ -1,16 +1,12 @@
 import React from "react";
 import Modal from "react-native-modal";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TextInput, View, TouchableOpacity } from "react-native";
+import COLORS from "../config/COLORS";
+import BodyText from "./typography/BodyText";
 
 interface PopupModalProps {
   //https://medium.com/@jeffbutsch/typescript-interface-functions-c691a108e3f1
-  inputName: string;
+  inputHeading: string;
   inputValue: string; //Input value of useState
   setInputValue(newValue: string): any; //set input value to useState
   saveValue(): any; //Takes in function that updates the value to Firebase
@@ -19,7 +15,7 @@ interface PopupModalProps {
 }
 
 const PopupModal = ({
-  inputName,
+  inputHeading,
   inputValue,
   setInputValue,
   saveValue,
@@ -34,7 +30,7 @@ const PopupModal = ({
       style={{ justifyContent: "center", alignItems: "center" }}
     >
       <View style={styles.modalPopUp}>
-        <Text style={styles.modalText}>Enter your new {inputName} below:</Text>
+        <BodyText>{inputHeading}</BodyText>
         <TextInput
           style={styles.infoBox}
           value={inputValue}
@@ -48,7 +44,7 @@ const PopupModal = ({
             }}
             style={styles.modalButton}
           >
-            <Text>Back</Text>
+            <BodyText>Back</BodyText>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -57,9 +53,12 @@ const PopupModal = ({
               setInputValue("");
               setModalVisibility(!isModalVisible);
             }}
-            style={[styles.modalButton, { backgroundColor: "#9CADA4", borderWidth: 0 }]}
+            style={[
+              styles.modalButton,
+              { backgroundColor: COLORS.PRIMARY, borderWidth: 0 },
+            ]}
           >
-            <Text style={{color:"#E5E8D9"}}>Confirm</Text>
+            <BodyText style={{ color: COLORS.WHITE }}>Confirm</BodyText>
           </TouchableOpacity>
         </View>
       </View>
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     height: 160,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: "#E5E8D9",
+    backgroundColor: COLORS.LIGHTACCENT,
   },
 
   modalText: {

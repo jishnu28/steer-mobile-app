@@ -51,8 +51,7 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [hasWaterheater, setHasWaterheater] = useState(false);
   const [hasKitchen, setHasKitchen] = useState(false);
   const [accommodationTags, setAccommodationTags] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [selectedImageUri, setSelectedImageUri] = useState("");
+  const [images, setImages] = useState<string[]>([]); // Stores urls for images uploaded to firebase storage
 
   const [user, loading, error] = useAuthState(firebaseAuth);
 
@@ -65,7 +64,6 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
 
     if (_images.assets) {
       const firstImage = _images.assets[0];
-      setSelectedImageUri(firstImage.uri);
 
       _images.assets.forEach((image) => {
         saveAccommodationImages(image);
@@ -99,9 +97,7 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const handleUpload = () => {
     const newAccommodation: AccommodationData = {
       isActive: isActive,
-      owner:
-        user?.uid ??
-        "default owner id - an error occurred while uploading this accommodation",
+      owner: user?.uid ?? "owner id could not be obtained",
       title: title,
       description: description,
       images: [],
@@ -326,7 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: SPACINGS.MD,
-    paddingVertical: SPACINGS.SM,
+    paddingVertical: SPACINGS.MD,
     maxWidth: 0.5 * width,
   },
   buttonText: {
@@ -339,6 +335,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: "column",
     padding: SPACINGS.MD,
+    paddingBottom: SPACINGS.XXL,
   },
 });
 

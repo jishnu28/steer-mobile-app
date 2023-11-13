@@ -2,22 +2,33 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "@rneui/themed";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  DocumentData,
+} from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import ICONSIZES from "../../../config/ICONSIZES";
 import COLORS from "../../../config/COLORS";
 import SPACINGS from "../../../config/SPACINGS";
 
-function HeartButton(item: any) {
+interface HeartButtonProps {
+  item: DocumentData;
+}
+
+function HeartButton({ item }: HeartButtonProps) {
   const [isLiked, setIsLiked] = React.useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth);
 
   async function setSavedPost() {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
+      console.log("postID to be saved: ", item.firestoreID);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayUnion(item.item.firestoreID),
+        favouritedPosts: arrayUnion(item.firestoreID),
       });
     } catch (error) {
       console.error("Error writing document to savedPosts", error);
@@ -28,7 +39,7 @@ function HeartButton(item: any) {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
       await updateDoc(savedRef, {
-        favouritedPosts: arrayRemove(item.item.firestoreID),
+        favouritedPosts: arrayRemove(item.firestoreID),
       });
     } catch (error) {
       console.error("Error writing document to savedPosts", error);

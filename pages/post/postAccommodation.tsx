@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { SafeAreaView } from "react-native";
 import AccommodationInputs from "./components/AccommodationInputs";
 import COLORS from "../../config/COLORS";
+import SPACINGS from "../../config/SPACINGS";
 
 interface PostAccommodationProps {
   navigation: NativeStackNavigationProp<any>;

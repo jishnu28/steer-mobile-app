@@ -1,5 +1,12 @@
-import { collection, doc, addDoc, updateDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  Timestamp,
+} from "firebase/firestore";
 import { firestore } from "../../../firebaseConfig";
+import { defaultPicURL } from "../../../config/CONSTANTS";
 
 // Type declarations for the fields in the accommodations collection
 export interface ExperienceData {
@@ -25,10 +32,13 @@ export default async function createExperience(newData: ExperienceData) {
     price: 1,
     address: "456 Testing Avenue",
     experienceTags: ["testing", "terrific", "tricycling"],
-    postingDate: Timestamp.fromDate(new Date()), 
+    postingDate: Timestamp.fromDate(new Date()),
   };
 
   try {
+    if (newData.images.length === 0) {
+      newData.images.push(defaultPicURL);
+    }
     const docRef = await addDoc(collection(firestore, "experiences"), newData);
     await updateDoc(doc(firestore, "experiences", docRef.id), {
       firestoreID: docRef.id,

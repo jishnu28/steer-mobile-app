@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -21,6 +21,18 @@ interface ItineraryLandingProps {
 }
 
 function ItineraryLanding({ navigation }: ItineraryLandingProps) {
+  useEffect(() => {
+    const callHelloWorldFunction = async () => {
+      console.log("Calling hello world function");
+      const response = await fetch(
+        "http://127.0.0.1:5001/steer-app-168c6/helloWorld"
+      );
+      const data = await response.text();
+      console.log(data); // Should log: "Hello from Firebase!"
+    };
+
+    callHelloWorldFunction();
+  }, []);
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>

@@ -56,6 +56,7 @@ function ExploreItemCarousel({
     if (collectionName) {
       fetchData();
     }
+    setRefreshing(false);
     setDbItems(items ?? []);
   }, []);
 
