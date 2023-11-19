@@ -16,10 +16,11 @@ import COLORS from "../../../config/COLORS";
 import SPACINGS from "../../../config/SPACINGS";
 
 interface HeartButtonProps {
+  listingCollection: string;
   item: DocumentData;
 }
 
-function HeartButton({ item }: HeartButtonProps) {
+function HeartButton({ listingCollection, item }: HeartButtonProps) {
   const [isLiked, setIsLiked] = React.useState(false);
   const [user, loading, error] = useAuthState(firebaseAuth);
 
@@ -27,9 +28,15 @@ function HeartButton({ item }: HeartButtonProps) {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
       console.log("postID to be saved: ", item.firestoreID);
-      await updateDoc(savedRef, {
-        favouritedPosts: arrayUnion(item.firestoreID),
-      });
+      if (listingCollection === "accommodations") {
+        await updateDoc(savedRef, {
+          favouritedAccommodations: arrayUnion(item.firestoreID),
+        });
+      } else if (listingCollection === "experiences") {
+        await updateDoc(savedRef, {
+          favouritedExperiences: arrayUnion(item.firestoreID),
+        });
+      }
     } catch (error) {
       console.error("Error writing document to savedPosts", error);
     }
@@ -38,9 +45,15 @@ function HeartButton({ item }: HeartButtonProps) {
   async function removeSavedPost() {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
-      await updateDoc(savedRef, {
-        favouritedPosts: arrayRemove(item.firestoreID),
-      });
+      if (listingCollection === "accommodations") {
+        await updateDoc(savedRef, {
+          favouritedAccommodations: arrayRemove(item.firestoreID),
+        });
+      } else if (listingCollection === "experiences") {
+        await updateDoc(savedRef, {
+          favouritedExperiences: arrayRemove(item.firestoreID),
+        });
+      }
     } catch (error) {
       console.error("Error writing document to savedPosts", error);
     }

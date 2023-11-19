@@ -18,8 +18,7 @@ import FONTSIZES from "../../../config/FONTSIZES";
 import COLORS from "../../../config/COLORS";
 
 interface ExploreItemCarouselProps {
-  activeCategory?: number;
-  collectionName?: string;
+  collectionName: string;
   items?: DocumentData[];
   navigation: NativeStackNavigationProp<any>;
 }
@@ -39,7 +38,7 @@ function ExploreItemCarousel({
   const [refreshing, setRefreshing] = useState(true);
 
   async function fetchData() {
-    if (collectionName) {
+    if (!items) {
       const currItems: DocumentData[] = [];
       const querySnapshot = await getDocs(
         collection(firestore, collectionName)
@@ -48,17 +47,14 @@ function ExploreItemCarousel({
         currItems.push(doc.data());
       });
       setDbItems(currItems);
-      setRefreshing(false);
     }
+    setRefreshing(false);
   }
 
   useEffect(() => {
-    if (collectionName) {
-      fetchData();
-    }
-    setRefreshing(false);
+    fetchData();
     setDbItems(items ?? []);
-  }, []);
+  }, [collectionName]);
 
   return (
     <ScrollView
@@ -71,7 +67,7 @@ function ExploreItemCarousel({
       {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
-            <HeartButton item={item} />
+            <HeartButton listingCollection={collectionName} item={item} />
           </View>
 
           <View style={styles.card}>
@@ -80,6 +76,7 @@ function ExploreItemCarousel({
               onPress={() =>
                 navigation.navigate("Detail", {
                   item: item,
+                  listingCollection: collectionName,
                   navigation: navigation,
                 })
               }
@@ -114,6 +111,7 @@ function ExploreItemCarousel({
               onPress={() =>
                 navigation.navigate("Detail", {
                   item: item,
+                  listingCollection: collectionName,
                   navigation: navigation,
                 })
               }

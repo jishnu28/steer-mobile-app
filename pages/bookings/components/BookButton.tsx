@@ -1,22 +1,15 @@
 import { FAB, Icon } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import SPACINGS from "../../../config/SPACINGS";
 import COLORS from "../../../config/COLORS";
 import ICONSIZES from "../../../config/ICONSIZES";
 
-const BookButton: React.FC = () => {
-  const handleReservePress = () => {
-    // to implement reservation logic
-  };
+interface BookButtonProps {
+  onPress: () => void;
+}
 
+function BookButton(props: BookButtonProps) {
   return (
     <FAB
       style={styles.fab}
@@ -24,7 +17,7 @@ const BookButton: React.FC = () => {
       placement="right"
       size="large"
       title="Reserve"
-      onPress={handleReservePress}
+      onPress={props.onPress}
       icon={
         <Icon
           type="material-community"
@@ -35,7 +28,7 @@ const BookButton: React.FC = () => {
       }
     />
   );
-};
+}
 
 const styles = StyleSheet.create({
   fab: {

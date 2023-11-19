@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,7 +17,14 @@ interface ExploreProps {
 }
 
 function Explore({ navigation }: ExploreProps) {
-  const [activeCategory, setActiveCategory] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<number>(0);
+  const [collectionName, setCollectionName] = useState<string>(
+    CATEGORIES[activeCategory].dbName
+  );
+
+  useEffect(() => {
+    setCollectionName(CATEGORIES[activeCategory].dbName);
+  }, [activeCategory]);
 
   return (
     <SafeAreaView style={styles.background}>
@@ -27,9 +34,8 @@ function Explore({ navigation }: ExploreProps) {
           activeCategory={activeCategory}
         />
         <ExploreItemCarousel
-          activeCategory={activeCategory}
           navigation={navigation}
-          collectionName={CATEGORIES[activeCategory].dbName}
+          collectionName={collectionName}
         />
       </View>
     </SafeAreaView>

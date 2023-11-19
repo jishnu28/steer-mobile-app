@@ -23,6 +23,7 @@ import {
 } from "./components/itineraryGenerationHelper";
 import { DocumentData } from "firebase/firestore";
 import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
+import CATEGORIES from "../../config/CATEGORIES";
 
 interface ItineraryResultsProps {
   navigation: NativeStackNavigationProp<any>;
@@ -172,6 +173,7 @@ function ItineraryResults({ navigation }: ItineraryResultsProps) {
                       <ExploreItemCarousel
                         items={[accommodation]}
                         navigation={navigation}
+                        collectionName={CATEGORIES[0].dbName}
                       />
                     </View>
                   </View>
@@ -192,6 +194,7 @@ function ItineraryResults({ navigation }: ItineraryResultsProps) {
                   <ExploreItemCarousel
                     items={experiences ?? []}
                     navigation={navigation}
+                    collectionName={CATEGORIES[1].dbName}
                   />
                 </View>
               </ScrollView>

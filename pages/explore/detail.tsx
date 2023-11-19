@@ -16,7 +16,6 @@ import TagsSection from "./components/TagsSection";
 import DescriptionSection from "./components/DescriptionSection";
 import { DocumentData, addDoc, collection } from "firebase/firestore";
 import InfoButton from "./components/InfoButton";
-import ChatButton from "../chat/components/ChatButton";
 import { RouteProp } from "@react-navigation/native";
 import ImageCarousel from "./components/ImageCarousel";
 import SPACINGS from "../../config/SPACINGS";
@@ -29,7 +28,7 @@ import BookButton from "../bookings/components/BookButton";
 const { width, height } = Dimensions.get("screen");
 
 type RootStackParamList = {
-  Detail: { item: any };
+  Detail: { item: any; listingCollection: string };
   // other routes...
 };
 
@@ -41,7 +40,7 @@ interface DetailProps {
 }
 
 function Detail({ route, navigation }: DetailProps) {
-  const { item } = route.params;
+  const { item, listingCollection } = route.params;
   const [data, setData] = useState<DocumentData | undefined>(item);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [reviewModal, setReviewModal] = useState<boolean>(false);
@@ -49,13 +48,13 @@ function Detail({ route, navigation }: DetailProps) {
   const [user, loading, error] = useAuthState(firebaseAuth);
 
   const saveNewReview = async () => {
-    const reviewSubcollectionRef = collection(
+    const reviewsSubcollectionRef = collection(
       firestore,
-      "accommodations",
+      listingCollection,
       item.firestoreID,
       "reviews"
     );
-    const newReviewRef = await addDoc(reviewSubcollectionRef, {
+    const newReviewRef = await addDoc(reviewsSubcollectionRef, {
       text: newReview,
       userID: user?.uid ?? "",
     });
@@ -130,7 +129,17 @@ function Detail({ route, navigation }: DetailProps) {
             </View>
             <BackButton onPress={() => navigation.goBack()} />
             <InfoButton onPress={() => setIsOpen(false)} />
-            <BookButton />
+            <BookButton
+              onPress={() =>
+                navigation.navigate("Booking", {
+                  listingCollection: listingCollection,
+                  listingId: data.firestoreID,
+                  listingPrice: data.price,
+                  listingCapacity: data.numGuests,
+                  navigation: navigation,
+                })
+              }
+            />
             <PopupModal
               inputHeading="Submit a review:"
               inputValue={newReview}
@@ -144,7 +153,17 @@ function Detail({ route, navigation }: DetailProps) {
           <>
             <BackButton onPress={() => navigation.goBack()} />
             <InfoButton onPress={() => setIsOpen(true)} />
-            <BookButton />
+            <BookButton
+              onPress={() =>
+                navigation.navigate("Booking", {
+                  listingCollection: listingCollection,
+                  listingId: data.firestoreID,
+                  listingPrice: data.price,
+                  listingCapacity: data.numGuests,
+                  navigation: navigation,
+                })
+              }
+            />
           </>
         )}
       </SafeAreaView>

@@ -18,6 +18,7 @@ import SPACINGS from "../../config/SPACINGS";
 import COLORS from "../../config/COLORS";
 import FONTSIZES from "../../config/FONTSIZES";
 import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
+import CATEGORIES from "../../config/CATEGORIES";
 
 type RootStackParamList = {
   Profile: undefined;
@@ -42,16 +43,19 @@ interface ProfileData {
 }
 
 const ProfilePage = ({ navigation }: Props) => {
-  //Used for user info retrieval
-  const [user, loading, error] = useAuthState(firebaseAuth);
-  const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
-  const [userSavedPosts, setUserSavedPosts] = React.useState<DocumentData[]>(
-    []
-  );
-  const [isLoading, setIsLoading] = React.useState(true);
   //Used to set user info
   const [username, setUsername] = React.useState("");
   const [usernameModal, setUsernameModal] = React.useState(false);
+  //Used for user info retrieval
+  const [user, loading, error] = useAuthState(firebaseAuth);
+  const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
+  const [userSavedAccommodations, setUserSavedAccommodations] = React.useState<
+    DocumentData[]
+  >([]);
+  const [userSavedExperiences, setUserSavedExperiences] = React.useState<
+    DocumentData[]
+  >([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   //Retrieves profile info when page first rendered
   const getProfile = async () => {
@@ -61,19 +65,43 @@ const ProfilePage = ({ navigation }: Props) => {
       const currUserDoc = userProfile.data();
       setProfileInfo(currUserDoc);
 
-      // get posts saved by user
-      const userSavedPostIDs = currUserDoc?.favouritedPosts ?? [];
-      if (userSavedPostIDs.length > 0) {
-        const userSavedPostDocs: DocumentData[] = [];
-        for (let i = 0; i < userSavedPostIDs.length; i++) {
-          const postRef = doc(firestore, "accommodations", userSavedPostIDs[i]);
+      // get accommodations favourited by user
+      const userSavedAccommodationIDs =
+        currUserDoc?.favouritedAccommodations ?? [];
+      if (userSavedAccommodationIDs.length > 0) {
+        const userSavedAccommodationDocs: DocumentData[] = [];
+        for (let i = 0; i < userSavedAccommodationIDs.length; i++) {
+          const postRef = doc(
+            firestore,
+            "accommodations",
+            userSavedAccommodationIDs[i]
+          );
           const postDoc = await getDoc(postRef);
           const postDocData = postDoc.data();
           if (postDocData) {
-            userSavedPostDocs.push(postDocData);
+            userSavedAccommodationDocs.push(postDocData);
           }
         }
-        setUserSavedPosts(userSavedPostDocs);
+        setUserSavedAccommodations(userSavedAccommodationDocs);
+      }
+
+      // get experiences favourited by user
+      const userSavedExperienceIDs = currUserDoc?.favouritedExperiences ?? [];
+      if (userSavedExperienceIDs.length > 0) {
+        const userSavedExperienceDocs: DocumentData[] = [];
+        for (let i = 0; i < userSavedExperienceIDs.length; i++) {
+          const postRef = doc(
+            firestore,
+            "experiences",
+            userSavedExperienceIDs[i]
+          );
+          const postDoc = await getDoc(postRef);
+          const postDocData = postDoc.data();
+          if (postDocData) {
+            userSavedExperienceDocs.push(postDocData);
+          }
+        }
+        setUserSavedExperiences(userSavedExperienceDocs);
       }
     } catch (error) {
       console.error("Error retrieving profile data:", error);
@@ -191,7 +219,18 @@ const ProfilePage = ({ navigation }: Props) => {
         </View>
 
         {!isLoading && (
-          <ExploreItemCarousel navigation={navigation} items={userSavedPosts} />
+          <>
+            <ExploreItemCarousel
+              navigation={navigation}
+              items={userSavedAccommodations}
+              collectionName={CATEGORIES[0].dbName}
+            />
+            <ExploreItemCarousel
+              navigation={navigation}
+              items={userSavedExperiences}
+              collectionName={CATEGORIES[1].dbName}
+            />
+          </>
         )}
       </View>
     </SafeAreaView>

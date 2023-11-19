@@ -52,7 +52,7 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
       console.log("Registered with:", user.email);
 
       await setDoc(doc(firestore, "userChats", user.uid), {
-        myName: username,
+        myName: username, // TODO: Remove this?
         chats: [],
       });
       await setDoc(doc(firestore, "users", user.uid), {
@@ -60,7 +60,7 @@ const SignupScreen: React.FC<SignupProps> = ({ navigation }) => {
         email: user.email,
         uid: user.uid,
         profilePic: defaultProfilePicURL,
-        favouritedPosts: [],
+        favouritedPosts: [], // TODO: Add pushtoken field?
       });
       await setDoc(doc(firestore, "savedPosts", user.uid), {
         posts: [],

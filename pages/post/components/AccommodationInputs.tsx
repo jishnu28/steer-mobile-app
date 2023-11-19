@@ -182,7 +182,11 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
               <Image
                 key={index}
                 source={{ uri: imageUri }}
-                style={{ width: 200, height: 200, marginRight: 10 }}
+                style={{
+                  width: 0.2 * width,
+                  height: 0.2 * width,
+                  margin: SPACINGS.MD,
+                }}
               />
             ))}
           </ScrollView>

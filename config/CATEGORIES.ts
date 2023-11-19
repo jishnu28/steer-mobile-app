@@ -1,7 +1,7 @@
 export default [
   {
     id: 1,
-    title: "Accomodation",
+    title: "Accommodation",
     dbName: "accommodations",
   },
   {
