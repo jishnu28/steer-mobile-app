@@ -1,9 +1,8 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { SafeAreaView } from "react-native";
+import { Platform, SafeAreaView, StatusBar } from "react-native";
 import AccommodationInputs from "./components/AccommodationInputs";
 import COLORS from "../../config/COLORS";
-import SPACINGS from "../../config/SPACINGS";
 
 interface PostAccommodationProps {
   navigation: NativeStackNavigationProp<any>;
@@ -14,7 +13,9 @@ const PostAccommodation = ({ navigation }: PostAccommodationProps) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: COLORS.LIGHTBG,
+        backgroundColor: COLORS.LIGHTACCENT,
+        paddingTop:
+          Platform.OS === "android" ? StatusBar.currentHeight ?? 0 : 0,
       }}
     >
       <AccommodationInputs navigation={navigation} />

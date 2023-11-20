@@ -10,6 +10,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
+import { Tab, Text, TabView } from "@rneui/themed";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
 import createAccommodation, {
@@ -30,13 +31,16 @@ import COLORS from "../../../config/COLORS";
 import SPACINGS from "../../../config/SPACINGS";
 import H3 from "../../../custom_components/typography/H3";
 import ICONSIZES from "../../../config/ICONSIZES";
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 interface AccommodationInputsProps {
   navigation: NativeStackNavigationProp<any>;
 }
 
 const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
+  const [index, setIndex] = React.useState(0);
+  const [indicatorX, setIndicatorX] = useState(0); // for fixing translateX bug with tab component
+  const tabWidth = width / 3;
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [address, setAddress] = useState("");
@@ -143,186 +147,225 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <H1 style={{ textAlign: "center" }}>Upload Accommodation</H1>
-      <ScrollView>
-        <View style={styles.mainContainer}>
-          <View style={styles.questionBox}>
-            <H3>Title</H3>
-            <Input
-              value={title}
-              placeholder="Add a title"
-              style={{
-                borderBottomColor: COLORS.DARKACCENT,
-                fontFamily: "Bitter-Bold",
-                fontSize: 25,
-                opacity: 0.6,
-              }}
-              onChangeText={(text) => setTitle(text)}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Description:</H3>
-            <Input
-              value={description}
-              placeholder="Add description"
-              style={{
-                borderWidth: 0,
-                fontFamily: "Bitter-Bold",
-                fontSize: 20,
-                opacity: 0.6,
-              }}
-              onChangeText={(text) => setDescription(text)}
-            />
-          </View>
-
-          <ScrollView horizontal>
-            {images.map((imageUri, index) => (
-              <Image
-                key={index}
-                source={{ uri: imageUri }}
-                style={{
-                  width: 0.2 * width,
-                  height: 0.2 * width,
-                  margin: SPACINGS.MD,
-                }}
-              />
-            ))}
-          </ScrollView>
-
-          <View style={styles.questionBox}>
-            <H3>Address</H3>
-            <Input
-              value={address}
-              placeholder="Enter address"
-              onChangeText={(text) => setAddress(text)}
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-                opacity: 0.6,
-                borderWidth: 0,
-              }}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Price/night</H3>
-            <Input
-              value={price.toString()}
-              onChangeText={(text) => setPrice(Number(text))}
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-                opacity: 0.6,
-                borderWidth: 0,
-                width: 0.4 * width,
-              }}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Tags</H3>
-            <Input
-              value={accommodationTags}
-              placeholder="Enter tags separated by commas.."
-              onChangeText={(text) => setAccommodationTags(text)}
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-                opacity: 0.6,
-                borderWidth: 0,
-              }}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Sustainability features</H3>
-            <Input
-              value={accommodationTags}
-              placeholder="Enter tags separated by commas.."
-              onChangeText={(text) => setAccommodationTags(text)}
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-                opacity: 0.6,
-                borderWidth: 0,
-              }}
-            />
-          </View>
-
-          <Pressable style={styles.button} onPress={() => addImages()}>
-            <H3 style={styles.buttonText}>Upload Images</H3>
-          </Pressable>
-
-          <View style={[styles.questionBox, { flexDirection: "row" }]}>
-            <H3>I can host</H3>
-            <NumberToggle
-              style={{ paddingHorizontal: SPACINGS.SM }}
-              numItems={numGuests}
-              setNumItems={setPositiveNumGuests}
-            />
-            <H3>visitors</H3>
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Number of Beds:</H3>
-            <NumberToggle
-              style={{ marginVertical: SPACINGS.SM }}
-              numItems={numBeds}
-              setNumItems={setPositiveNumBeds}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Number of Bedrooms:</H3>
-            <NumberToggle
-              style={{ marginVertical: SPACINGS.SM }}
-              numItems={numBedrooms}
-              setNumItems={setPositiveNumBedrooms}
-            />
-          </View>
-
-          <View style={styles.questionBox}>
-            <H3>Number of Baths:</H3>
-            <NumberToggle
-              style={{ marginVertical: SPACINGS.SM }}
-              numItems={numBaths}
-              setNumItems={setPositiveNumBaths}
-            />
-          </View>
-
-          <BooleanToggle
-            title={"Has Wifi?"}
-            hasItem={hasWifi}
-            setHasItem={setHasWifi}
+      <View style={{ marginTop: SPACINGS.XL }}>
+        <Tab
+          value={index}
+          onChange={(e) => {
+            setIndex(e);
+            setIndicatorX(e * tabWidth);
+          }}
+          disableIndicator={true}
+          scrollable={true}
+          indicatorStyle={{
+            backgroundColor: "white",
+            height: 0,
+            transform: [{ translateX: indicatorX }], // for fixing translateX bug with tab component
+          }}
+        >
+          <Tab.Item
+            title="Part 1"
+            titleStyle={(active) =>
+              active ? styles.activeTabTitle : styles.inactiveTabTitle
+            }
+            containerStyle={(active) =>
+              active ? styles.activeTabContainer : styles.inactiveTabContainer
+            }
           />
-
-          <BooleanToggle
-            title={"Has Heating?"}
-            hasItem={hasHeating}
-            setHasItem={setHasHeating}
+          <Tab.Item
+            title="Part 2"
+            titleStyle={(active) =>
+              active ? styles.activeTabTitle : styles.inactiveTabTitle
+            }
+            containerStyle={(active) =>
+              active ? styles.activeTabContainer : styles.inactiveTabContainer
+            }
           />
-
-          <BooleanToggle
-            title={"Has Waterheater?"}
-            hasItem={hasWaterheater}
-            setHasItem={setHasWaterheater}
+          <Tab.Item
+            title="Part 3"
+            titleStyle={(active) =>
+              active ? styles.activeTabTitle : styles.inactiveTabTitle
+            }
+            containerStyle={(active) =>
+              active ? styles.activeTabContainer : styles.inactiveTabContainer
+            }
           />
+        </Tab>
 
-          <BooleanToggle
-            title={"Has Kitchen?"}
-            hasItem={hasKitchen}
-            setHasItem={setHasKitchen}
-          />
+        <TabView value={index} onChange={setIndex} animationType="spring">
+          <TabView.Item style={styles.tabView}>
+            <ScrollView
+              style={styles.mainScrollView}
+              contentContainerStyle={{ flexGrow: 1 }}
+            >
+              <View style={styles.mainContainer}>
+                <View style={styles.questionBox}>
+                  <H3>Title</H3>
+                  <Input
+                    value={title}
+                    placeholder="Add a title"
+                    style={styles.placeholder}
+                    onChangeText={(text) => setTitle(text)}
+                  />
+                </View>
 
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Pressable style={styles.button} onPress={() => handleUpload()}>
-              <H3 style={styles.buttonText}>Submit</H3>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
+                <View style={styles.questionBox}>
+                  <H3>Description:</H3>
+                  <Input
+                    value={description}
+                    placeholder="Add a description"
+                    style={styles.placeholder}
+                    onChangeText={(text) => setDescription(text)}
+                  />
+                </View>
+
+                <ScrollView horizontal>
+                  {images.map((imageUri, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: imageUri }}
+                      style={{
+                        width: 0.2 * width,
+                        height: 0.2 * width,
+                        margin: SPACINGS.MD,
+                      }}
+                    />
+                  ))}
+                </ScrollView>
+
+                <View style={styles.questionBox}>
+                  <H3>Address</H3>
+                  <Input
+                    value={address}
+                    placeholder="Enter address"
+                    onChangeText={(text) => setAddress(text)}
+                    style={styles.placeholder}
+                  />
+                </View>
+
+                <View style={styles.questionBox}>
+                  <H3>Price/night</H3>
+                  <Input
+                    value={price.toString()}
+                    onChangeText={(text) => setPrice(Number(text))}
+                    style={styles.placeholder}
+                  />
+                </View>
+
+                <View style={styles.questionBox}>
+                  <H3>Tags</H3>
+                  <Input
+                    value={accommodationTags}
+                    placeholder="Enter tags separated by commas.."
+                    onChangeText={(text) => setAccommodationTags(text)}
+                    style={styles.placeholder}
+                  />
+                </View>
+
+                <View style={[styles.questionBox, { paddingBottom: 200 }]}>
+                  <H3>Sustainability features</H3>
+                  <Input
+                    value={accommodationTags}
+                    placeholder="Enter tags separated by commas.."
+                    onChangeText={(text) => setAccommodationTags(text)}
+                    style={styles.placeholder}
+                  />
+                </View>
+              </View>
+            </ScrollView>
+          </TabView.Item>
+          <TabView.Item style={styles.tabView}>
+            <ScrollView style={styles.mainScrollView}>
+              <View style={styles.mainContainer}>
+                <View style={styles.questionBox}>
+                  <H3>Number of Guests:</H3>
+                  <NumberToggle
+                    style={styles.numberToggle}
+                    numItems={numGuests}
+                    setNumItems={setPositiveNumGuests}
+                  />
+                </View>
+
+                <View style={styles.questionBox}>
+                  <H3>Number of Beds:</H3>
+                  <NumberToggle
+                    style={styles.numberToggle}
+                    numItems={numBeds}
+                    setNumItems={setPositiveNumBeds}
+                  />
+                </View>
+
+                <View style={styles.questionBox}>
+                  <H3>Number of Bedrooms:</H3>
+                  <NumberToggle
+                    style={styles.numberToggle}
+                    numItems={numBedrooms}
+                    setNumItems={setPositiveNumBedrooms}
+                  />
+                </View>
+
+                <View style={styles.questionBox}>
+                  <H3>Number of Baths:</H3>
+                  <NumberToggle
+                    style={styles.numberToggle}
+                    numItems={numBaths}
+                    setNumItems={setPositiveNumBaths}
+                  />
+                </View>
+
+                <Pressable style={styles.button} onPress={() => addImages()}>
+                  <H3 style={styles.buttonText}>Upload Images</H3>
+                </Pressable>
+              </View>
+            </ScrollView>
+          </TabView.Item>
+          <TabView.Item style={styles.tabView}>
+            <ScrollView style={styles.mainScrollView}>
+              <View style={styles.mainContainer}>
+                <BooleanToggle
+                  style={styles.booleanToggle}
+                  title={"Has Wifi?"}
+                  hasItem={hasWifi}
+                  setHasItem={setHasWifi}
+                />
+
+                <BooleanToggle
+                  style={styles.booleanToggle}
+                  title={"Has Heating?"}
+                  hasItem={hasHeating}
+                  setHasItem={setHasHeating}
+                />
+
+                <BooleanToggle
+                  style={styles.booleanToggle}
+                  title={"Has Waterheater?"}
+                  hasItem={hasWaterheater}
+                  setHasItem={setHasWaterheater}
+                />
+
+                <BooleanToggle
+                  style={styles.booleanToggle}
+                  title={"Has Kitchen?"}
+                  hasItem={hasKitchen}
+                  setHasItem={setHasKitchen}
+                />
+
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => handleUpload()}
+                  >
+                    <H3 style={styles.buttonText}>Submit</H3>
+                  </Pressable>
+                </View>
+              </View>
+            </ScrollView>
+          </TabView.Item>
+        </TabView>
+      </View>
     </View>
   );
 };
@@ -344,6 +387,7 @@ const styles = StyleSheet.create({
     borderRadius: ICONSIZES.LG,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     paddingHorizontal: SPACINGS.MD,
     paddingVertical: SPACINGS.MD,
     marginVertical: SPACINGS.MD,
@@ -360,6 +404,59 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     padding: SPACINGS.MD,
     paddingBottom: SPACINGS.XXL,
+  },
+  activeTabTitle: {
+    color: COLORS.WHITE,
+    paddingVertical: SPACINGS.XS,
+    paddingHorizontal: SPACINGS.XXS,
+    fontFamily: "Bitter-Bold",
+  },
+  inactiveTabTitle: {
+    color: COLORS.PRIMARY,
+    paddingVertical: SPACINGS.XS,
+    paddingHorizontal: SPACINGS.XXS,
+    fontFamily: "Bitter-Medium",
+  },
+  activeTabContainer: {
+    backgroundColor: COLORS.PRIMARY,
+    borderWidth: 1,
+    borderColor: COLORS.PRIMARY,
+    marginHorizontal: SPACINGS.SM,
+    borderRadius: SPACINGS.XL,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  inactiveTabContainer: {
+    backgroundColor: COLORS.LIGHTBG,
+    borderWidth: 1,
+    borderColor: COLORS.PRIMARY,
+    marginHorizontal: SPACINGS.SM,
+    borderRadius: SPACINGS.XL,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  tabView: {
+    width: "100%",
+    minHeight: height,
+    flex: 1,
+  },
+  mainScrollView: {
+    backgroundColor: COLORS.LIGHTBG,
+    margin: SPACINGS.MD,
+    borderTopLeftRadius: SPACINGS.XL,
+    borderTopRightRadius: SPACINGS.XL,
+  },
+  numberToggle: {
+    marginTop: SPACINGS.SM,
+    marginBottom: SPACINGS.MD,
+  },
+  booleanToggle: {
+    marginVertical: SPACINGS.MD,
+  },
+  placeholder: {
+    fontFamily: "Bitter-Regular",
+    fontSize: 16,
+    opacity: 0.75,
   },
 });
 

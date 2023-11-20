@@ -111,12 +111,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             <Input
               value={title}
               placeholder="Add a title"
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 25,
-                opacity: 0.6,
-                borderBottomColor: COLORS.DARKACCENT,
-              }}
+              style={styles.placeholder}
               onChangeText={(text) => setTitle(text)}
             />
           </View>
@@ -126,12 +121,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             <Input
               value={description}
               placeholder="Add description"
-              style={{
-                borderWidth: 0,
-                fontFamily: "Bitter-Regular",
-                fontSize: 20,
-                opacity: 0.6,
-              }}
+              style={styles.placeholder}
               onChangeText={(text) => setDescription(text)}
             />
           </View>
@@ -160,11 +150,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
               value={address}
               placeholder="Enter.."
               onChangeText={(text) => setAddress(text)}
-              style={{
-                borderWidth: 0,
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-              }}
+              style={styles.placeholder}
             />
           </View>
 
@@ -173,12 +159,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             <Input
               value={price.toString()}
               onChangeText={(text) => setPrice(Number(text))}
-              style={{
-                width: 0.4 * width,
-                borderWidth: 0,
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-              }}
+              style={styles.placeholder}
             />
           </View>
 
@@ -186,7 +167,11 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             <H3 style={{ marginBottom: SPACINGS.SM }}>
               How many pax per booking:
             </H3>
-            <NumberToggle numItems={numGuests} setNumItems={setNumGuests} />
+            <NumberToggle
+              style={styles.numberToggle}
+              numItems={numGuests}
+              setNumItems={setNumGuests}
+            />
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Pressable style={styles.button} onPress={() => handleUpload()}>
@@ -211,6 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: ICONSIZES.LG,
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
     paddingHorizontal: SPACINGS.MD,
     paddingVertical: SPACINGS.SM,
     maxWidth: 0.5 * width,
@@ -225,6 +211,19 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: "column",
     padding: SPACINGS.MD,
+    backgroundColor: COLORS.LIGHTBG,
+    margin: SPACINGS.MD,
+    marginTop: SPACINGS.XL,
+    borderRadius: SPACINGS.XL,
+  },
+  numberToggle: {
+    marginTop: SPACINGS.SM,
+    marginBottom: SPACINGS.MD,
+  },
+  placeholder: {
+    fontFamily: "Bitter-Regular",
+    fontSize: 16,
+    opacity: 0.75,
   },
 });
 
