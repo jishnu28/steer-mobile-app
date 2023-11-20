@@ -1,39 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet, SafeAreaView } from 'react-native';
+import { FAB, Icon } from "@rneui/themed";
+import React from "react";
+import { StyleSheet } from "react-native";
+import SPACINGS from "../../../config/SPACINGS";
+import COLORS from "../../../config/COLORS";
+import ICONSIZES from "../../../config/ICONSIZES";
 
+interface BookButtonProps {
+  onPress: () => void;
+}
 
-const BookButton: React.FC = () => {
-
-  const handleReservePress = () => {
-    // to implement reservation logic
-  };
-
+function BookButton(props: BookButtonProps) {
   return (
-    <>
-      <TouchableOpacity onPress={handleReservePress}>
-        <View style={styles.button}> 
-            <Text style={styles.buttonText}>Reserve</Text>
-        </View>
-      </TouchableOpacity>
-    </>
+    <FAB
+      style={styles.fab}
+      color={COLORS.PRIMARY}
+      placement="right"
+      size="large"
+      title="Reserve"
+      onPress={props.onPress}
+      icon={
+        <Icon
+          type="material-community"
+          name="calendar-check"
+          color={COLORS.WHITE}
+          size={ICONSIZES.XS}
+        />
+      }
+    />
   );
-};
+}
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#FFAF87',
-        padding: 10,
-        paddingLeft:50,
-        paddingRight:50,
-        alignItems: 'center',
-        margin: 30,
-        borderRadius: 30
-      },
-      buttonText: {
-        color: "black",
-        fontSize: 20,
-        fontFamily: "Bitter-Regular",
-      },
+  fab: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: SPACINGS.XS },
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
 });
 
 export default BookButton;

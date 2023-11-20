@@ -16,10 +16,10 @@ import { RefreshControl } from "react-native-gesture-handler";
 import SPACINGS from "../../../config/SPACINGS";
 import FONTSIZES from "../../../config/FONTSIZES";
 import COLORS from "../../../config/COLORS";
+import SustainabilityRating from "./SustainabilityRating";
 
 interface ExploreItemCarouselProps {
-  activeCategory?: number;
-  collectionName?: string;
+  collectionName: string;
   items?: DocumentData[];
   navigation: NativeStackNavigationProp<any>;
 }
@@ -37,9 +37,10 @@ function ExploreItemCarousel({
 }: ExploreItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
   const [refreshing, setRefreshing] = useState(true);
+  const isAccommodation = collectionName === "accommodations";
 
   async function fetchData() {
-    if (collectionName) {
+    if (!items) {
       const currItems: DocumentData[] = [];
       const querySnapshot = await getDocs(
         collection(firestore, collectionName)
@@ -48,17 +49,14 @@ function ExploreItemCarousel({
         currItems.push(doc.data());
       });
       setDbItems(currItems);
-      setRefreshing(false);
     }
+    setRefreshing(false);
   }
 
   useEffect(() => {
-    if (collectionName) {
-      fetchData();
-    }
-    setRefreshing(false);
+    fetchData();
     setDbItems(items ?? []);
-  }, []);
+  }, [collectionName]);
 
   return (
     <ScrollView
@@ -71,7 +69,12 @@ function ExploreItemCarousel({
       {dbItems.map((item, index) => (
         <View key={index}>
           <View style={styles.heartButtonContainer}>
-            <HeartButton item={item} />
+            {isAccommodation && (
+              <SustainabilityRating
+                numFeatures={item.sustainabilityFeatures?.length() ?? 0}
+              />
+            )}
+            <HeartButton listingCollection={collectionName} item={item} />
           </View>
 
           <View style={styles.card}>
@@ -80,6 +83,7 @@ function ExploreItemCarousel({
               onPress={() =>
                 navigation.navigate("Detail", {
                   item: item,
+                  listingCollection: collectionName,
                   navigation: navigation,
                 })
               }
@@ -114,6 +118,7 @@ function ExploreItemCarousel({
               onPress={() =>
                 navigation.navigate("Detail", {
                   item: item,
+                  listingCollection: collectionName,
                   navigation: navigation,
                 })
               }
@@ -193,6 +198,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     padding: 10,
     width: "100%",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
 });

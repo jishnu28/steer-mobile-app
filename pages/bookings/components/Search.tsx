@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, Modal, Text } from "react-native";
-import DateSelection from './DateSelection';
-import RoomGuestSelector from './RoomGuestSelector';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Text,
+} from "react-native";
+import DateSelector from "./DateSelector";
+import RoomGuestSelector from "./RoomGuestSelector";
 
 const SearchBar = () => {
   const [searchText, setDestinationText] = useState("");
@@ -42,14 +49,18 @@ const SearchBar = () => {
       {/* Modals */}
       <Modal visible={showDateModal} transparent={true} animationType="slide">
         <View style={styles.modalContent}>
-          <DateSelection />
+          <DateSelector />
           <TouchableOpacity onPress={() => setShowDateModal(false)}>
             <Text style={styles.closeButton}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
 
-      <Modal visible={showRoomsGuestsModal} transparent={true} animationType="slide">
+      <Modal
+        visible={showRoomsGuestsModal}
+        transparent={true}
+        animationType="slide"
+      >
         <View style={styles.modalContent}>
           <RoomGuestSelector />
           <TouchableOpacity onPress={() => setShowRoomsGuestsModal(false)}>
@@ -63,12 +74,12 @@ const SearchBar = () => {
 
 const styles = StyleSheet.create({
   searchBarContainer: {
-    flexDirection: "column", 
+    flexDirection: "column",
     paddingHorizontal: 30,
     paddingTop: 16,
     marginBottom: 10,
     backgroundColor: "white",
-    borderRadius: 30
+    borderRadius: 30,
   },
   fieldContainer: {
     marginBottom: 10,

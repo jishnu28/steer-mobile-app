@@ -9,16 +9,40 @@ import SPACINGS from "../../../config/SPACINGS";
 interface NumberToggleProps {
   numItems: number;
   setNumItems: (value: number) => void;
+  min?: number;
+  max?: number;
   style?: ViewStyle;
 }
 
-const NumberToggle = ({ numItems, setNumItems, style }: NumberToggleProps) => {
+function decrement(num: number, min?: number) {
+  if (min && num - 1 < min) {
+    return min;
+  } else {
+    return num - 1;
+  }
+}
+
+function increment(num: number, max?: number) {
+  if (max && num >= max) {
+    return max;
+  } else {
+    return num + 1;
+  }
+}
+
+const NumberToggle = ({
+  numItems,
+  setNumItems,
+  min,
+  max,
+  style,
+}: NumberToggleProps) => {
   return (
     <View style={[styles.mainContainer, style]}>
       <Pressable
         style={styles.button}
         onPress={() => {
-          setNumItems(numItems - 1);
+          setNumItems(decrement(numItems, min));
         }}
       >
         <Icon
@@ -32,7 +56,7 @@ const NumberToggle = ({ numItems, setNumItems, style }: NumberToggleProps) => {
       <Pressable
         style={styles.button}
         onPress={() => {
-          setNumItems(numItems + 1);
+          setNumItems(increment(numItems, max));
         }}
       >
         <Icon

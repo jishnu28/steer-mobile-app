@@ -11,12 +11,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { defaultProfilePicURL } from "../../../config/CONSTANTS";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import ChatButton from "../../chat/components/ChatButton";
 
 interface HostSectionProps {
+  navigation: NativeStackNavigationProp<any>;
   hostID: string;
 }
 
-const HostSection: React.FC<HostSectionProps> = ({ hostID }) => {
+const HostSection: React.FC<HostSectionProps> = ({ navigation, hostID }) => {
   //Used for user info retrieval
   const [user, loading, error] = useAuthState(firebaseAuth);
   //Used to set user info
@@ -48,6 +51,7 @@ const HostSection: React.FC<HostSectionProps> = ({ hostID }) => {
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
         <H2>Host</H2>
+        <ChatButton navigation={navigation} hostID={hostID} />
       </View>
       <View style={styles.innerContainer}>
         <View style={styles.avatarContainer}>
@@ -61,13 +65,6 @@ const HostSection: React.FC<HostSectionProps> = ({ hostID }) => {
               color={COLORS.PRIMARY}
               type="material-community"
               name="star"
-              size={ICONSIZES.MD}
-            />
-            <H3 style={{ marginLeft: SPACINGS.MD }}>-</H3>
-            <Icon
-              color={COLORS.PRIMARY}
-              type="material-community"
-              name="leaf"
               size={ICONSIZES.MD}
             />
           </View>
@@ -88,6 +85,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
     marginBottom: SPACINGS.SM,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   innerContainer: {
     backgroundColor: COLORS.LIGHTACCENT,
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     marginTop: SPACINGS.XS,
   },

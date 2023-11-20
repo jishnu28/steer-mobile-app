@@ -25,7 +25,8 @@ export interface AccommodationData {
   hasKitchen: boolean;
   hasHeating: boolean;
   hasWaterheater: boolean;
-  accommodationTags: string[]; // for use in search and itinerary generation
+  accommodationTags: string[];
+  sustainabilityFeatures: string[];
   postingDate: Timestamp;
   // TODO: Add in the 'reviews' collection as a subcollection here
 }

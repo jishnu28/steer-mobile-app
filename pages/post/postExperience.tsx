@@ -1,6 +1,6 @@
 import React from "react";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { SafeAreaView } from "react-native";
+import { Platform, SafeAreaView, StatusBar } from "react-native";
 import ExperienceInputs from "./components/ExperienceInputs";
 import COLORS from "../../config/COLORS";
 
@@ -13,7 +13,9 @@ const PostExperience = ({ navigation }: PostExperienceProps) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: COLORS.LIGHTBG,
+        backgroundColor: COLORS.LIGHTACCENT,
+        paddingTop:
+          Platform.OS === "android" ? StatusBar.currentHeight ?? 0 : 0,
       }}
     >
       <ExperienceInputs navigation={navigation} />
