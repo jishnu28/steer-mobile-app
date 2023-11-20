@@ -55,10 +55,10 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
             <Icon
               color={COLORS.DARKACCENT}
               type="material-community"
-              name="home-group"
+              name="home"
               size={70}
             />
-            <H3 style={{ color: COLORS.DARKBG, width: "80%" }}>
+            <H3 style={{ color: COLORS.DARKBG, marginTop: SPACINGS.SM }}>
               Accommodation
             </H3>
           </TouchableOpacity>
@@ -75,7 +75,9 @@ const PostLanding = ({ navigation }: PostLandingProps) => {
               name="forest"
               size={70}
             />
-            <H3 style={{ color: COLORS.DARKBG }}>Experience</H3>
+            <H3 style={{ color: COLORS.DARKBG, marginTop: SPACINGS.SM }}>
+              Experience
+            </H3>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,13 +91,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonsContainer: {
-    flexDirection: "row",
-    marginTop: SPACINGS.LG,
+    marginVertical: SPACINGS.LG,
   },
   button: {
-    width: 0.4 * width,
+    width: 0.6 * width,
     height: 0.4 * width,
-    marginHorizontal: SPACINGS.MD,
+    margin: SPACINGS.MD,
     alignItems: "center",
     backgroundColor: COLORS.LIGHTBG,
     justifyContent: "center",

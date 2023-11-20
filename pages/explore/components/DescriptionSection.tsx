@@ -9,6 +9,7 @@ interface DescriptionSectionProps {
   address: string;
   price: number;
   description: string;
+  isAccommodation: boolean;
 }
 
 const DescriptionSection: React.FC<DescriptionSectionProps> = ({
@@ -16,6 +17,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   address,
   price,
   description,
+  isAccommodation,
 }) => {
   return (
     <View style={styles.mainContainer}>
@@ -27,7 +29,8 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
         <View style={styles.pricecontainer}>
           <BodyText>$</BodyText>
           <H1>{price}</H1>
-          <BodyText>/night</BodyText>
+          {isAccommodation && <BodyText>/night</BodyText>}
+          {!isAccommodation && <BodyText>/pax</BodyText>}
         </View>
       </View>
       <View style={styles.descriptionContainer}>

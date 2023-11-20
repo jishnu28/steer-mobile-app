@@ -28,20 +28,30 @@ import { defaultProfilePicURL } from "../../../config/CONSTANTS";
 
 interface ReviewSectionProps {
   parentDocID: string;
+  isAccommodation: boolean;
   openReviewModal: () => void;
 }
 
 const ReviewSection: React.FC<ReviewSectionProps> = ({
   parentDocID,
+  isAccommodation,
   openReviewModal,
 }) => {
   const [reviews, setReviews] = React.useState<string[][]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const getReviews = async () => {
-    const querySnapshot = await getDocs(
-      collection(firestore, "accommodations", parentDocID, "reviews")
-    );
+    var querySnapshot = null;
+    if (isAccommodation) {
+      querySnapshot = await getDocs(
+        collection(firestore, "accommodations", parentDocID, "reviews")
+      );
+    } else {
+      querySnapshot = await getDocs(
+        collection(firestore, "experiences", parentDocID, "reviews")
+      );
+    }
+
     querySnapshot.forEach(async (reviewDoc) => {
       const currDoc = reviewDoc.data();
       const currReview: string[] = [];
@@ -52,7 +62,6 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
         currReview.push(reviewUserDoc.profilePic);
       } else {
         currReview.push(defaultProfilePicURL);
-        // TODO: Replace with url to default profile pic
       }
       currReview.push(currDoc.text);
       setReviews((prevReviews) => [...prevReviews, currReview]);

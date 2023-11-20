@@ -38,6 +38,7 @@ export default function Booking({ route, navigation }: BookingProps) {
           price={listingPrice ?? 0}
           id={listingId}
           guestCapacity={listingCapacity}
+          navigation={navigation}
         />
       )}
       {!isAccommodationsBooking && (
@@ -45,6 +46,7 @@ export default function Booking({ route, navigation }: BookingProps) {
           price={listingPrice ?? 0}
           id={listingId}
           guestCapacity={listingCapacity}
+          navigation={navigation}
         />
       )}
     </SafeAreaView>

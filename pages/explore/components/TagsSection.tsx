@@ -5,19 +5,23 @@ import COLORS from "../../../config/COLORS";
 import H2 from "../../../custom_components/typography/H2";
 
 interface TagsSectionProps {
-  accommodationTags: string[];
+  heading?: string;
+  tags: string[];
 }
 
-const TagsSection: React.FC<TagsSectionProps> = ({ accommodationTags }) => {
+const TagsSection: React.FC<TagsSectionProps> = ({ heading, tags }) => {
+  const noTags = tags.length === 0;
   return (
     <View style={styles.mainContainer}>
-      <H2>Tags</H2>
+      {heading && <H2>{heading}</H2>}
+      {!heading && <H2>Tags</H2>}
       <View style={styles.innerContainer}>
-        {accommodationTags.map((tag) => (
+        {tags.map((tag) => (
           <View key={tag} style={styles.badgeStyle}>
             <BodyText>{tag}</BodyText>
           </View>
         ))}
+        {noTags && <H2 style={{ marginLeft: SPACINGS.SM }}>-</H2>}
       </View>
     </View>
   );

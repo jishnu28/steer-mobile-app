@@ -41,6 +41,7 @@ interface DetailProps {
 
 function Detail({ route, navigation }: DetailProps) {
   const { item, listingCollection } = route.params;
+  const isAccommodation = listingCollection === "accommodations";
   const [data, setData] = useState<DocumentData | undefined>(item);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [reviewModal, setReviewModal] = useState<boolean>(false);
@@ -108,20 +109,35 @@ function Detail({ route, navigation }: DetailProps) {
                     address={data.address}
                     price={data.price}
                     description={data.description}
+                    isAccommodation={isAccommodation}
                   />
-                  <AmenitiesSection
-                    hasHeating={data.hasHeating}
-                    hasKitchen={data.hasKitchen}
-                    hasWaterHeater={data.hasWaterheater}
-                    hasWifi={data.hasWifi}
-                    numBaths={data.numBaths}
-                    numBeds={data.numBeds}
-                    numBedrooms={data.numBedrooms}
-                  />
-                  <TagsSection accommodationTags={data.accommodationTags} />
+                  {isAccommodation && (
+                    <AmenitiesSection
+                      hasHeating={data.hasHeating}
+                      hasKitchen={data.hasKitchen}
+                      hasWaterHeater={data.hasWaterheater}
+                      hasWifi={data.hasWifi}
+                      numBaths={data.numBaths}
+                      numBeds={data.numBeds}
+                      numBedrooms={data.numBedrooms}
+                    />
+                  )}
+                  {isAccommodation && (
+                    <>
+                      <TagsSection tags={data.accommodationTags ?? []} />
+                      <TagsSection
+                        heading={"Sustainability Features"}
+                        tags={data.sustainabilityFeatures ?? []}
+                      />
+                    </>
+                  )}
+                  {!isAccommodation && (
+                    <TagsSection tags={data.experienceTags ?? []} />
+                  )}
                   <HostSection hostID={data.owner} navigation={navigation} />
                   <ReviewSection
                     parentDocID={data.firestoreID}
+                    isAccommodation={isAccommodation}
                     openReviewModal={() => setReviewModal(true)}
                   />
                 </ScrollView>

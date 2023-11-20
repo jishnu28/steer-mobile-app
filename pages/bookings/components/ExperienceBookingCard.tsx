@@ -11,11 +11,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface ExperienceBookingCardProps {
   id: string;
   price: number;
   guestCapacity: number;
+  navigation: NativeStackNavigationProp<any>;
 }
 
 export default function ExperienceBookingCard(
@@ -44,6 +46,7 @@ export default function ExperienceBookingCard(
     setShow(false);
     setSelectedDate(currentDate);
     setDateString(formattedDate);
+    setReadyToBook(true);
   };
 
   const showMode = (currentMode: any) => {
@@ -56,7 +59,6 @@ export default function ExperienceBookingCard(
   };
 
   const handleBookPress = async () => {
-    console.log("book pressed");
     const bookingsSubcollectionRef = collection(
       firestore,
       "experiences",
@@ -70,6 +72,9 @@ export default function ExperienceBookingCard(
       guestId: user?.uid ?? "requester's id could not be obtained",
       requestTime: new Date(),
       paymentStatus: "pending",
+    });
+    props.navigation.navigate("RequestConfirmation", {
+      navigation: props.navigation,
     });
   };
 

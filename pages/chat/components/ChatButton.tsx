@@ -8,7 +8,6 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import SPACINGS from "../../../config/SPACINGS";
 import COLORS from "../../../config/COLORS";
 import ICONSIZES from "../../../config/ICONSIZES";
-import BodyText from "../../../custom_components/typography/BodyText";
 import FONTSIZES from "../../../config/FONTSIZES";
 
 type RootStackParamList = {
@@ -151,28 +150,25 @@ const ChatButton = ({ navigation, hostID }: LaunchChatProps) => {
   };
 
   return (
-    <Pressable style={styles.fab} onPress={handleSelectLaunchChat}>
+    <Pressable style={styles.button} onPress={handleSelectLaunchChat}>
       <Icon
         type="material-community"
-        name="chat-outline"
+        name="message-outline"
         color={COLORS.WHITE}
         size={ICONSIZES.XS}
       />
-      <BodyText style={styles.buttonText}>Chat</BodyText>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  fab: {
+  button: {
     backgroundColor: COLORS.PRIMARY,
-    flexDirection: "row",
-    borderRadius: SPACINGS.XL,
-    padding: SPACINGS.SM,
+    borderRadius: ICONSIZES.LG,
+    width: ICONSIZES.LG,
+    height: ICONSIZES.LG,
     justifyContent: "center",
     alignItems: "center",
-    width: "50%",
-    marginVertical: SPACINGS.SM,
   },
   buttonText: {
     color: COLORS.WHITE,

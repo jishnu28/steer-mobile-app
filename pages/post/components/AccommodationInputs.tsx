@@ -51,6 +51,7 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [hasWaterheater, setHasWaterheater] = useState(false);
   const [hasKitchen, setHasKitchen] = useState(false);
   const [accommodationTags, setAccommodationTags] = useState("");
+  const [sustainabilityFeatures, setSustainabilityFeatures] = useState("");
   const [images, setImages] = useState<string[]>([]); // Stores urls for images uploaded to firebase storage
 
   const [user, loading, error] = useAuthState(firebaseAuth);
@@ -112,6 +113,9 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
       hasHeating: hasHeating,
       hasWaterheater: hasWaterheater,
       accommodationTags: accommodationTags.split(", ").map((tag) => tag.trim()),
+      sustainabilityFeatures: sustainabilityFeatures
+        .split(", ")
+        .map((tag) => tag.trim()),
       postingDate: Timestamp.fromDate(new Date()),
     };
     createAccommodation(newAccommodation);
@@ -173,10 +177,6 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
             />
           </View>
 
-          <Pressable style={styles.button} onPress={() => addImages()}>
-            <H3 style={styles.buttonText}>Upload Images</H3>
-          </Pressable>
-
           <ScrollView horizontal>
             {images.map((imageUri, index) => (
               <Image
@@ -190,21 +190,6 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
               />
             ))}
           </ScrollView>
-
-          <View style={styles.questionBox}>
-            <H3>Tags</H3>
-            <Input
-              value={accommodationTags}
-              placeholder="Enter tags separated by commas.."
-              onChangeText={(text) => setAccommodationTags(text)}
-              style={{
-                fontFamily: "Bitter-Regular",
-                fontSize: 16,
-                opacity: 0.6,
-                borderWidth: 0,
-              }}
-            />
-          </View>
 
           <View style={styles.questionBox}>
             <H3>Address</H3>
@@ -235,6 +220,40 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
               }}
             />
           </View>
+
+          <View style={styles.questionBox}>
+            <H3>Tags</H3>
+            <Input
+              value={accommodationTags}
+              placeholder="Enter tags separated by commas.."
+              onChangeText={(text) => setAccommodationTags(text)}
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+                opacity: 0.6,
+                borderWidth: 0,
+              }}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Sustainability features</H3>
+            <Input
+              value={accommodationTags}
+              placeholder="Enter tags separated by commas.."
+              onChangeText={(text) => setAccommodationTags(text)}
+              style={{
+                fontFamily: "Bitter-Regular",
+                fontSize: 16,
+                opacity: 0.6,
+                borderWidth: 0,
+              }}
+            />
+          </View>
+
+          <Pressable style={styles.button} onPress={() => addImages()}>
+            <H3 style={styles.buttonText}>Upload Images</H3>
+          </Pressable>
 
           <View style={[styles.questionBox, { flexDirection: "row" }]}>
             <H3>I can host</H3>
@@ -327,6 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: SPACINGS.MD,
     paddingVertical: SPACINGS.MD,
+    marginVertical: SPACINGS.MD,
     maxWidth: 0.5 * width,
   },
   buttonText: {

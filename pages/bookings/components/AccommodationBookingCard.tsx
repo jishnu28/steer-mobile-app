@@ -9,11 +9,13 @@ import NumberToggle from "../../post/components/NumberToggle";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface AccommodationBookingCardProps {
   id: string;
   price: number;
   guestCapacity: number;
+  navigation: NativeStackNavigationProp<any>;
 }
 
 export default function AccommodationBookingCard(
@@ -39,7 +41,6 @@ export default function AccommodationBookingCard(
   }, [numNights]);
 
   const handleBookPress = async () => {
-    console.log("book pressed");
     const bookingsSubcollectionRef = collection(
       firestore,
       "accommodations",
@@ -59,6 +60,9 @@ export default function AccommodationBookingCard(
       guestId: user?.uid ?? "requester's id could not be obtained",
       requestTime: new Date(),
       paymentStatus: "pending",
+    });
+    props.navigation.navigate("RequestConfirmation", {
+      navigation: props.navigation,
     });
   };
 

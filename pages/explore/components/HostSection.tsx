@@ -51,6 +51,7 @@ const HostSection: React.FC<HostSectionProps> = ({ navigation, hostID }) => {
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
         <H2>Host</H2>
+        <ChatButton navigation={navigation} hostID={hostID} />
       </View>
       <View style={styles.innerContainer}>
         <View style={styles.avatarContainer}>
@@ -66,15 +67,7 @@ const HostSection: React.FC<HostSectionProps> = ({ navigation, hostID }) => {
               name="star"
               size={ICONSIZES.MD}
             />
-            <H3 style={{ marginLeft: SPACINGS.MD }}>-</H3>
-            <Icon
-              color={COLORS.PRIMARY}
-              type="material-community"
-              name="leaf"
-              size={ICONSIZES.MD}
-            />
           </View>
-          <ChatButton navigation={navigation} hostID={hostID} />
         </View>
       </View>
     </View>
@@ -92,6 +85,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
     marginBottom: SPACINGS.SM,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   innerContainer: {
     backgroundColor: COLORS.LIGHTACCENT,

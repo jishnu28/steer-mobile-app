@@ -27,7 +27,6 @@ function HeartButton({ listingCollection, item }: HeartButtonProps) {
   async function setSavedPost() {
     try {
       const savedRef = doc(firestore, "users", user?.uid as any);
-      console.log("postID to be saved: ", item.firestoreID);
       if (listingCollection === "accommodations") {
         await updateDoc(savedRef, {
           favouritedAccommodations: arrayUnion(item.firestoreID),
@@ -68,9 +67,7 @@ function HeartButton({ listingCollection, item }: HeartButtonProps) {
       }}
     >
       <TouchableOpacity
-        // TODO: implement feature to save the liked experience to a database
         onPress={() => {
-          // console.log(item)
           if (isLiked) {
             removeSavedPost();
           } else {
