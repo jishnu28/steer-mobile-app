@@ -17,6 +17,7 @@ import SPACINGS from "../../../config/SPACINGS";
 import FONTSIZES from "../../../config/FONTSIZES";
 import COLORS from "../../../config/COLORS";
 import SustainabilityRating from "./SustainabilityRating";
+import CATEGORIES from "../../../config/CATEGORIES";
 
 interface ExploreItemCarouselProps {
   collectionName: string;
@@ -37,7 +38,7 @@ function ExploreItemCarousel({
 }: ExploreItemCarouselProps) {
   const [dbItems, setDbItems] = React.useState<DocumentData[]>([]);
   const [refreshing, setRefreshing] = useState(true);
-  const isAccommodation = collectionName === "accommodations";
+  const isAccommodation = collectionName === CATEGORIES[0].dbName;
 
   async function fetchData() {
     if (!items) {
@@ -71,7 +72,7 @@ function ExploreItemCarousel({
           <View style={styles.heartButtonContainer}>
             {isAccommodation && (
               <SustainabilityRating
-                numFeatures={item.sustainabilityFeatures?.length() ?? 0}
+                numFeatures={item.sustainabilityFeatures?.length ?? 0}
               />
             )}
             <HeartButton listingCollection={collectionName} item={item} />
@@ -107,10 +108,15 @@ function ExploreItemCarousel({
                 </View>
                 <Text style={styles.price}>
                   ${item.price}
-                  <Text style={[styles.price, { fontSize: 14 }]}>
-                    {" "}
-                    / night
-                  </Text>{" "}
+                  {isAccommodation && (
+                    <Text style={[styles.price, { fontSize: 14 }]}>
+                      {" "}
+                      / night
+                    </Text>
+                  )}
+                  {!isAccommodation && (
+                    <Text style={[styles.price, { fontSize: 14 }]}> / pax</Text>
+                  )}
                 </Text>
               </View>
             </Pressable>
@@ -126,11 +132,7 @@ function ExploreItemCarousel({
               <ImageCarousel
                 width={cardWidth}
                 height={cardHeight}
-                imagesToShow={
-                  item.images ?? [
-                    "../../../assets/images/default-listing-image.png",
-                  ]
-                }
+                imagesToShow={item.images}
                 navigation={navigation}
                 item={item}
                 page={false}

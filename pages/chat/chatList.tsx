@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  View,
-} from "react-native";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Avatar } from "@rneui/themed";
 import { onSnapshot, doc, collection, getDoc } from "firebase/firestore";
 import { firestore, firebaseAuth } from "../../firebaseConfig";
@@ -43,7 +36,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
   const [chats, setChats] = useState<any[]>([]);
   const { dispatch } = useContext(ChatContext);
   const currentUser = {
-    displayName: "John Doe",
+    displayName: auth?.currentUser?.displayName,
     email: auth?.currentUser?.email,
     uid: auth?.currentUser?.uid,
   };
@@ -57,6 +50,26 @@ const ChatList = ({ navigation }: ChatListProps) => {
     const dateObject = new Date(timestamp);
     return dateObject.toLocaleString();
   };
+
+  useEffect(() => {
+    const documentRef = doc(
+      collection(firestore, "userChats"),
+      currentUser.uid
+    );
+    const unsubscribe: Unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
+      const data = docSnapshot.data();
+      setChats(data?.chats || []);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  /**
+   * Fetches the display names of the recipient of each chat.
+   */
+  const [recipientDisplayNames, setRecipientDisplayNames] = useState<
+    Record<string, string>
+  >({});
 
   const getRecipientDisplayName = async (recipientUid: string) => {
     try {
@@ -73,42 +86,59 @@ const ChatList = ({ navigation }: ChatListProps) => {
     }
   };
 
+  const fetchRecipientDisplayNames = async () => {
+    const updatedRecipientDisplayNames: Record<string, string> = {};
+
+    for (const chat of chats) {
+      const recipientUid = chat.userInfo.uid;
+      const recipientDisplayName = await getRecipientDisplayName(recipientUid);
+      updatedRecipientDisplayNames[recipientUid] = recipientDisplayName;
+    }
+
+    setRecipientDisplayNames(updatedRecipientDisplayNames);
+  };
+
   useEffect(() => {
-    const documentRef = doc(
-      collection(firestore, "userChats"),
-      currentUser.uid
-    );
-    const unsubscribe: Unsubscribe = onSnapshot(documentRef, (docSnapshot) => {
-      const data = docSnapshot.data();
-      setChats(data?.chats || []);
-    });
+    fetchRecipientDisplayNames();
+  }, [chats]);
 
-    return () => unsubscribe();
-  }, []);
-
-  const imageUrl = defaultProfilePicURL;
-  //TODO: replace with code to retrieve profile pic from db
-
-  const [recipientDisplayNames, setRecipientDisplayNames] = useState<
+  /**
+   * Fetches the profile pic of the recipient of each chat.
+   * TODO: Combine this with the above functions for efficiency.
+   */
+  const [recipientProfilePics, setRecipientProfilePics] = useState<
     Record<string, string>
   >({});
 
-  useEffect(() => {
-    const fetchRecipientDisplayNames = async () => {
-      const updatedRecipientDisplayNames: Record<string, string> = {};
-
-      for (const chat of chats) {
-        const recipientUid = chat.userInfo.uid;
-        const recipientDisplayName = await getRecipientDisplayName(
-          recipientUid
-        );
-        updatedRecipientDisplayNames[recipientUid] = recipientDisplayName;
+  const getRecipientProfilePic = async (recipientUid: string) => {
+    try {
+      const userDocRef = doc(firestore, "users", recipientUid);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        return userData.profilePic;
       }
+      return defaultProfilePicURL; // Default if user not found
+    } catch (error) {
+      console.error("Error fetching recipient's profile pic:", error);
+      return "Error"; // Handle the error case
+    }
+  };
 
-      setRecipientDisplayNames(updatedRecipientDisplayNames);
-    };
+  const fetchRecipientProfilePics = async () => {
+    const updatedRecipientProfilePics: Record<string, string> = {};
 
-    fetchRecipientDisplayNames();
+    for (const chat of chats) {
+      const recipientUid = chat.userInfo.uid;
+      const recipientProfilePic = await getRecipientProfilePic(recipientUid);
+      updatedRecipientProfilePics[recipientUid] = recipientProfilePic;
+    }
+
+    setRecipientProfilePics(updatedRecipientProfilePics);
+  };
+
+  useEffect(() => {
+    fetchRecipientProfilePics();
   }, [chats]);
 
   return (
@@ -123,6 +153,8 @@ const ChatList = ({ navigation }: ChatListProps) => {
           const recipientUid = chat.userInfo.uid;
           const recipientDisplayName =
             recipientDisplayNames[recipientUid] || "Loading...";
+          const recipientProfilePic =
+            recipientProfilePics[recipientUid] || defaultProfilePicURL;
 
           return (
             <TouchableOpacity
@@ -131,7 +163,7 @@ const ChatList = ({ navigation }: ChatListProps) => {
               onPress={() => handleSelectChat(chat)}
             >
               <Avatar
-                source={{ uri: imageUrl }}
+                source={{ uri: recipientProfilePic }}
                 rounded
                 size={64}
                 containerStyle={styles.avatar}

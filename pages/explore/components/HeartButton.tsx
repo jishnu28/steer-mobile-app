@@ -37,7 +37,7 @@ function HeartButton({ listingCollection, item }: HeartButtonProps) {
         });
       }
     } catch (error) {
-      console.error("Error writing document to savedPosts", error);
+      console.error("Error favouriting post", error);
     }
   }
 
@@ -54,7 +54,7 @@ function HeartButton({ listingCollection, item }: HeartButtonProps) {
         });
       }
     } catch (error) {
-      console.error("Error writing document to savedPosts", error);
+      console.error("Error unfavouriting post", error);
     }
   }
 
