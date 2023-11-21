@@ -10,7 +10,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import { Tab, Text, TabView } from "@rneui/themed";
+import { Tab, TabView } from "@rneui/themed";
 import NumberToggle from "./NumberToggle";
 import BooleanToggle from "./BooleanToggle";
 import createAccommodation, {
@@ -31,6 +31,7 @@ import COLORS from "../../../config/COLORS";
 import SPACINGS from "../../../config/SPACINGS";
 import H3 from "../../../custom_components/typography/H3";
 import ICONSIZES from "../../../config/ICONSIZES";
+import BodyText from "../../../custom_components/typography/BodyText";
 const { width, height } = Dimensions.get("window");
 
 interface AccommodationInputsProps {
@@ -61,32 +62,50 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
   const [user, loading, error] = useAuthState(firebaseAuth);
 
   const addImages = async () => {
-    let _images = await ImagePicker.launchImageLibraryAsync({
+    let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.2,
-      allowsMultipleSelection: true, // allows multiple images to be selected
     });
 
-    if (_images.assets) {
-      const firstImage = _images.assets[0];
-
-      _images.assets.forEach((image) => {
-        saveAccommodationImages(image);
-      });
+    if (!_image.canceled) {
+      saveAccommodationImages(_image.assets[0]);
     }
   };
 
-  const saveAccommodationImages = async (saved_image: any) => {
+  const saveAccommodationImages = async (
+    saved_image: ImagePicker.ImagePickerAsset
+  ) => {
     try {
       //Uploads image to firebase storage
+      console.log("saveAccommodationImages called");
       const imageId = uuidv4();
-      const response = await fetch(saved_image.uri);
-      const blob = await response.blob();
+      // Why are we using XMLHttpRequest? See:
+      // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", saved_image.uri, true);
+        xhr.send(null);
+      });
       const imageRef = storageRef(
         firebaseStorage,
         `images/accommodationImages/${user!.uid}/${imageId}}`
       );
-      await uploadBytes(imageRef, blob);
+      try {
+        console.log("imageRef:", imageRef);
+        console.log("blob:", blob);
+        await uploadBytes(imageRef, blob);
+        console.log("image uploaded");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
 
       //Update image's url link in images array
       const url = await getDownloadURL(imageRef);
@@ -105,7 +124,7 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
       owner: user?.uid ?? "owner id could not be obtained",
       title: title,
       description: description,
-      images: [],
+      images: images,
       numGuests: numGuests,
       numBeds: numBeds,
       numBaths: numBaths,
@@ -220,20 +239,6 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
                   />
                 </View>
 
-                <ScrollView horizontal>
-                  {images.map((imageUri, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: imageUri }}
-                      style={{
-                        width: 0.2 * width,
-                        height: 0.2 * width,
-                        margin: SPACINGS.MD,
-                      }}
-                    />
-                  ))}
-                </ScrollView>
-
                 <View style={styles.questionBox}>
                   <H3>Address</H3>
                   <Input
@@ -266,9 +271,9 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
                 <View style={[styles.questionBox, { paddingBottom: 200 }]}>
                   <H3>Sustainability features</H3>
                   <Input
-                    value={accommodationTags}
+                    value={sustainabilityFeatures}
                     placeholder="Enter tags separated by commas.."
-                    onChangeText={(text) => setAccommodationTags(text)}
+                    onChangeText={(text) => setSustainabilityFeatures(text)}
                     style={styles.placeholder}
                   />
                 </View>
@@ -315,8 +320,25 @@ const AccommodationInputs = ({ navigation }: AccommodationInputsProps) => {
                 </View>
 
                 <Pressable style={styles.button} onPress={() => addImages()}>
-                  <H3 style={styles.buttonText}>Upload Images</H3>
+                  <H3 style={styles.buttonText}>Upload Image</H3>
                 </Pressable>
+                <BodyText style={{ alignSelf: "center" }}>
+                  *Upload 1 image at a time
+                </BodyText>
+
+                <ScrollView horizontal>
+                  {images.map((imageUrl, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: imageUrl }}
+                      style={{
+                        width: 0.2 * width,
+                        height: 0.2 * width,
+                        margin: SPACINGS.MD,
+                      }}
+                    />
+                  ))}
+                </ScrollView>
               </View>
             </ScrollView>
           </TabView.Item>

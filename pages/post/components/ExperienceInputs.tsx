@@ -29,6 +29,7 @@ import {
 import COLORS from "../../../config/COLORS";
 import ICONSIZES from "../../../config/ICONSIZES";
 import SPACINGS from "../../../config/SPACINGS";
+import BodyText from "../../../custom_components/typography/BodyText";
 
 const { width } = Dimensions.get("window");
 
@@ -49,34 +50,57 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
   const [user, loading, error] = useAuthState(firebaseAuth);
 
   const addImages = async () => {
-    let _images = await ImagePicker.launchImageLibraryAsync({
+    console.log("called addImages");
+    let _image = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.2,
-      allowsMultipleSelection: true, // allows multiple images to be selected
     });
 
-    if (_images.assets) {
-      _images.assets.forEach((image) => {
-        saveExperienceImages(image);
-      });
+    if (!_image.canceled) {
+      saveExperienceImages(_image.assets[0]);
     }
   };
 
-  const saveExperienceImages = async (saved_image: any) => {
+  const saveExperienceImages = async (
+    saved_image: ImagePicker.ImagePickerAsset
+  ) => {
     try {
+      console.log("called saveExperienceImages");
       //Uploads image to firebase storage
       const imageId = uuidv4();
-      const response = await fetch(saved_image.uri);
-      const blob = await response.blob();
+      // Why are we using XMLHttpRequest? See:
+      // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", saved_image.uri, true);
+        xhr.send(null);
+      });
+      console.log("blob created");
       const imageRef = storageRef(
         firebaseStorage,
         `images/experienceImages/${user!.uid}/${imageId}}`
       );
-      await uploadBytes(imageRef, blob);
+      try {
+        console.log("imageRef:", imageRef);
+        console.log("blob:", blob);
+        await uploadBytes(imageRef, blob);
+        console.log("image uploaded");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
 
       //Update image's url link in images array
       const url = await getDownloadURL(imageRef);
       setImages([...images, url]);
+      console.log("image url added to images array");
     } catch (error) {
       console.error(
         "Error updating profile pic to experiences collection:",
@@ -91,7 +115,7 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
       owner: user?.uid ?? "owner id could not be obtained",
       title: title,
       description: description,
-      images: [],
+      images: images,
       price: price,
       address: address,
       experienceTags: categoryTags.split(", ").map((tag) => tag.trim()),
@@ -126,30 +150,22 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
             />
           </View>
 
-          <Pressable style={styles.button} onPress={() => addImages()}>
-            <H3 style={styles.buttonText}>Upload Images</H3>
-          </Pressable>
-
-          <ScrollView horizontal>
-            {images.map((imageUri, index) => (
-              <Image
-                key={index}
-                source={{ uri: imageUri }}
-                style={{
-                  width: 0.2 * width,
-                  height: 0.2 * width,
-                  margin: SPACINGS.MD,
-                }}
-              />
-            ))}
-          </ScrollView>
-
           <View style={styles.questionBox}>
             <H3>Address:</H3>
             <Input
               value={address}
               placeholder="Enter.."
               onChangeText={(text) => setAddress(text)}
+              style={styles.placeholder}
+            />
+          </View>
+
+          <View style={styles.questionBox}>
+            <H3>Tags</H3>
+            <Input
+              value={categoryTags}
+              placeholder="Enter tags separated by commas.."
+              onChangeText={(text) => setCategoryTags(text)}
               style={styles.placeholder}
             />
           </View>
@@ -173,6 +189,28 @@ const ExperienceInputs = ({ navigation }: ExperienceInputsProps) => {
               setNumItems={setNumGuests}
             />
           </View>
+
+          <Pressable style={styles.button} onPress={() => addImages()}>
+            <H3 style={styles.buttonText}>Upload Image</H3>
+          </Pressable>
+          <BodyText style={{ alignSelf: "center" }}>
+            *Upload 1 image at a time
+          </BodyText>
+
+          <ScrollView horizontal>
+            {images.map((imageUrl, index) => (
+              <Image
+                key={index}
+                source={{ uri: imageUrl }}
+                style={{
+                  width: 0.2 * width,
+                  height: 0.2 * width,
+                  margin: SPACINGS.MD,
+                }}
+              />
+            ))}
+          </ScrollView>
+
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Pressable style={styles.button} onPress={() => handleUpload()}>
               <H3 style={styles.buttonText}>Submit</H3>

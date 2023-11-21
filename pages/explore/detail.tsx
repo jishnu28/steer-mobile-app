@@ -24,6 +24,7 @@ import PopupModal from "../../custom_components/PopupModal";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth, firestore } from "../../firebaseConfig";
 import BookButton from "../bookings/components/BookButton";
+import CATEGORIES from "../../config/CATEGORIES";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -41,7 +42,8 @@ interface DetailProps {
 
 function Detail({ route, navigation }: DetailProps) {
   const { item, listingCollection } = route.params;
-  const isAccommodation = listingCollection === "accommodations";
+  const isAccommodation = listingCollection === CATEGORIES[0].dbName;
+  console.log("isAccommodation", isAccommodation);
   const [data, setData] = useState<DocumentData | undefined>(item);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [reviewModal, setReviewModal] = useState<boolean>(false);

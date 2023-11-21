@@ -1,2 +1,2 @@
 export const defaultProfilePicURL = "https://firebasestorage.googleapis.com/v0/b/steer-app-168c6.appspot.com/o/images%2FuserProfileImages%2Faccount-circle.png?alt=media&token=fa3111ea-9b48-47d4-9b94-f33f3a985d43";
-export const defaultPicURL = "https://firebasestorage.googleapis.com/v0/b/steer-app-168c6.appspot.com/o/images%2Fdefault-pic.png?alt=media&token=8c59012f-67cd-41eb-b993-f1e46557e315";
+export const defaultPicURL = "https://firebasestorage.googleapis.com/v0/b/steer-app-168c6.appspot.com/o/images%2Fdefault-image.png?alt=media&token=385f1383-71d6-4556-8978-ee9a6ce30dad";

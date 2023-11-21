@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import UploadPic from "./components/UploadPic";
 import UploadInfo from "./components/UploadInfo";
@@ -19,6 +19,7 @@ import COLORS from "../../config/COLORS";
 import FONTSIZES from "../../config/FONTSIZES";
 import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
+import H3 from "../../custom_components/typography/H3";
 
 type RootStackParamList = {
   Profile: undefined;
@@ -140,15 +141,28 @@ const ProfilePage = ({ navigation }: Props) => {
     if (!_image.canceled) {
       //checks that the user doesn't close photo library before selecting an image
       // console.log(_image)
-      saveProfilePic(_image);
+      saveProfilePic(_image.assets[0]);
     }
   };
 
-  const saveProfilePic = async (saved_image: any) => {
+  const saveProfilePic = async (saved_image: ImagePicker.ImagePickerAsset) => {
     try {
       //Uploads image to firebase storage
-      const response = await fetch(saved_image.uri);
-      const blob = await response.blob();
+      // Why are we using XMLHttpRequest? See:
+      // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+      const blob: Blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", saved_image.uri, true);
+        xhr.send(null);
+      });
       const imageRef = storageRef(
         firebaseStorage,
         `images/userProfileImages/${user!.uid}`
@@ -214,23 +228,41 @@ const ProfilePage = ({ navigation }: Props) => {
           <Text
             style={[styles.headerText, { width: 300, textAlign: "center" }]}
           >
-            Saved
+            Favourited
           </Text>
         </View>
 
         {!isLoading && (
-          <>
+          <ScrollView style={{ flex: 1 }}>
+            <H3
+              style={{
+                marginTop: SPACINGS.XL,
+                marginBottom: -SPACINGS.MD,
+                alignSelf: "center",
+              }}
+            >
+              Accommodations
+            </H3>
             <ExploreItemCarousel
               navigation={navigation}
               items={userSavedAccommodations}
               collectionName={CATEGORIES[0].dbName}
             />
+            <H3
+              style={{
+                marginTop: SPACINGS.XL,
+                marginBottom: -SPACINGS.MD,
+                alignSelf: "center",
+              }}
+            >
+              Experiences
+            </H3>
             <ExploreItemCarousel
               navigation={navigation}
               items={userSavedExperiences}
               collectionName={CATEGORIES[1].dbName}
             />
-          </>
+          </ScrollView>
         )}
       </View>
     </SafeAreaView>

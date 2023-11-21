@@ -33,7 +33,7 @@ function TripInterestSelection({ navigation }: TripInterestSelectionProps) {
 
   const handleNextPress = () => {
     const interests = [];
-    if (outdoors) interests.push("outdoors");
+    if (outdoors) interests.push("outdoor");
     if (wildlife) interests.push("wildlife");
     if (plants) interests.push("plants");
     if (farms) interests.push("farms");

@@ -58,7 +58,7 @@ function TripPreferences({ navigation }: TripPreferencesProps) {
   };
 
   const handleNextPress = () => {
-    const budget = lowBudget ? 100 : averageBudget ? 250 : 500;
+    const budget = lowBudget ? 49 : averageBudget ? 99 : 500;
     const preferences = [];
     if (timingPreference) preferences.push(timingPreference);
     if (pacePreference) preferences.push(pacePreference);

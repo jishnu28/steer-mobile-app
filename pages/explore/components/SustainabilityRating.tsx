@@ -10,7 +10,7 @@ interface SustainabilityRatingProps {
 }
 
 function QuantityToRating(qty: number) {
-  if (qty >= 5) {
+  if (qty >= 4) {
     return 3;
   } else if (qty >= 3) {
     return 2;
