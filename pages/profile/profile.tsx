@@ -29,6 +29,9 @@ import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
 import H3 from "../../custom_components/typography/H3";
 import { ButtonGroup, Tab, TabView } from "@rneui/themed";
+import BodyText from "../../custom_components/typography/BodyText";
+import ProfileCarousel from "./components/ProfileCarousel";
+import RequestsContainer from "./components/RequestsContainer";
 
 type RootStackParamList = {
   Profile: undefined;
@@ -55,14 +58,14 @@ interface ProfileData {
 const width = Dimensions.get("window").width;
 
 const ProfilePage = ({ navigation }: Props) => {
+  // for managing tabs
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([0, 1]);
-  //Used to set user info
+  // Used to set user info
   const [username, setUsername] = React.useState("");
   const [usernameModal, setUsernameModal] = React.useState(false);
-  //Used for user info retrieval
   const [user, loading, error] = useAuthState(firebaseAuth);
   const [profileInfo, setProfileInfo] = React.useState<ProfileData | any>({});
+  // Used to retrieve user's favourited listings
   const [userSavedAccommodations, setUserSavedAccommodations] = React.useState<
     DocumentData[]
   >([]);
@@ -70,6 +73,7 @@ const ProfilePage = ({ navigation }: Props) => {
     DocumentData[]
   >([]);
   const [isLoadingFavs, setIsLoadingFavs] = React.useState(true);
+  // Used to retrieve user's personal listings
   const [userOwnedAccommodations, setUserOwnedAccommodations] = React.useState<
     DocumentData[]
   >([]);
@@ -78,9 +82,10 @@ const ProfilePage = ({ navigation }: Props) => {
   >([]);
   const [isLoadingPersonal, setIsLoadingPersonal] = React.useState(true);
 
-  // Retrieves profile info when page is rendered
+  // Retrieves profile info and favourited listings
   const getProfile = async () => {
     try {
+      // get user profile info
       const profileRef = doc(firestore, "users", user?.uid as any);
       const userProfile = await getDoc(profileRef);
       const currUserDoc = userProfile.data();
@@ -134,7 +139,7 @@ const ProfilePage = ({ navigation }: Props) => {
     getProfile();
   }, []);
 
-  // Retrieves personal posts
+  // Retrieves personally owned listings
   const getPersonalPosts = async () => {
     try {
       // get accommodations owned by user (if any)
@@ -180,7 +185,7 @@ const ProfilePage = ({ navigation }: Props) => {
     setIsLoadingPersonal(false);
   };
 
-  //Code for profile picture upload
+  // Code for profile picture upload
   const checkForCameraRollPermission = async () => {
     const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
     if (status != "granted") {
@@ -192,6 +197,7 @@ const ProfilePage = ({ navigation }: Props) => {
     }
   };
 
+  // handles profile picture upload
   const addImage = async () => {
     checkForCameraRollPermission();
     let _image = await ImagePicker.launchImageLibraryAsync({
@@ -248,7 +254,7 @@ const ProfilePage = ({ navigation }: Props) => {
     }
   };
 
-  //Code for profile info upload
+  //handles username update
   const saveUsername = async () => {
     try {
       const docRef = doc(firestore, "users", user!.uid);
@@ -291,7 +297,7 @@ const ProfilePage = ({ navigation }: Props) => {
       {/* marginBottom to leave space for the NavBar */}
       <View style={styles.posts}>
         <ButtonGroup
-          buttons={["Favourites", "Personal"]}
+          buttons={["Favourites", "My listings"]}
           selectedIndex={selectedIndex}
           onPress={(value) => {
             setSelectedIndex(value);
@@ -321,34 +327,20 @@ const ProfilePage = ({ navigation }: Props) => {
         />
         {!isLoadingFavs && selectedIndex == 0 && (
           <ScrollView>
-            <H3
-              style={{
-                marginTop: SPACINGS.MD,
-                marginBottom: -SPACINGS.LG,
-                alignSelf: "center",
-              }}
-            >
-              Accommodations
-            </H3>
-            <ExploreItemCarousel
+            <ProfileCarousel
               navigation={navigation}
-              items={userSavedAccommodations}
-              collectionName={CATEGORIES[0].dbName}
+              title="Accommodations"
+              noDataMessage="You have not saved any accommodations!"
+              carouselData={userSavedAccommodations}
+              carouselCollectionName={CATEGORIES[0].dbName}
               isFavourite={true}
             />
-            <H3
-              style={{
-                marginTop: SPACINGS.XL,
-                marginBottom: -SPACINGS.LG,
-                alignSelf: "center",
-              }}
-            >
-              Experiences
-            </H3>
-            <ExploreItemCarousel
+            <ProfileCarousel
               navigation={navigation}
-              items={userSavedExperiences}
-              collectionName={CATEGORIES[1].dbName}
+              title="Experiences"
+              noDataMessage="You have not saved any experiences!"
+              carouselData={userSavedExperiences}
+              carouselCollectionName={CATEGORIES[1].dbName}
               isFavourite={true}
             />
           </ScrollView>
@@ -358,30 +350,29 @@ const ProfilePage = ({ navigation }: Props) => {
             <H3
               style={{
                 marginTop: SPACINGS.MD,
-                marginBottom: -SPACINGS.LG,
+                marginBottom: SPACINGS.LG,
                 alignSelf: "center",
               }}
             >
-              Accommodations
+              Requests
             </H3>
-            <ExploreItemCarousel
-              navigation={navigation}
-              items={userOwnedAccommodations}
-              collectionName={CATEGORIES[0].dbName}
+            <RequestsContainer
+              userOwnedAccommodations={userOwnedAccommodations}
+              userOwnedExperiences={userOwnedExperiences}
             />
-            <H3
-              style={{
-                marginTop: SPACINGS.XL,
-                marginBottom: -SPACINGS.LG,
-                alignSelf: "center",
-              }}
-            >
-              Experiences
-            </H3>
-            <ExploreItemCarousel
+            <ProfileCarousel
               navigation={navigation}
-              items={userOwnedExperiences}
-              collectionName={CATEGORIES[1].dbName}
+              title="Accommodations"
+              noDataMessage="You have not listed any accommodations!"
+              carouselData={userOwnedAccommodations}
+              carouselCollectionName={CATEGORIES[0].dbName}
+            />
+            <ProfileCarousel
+              navigation={navigation}
+              title="Experiences"
+              noDataMessage="You have not listed any experiences!"
+              carouselData={userOwnedExperiences}
+              carouselCollectionName={CATEGORIES[1].dbName}
             />
           </ScrollView>
         )}
