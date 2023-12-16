@@ -47,6 +47,14 @@ const AccReqCard: React.FC<AccReqCardProps> = ({ accReq, navigation }) => {
     getUserInfo();
   }, []);
 
+  const handleApproveAccReq = () => {
+    setIsApproved(true);
+  };
+
+  const handleRejectAccReq = () => {
+    setIsApproved(false);
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.avatarContainer}>
@@ -85,7 +93,7 @@ const AccReqCard: React.FC<AccReqCardProps> = ({ accReq, navigation }) => {
         >
           <Pressable
             onPress={() => {
-              setIsApproved(true);
+              handleApproveAccReq();
             }}
             style={[styles.acceptButton, { opacity: isApproved ? 0.5 : 1 }]}
           >
@@ -93,7 +101,7 @@ const AccReqCard: React.FC<AccReqCardProps> = ({ accReq, navigation }) => {
           </Pressable>
           <Pressable
             onPress={() => {
-              setIsApproved(false);
+              handleRejectAccReq();
             }}
             style={styles.rejectButton}
           >
