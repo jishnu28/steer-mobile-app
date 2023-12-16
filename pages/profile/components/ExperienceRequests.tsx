@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { DocumentData, collection, getDocs } from "firebase/firestore";
 import H3 from "../../../custom_components/typography/H3";
-import BodyText from "../../../custom_components/typography/BodyText";
 import SPACINGS from "../../../config/SPACINGS";
 import { View } from "react-native";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseAuth, firestore } from "../../../firebaseConfig";
 import FONTSIZES from "../../../config/FONTSIZES";
+import ExpReqCard from "./ExpReqCard";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface ExperienceRequestsProps {
   experience: DocumentData;
+  navigation: NativeStackNavigationProp<any>;
 }
 
-const ExperienceRequests = ({ experience }: ExperienceRequestsProps) => {
+const ExperienceRequests = ({
+  experience,
+  navigation,
+}: ExperienceRequestsProps) => {
   const [user, loading, error] = useAuthState(firebaseAuth);
   const [experienceRequests, setExperienceRequests] = useState<DocumentData[]>(
     []
@@ -30,18 +35,15 @@ const ExperienceRequests = ({ experience }: ExperienceRequestsProps) => {
     );
     setExperienceRequests(newExperienceRequests);
     setLoadingExperienceRequests(false);
-    console.log("experienceRequests have been updated:", newExperienceRequests);
   };
   useEffect(() => {
     if (experienceRequests.length == 0) {
-      console.log("experienceRequests is empty");
       getExperienceRequests();
-      console.log("experienceRequests is now:", experienceRequests);
     }
   }, []);
 
   return (
-    <View>
+    <View style={{ width: "100%" }}>
       {experienceRequests.length == 0 && (
         <H3
           style={{
@@ -49,7 +51,7 @@ const ExperienceRequests = ({ experience }: ExperienceRequestsProps) => {
             fontSize: FONTSIZES.SM,
           }}
         >
-          No new requests for {experience.title}
+          - No new requests for {experience.title}
         </H3>
       )}
       {experienceRequests.length != 0 && !loadingExperienceRequests && (
@@ -62,9 +64,12 @@ const ExperienceRequests = ({ experience }: ExperienceRequestsProps) => {
           >
             {experience.title}
           </H3>
-          {/* TODO: Replace with details about the booking request*/}
           {experienceRequests.map((experienceRequest, index) => (
-            <BodyText key={index}>{experienceRequest.guestId}</BodyText>
+            <ExpReqCard
+              key={index}
+              expReq={experienceRequest}
+              navigation={navigation}
+            />
           ))}
         </>
       )}

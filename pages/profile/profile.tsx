@@ -25,11 +25,9 @@ import {
 import SPACINGS from "../../config/SPACINGS";
 import COLORS from "../../config/COLORS";
 import FONTSIZES from "../../config/FONTSIZES";
-import ExploreItemCarousel from "../explore/components/ExploreItemCarousel";
 import CATEGORIES from "../../config/CATEGORIES";
 import H3 from "../../custom_components/typography/H3";
 import { ButtonGroup, Tab, TabView } from "@rneui/themed";
-import BodyText from "../../custom_components/typography/BodyText";
 import ProfileCarousel from "./components/ProfileCarousel";
 import RequestsContainer from "./components/RequestsContainer";
 
@@ -297,7 +295,7 @@ const ProfilePage = ({ navigation }: Props) => {
       {/* marginBottom to leave space for the NavBar */}
       <View style={styles.posts}>
         <ButtonGroup
-          buttons={["Favourites", "My listings"]}
+          buttons={["Favourites", "Bookings", "My listings"]}
           selectedIndex={selectedIndex}
           onPress={(value) => {
             setSelectedIndex(value);
@@ -311,7 +309,7 @@ const ProfilePage = ({ navigation }: Props) => {
             marginVertical: SPACINGS.LG,
           }}
           selectedTextStyle={{
-            fontFamily: "Bitter-Bold",
+            fontFamily: "Bitter-Medium",
             fontSize: FONTSIZES.MD,
           }}
           textStyle={{
@@ -346,7 +344,7 @@ const ProfilePage = ({ navigation }: Props) => {
           </ScrollView>
         )}
         {!isLoadingPersonal && selectedIndex == 1 && (
-          <ScrollView>
+          <ScrollView style={{ width: "80%" }}>
             <H3
               style={{
                 marginTop: SPACINGS.MD,
@@ -354,12 +352,17 @@ const ProfilePage = ({ navigation }: Props) => {
                 alignSelf: "center",
               }}
             >
-              Requests
+              Current Requests
             </H3>
             <RequestsContainer
               userOwnedAccommodations={userOwnedAccommodations}
               userOwnedExperiences={userOwnedExperiences}
+              navigation={navigation}
             />
+          </ScrollView>
+        )}
+        {!isLoadingPersonal && selectedIndex == 2 && (
+          <ScrollView>
             <ProfileCarousel
               navigation={navigation}
               title="Accommodations"
@@ -409,7 +412,6 @@ const styles = StyleSheet.create({
     color: COLORS.DARKBG,
   },
   posts: {
-    flex: 1,
     backgroundColor: COLORS.LIGHTBG,
     width: "100%",
     borderTopRightRadius: SPACINGS.XL,

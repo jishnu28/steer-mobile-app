@@ -6,27 +6,38 @@ import { View } from "react-native";
 import AccommodationRequests from "./AccommodationRequests";
 import FONTSIZES from "../../../config/FONTSIZES";
 import ExperienceRequests from "./ExperienceRequests";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface RequestsContainerProps {
   userOwnedAccommodations: DocumentData[];
   userOwnedExperiences: DocumentData[];
+  navigation: NativeStackNavigationProp<any>;
 }
 
 const RequestsContainer = ({
   userOwnedAccommodations,
   userOwnedExperiences,
+  navigation,
 }: RequestsContainerProps) => {
   return (
-    <View>
+    <View style={{ alignItems: "flex-start", paddingBottom: 230 }}>
       <H3 style={{ fontSize: FONTSIZES.MD }}>Accommodation Requests</H3>
       {userOwnedAccommodations.map((accommodation, index) => (
-        <AccommodationRequests key={index} accommodation={accommodation} />
+        <AccommodationRequests
+          key={index}
+          accommodation={accommodation}
+          navigation={navigation}
+        />
       ))}
       <H3 style={{ marginTop: SPACINGS.MD, fontSize: FONTSIZES.MD }}>
         Experience Requests
       </H3>
       {userOwnedExperiences.map((experience, index) => (
-        <ExperienceRequests key={index} experience={experience} />
+        <ExperienceRequests
+          key={index}
+          experience={experience}
+          navigation={navigation}
+        />
       ))}
     </View>
   );

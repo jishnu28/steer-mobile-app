@@ -25,7 +25,7 @@ const ProfileCarousel = ({
   isFavourite,
 }: ProfileCarouselProps) => {
   return (
-    <View>
+    <View style={{ alignItems: "center", paddingBottom: 80 }}>
       <H3
         style={{
           marginTop: SPACINGS.MD,
@@ -46,12 +46,14 @@ const ProfileCarousel = ({
           {noDataMessage}
         </BodyText>
       )}
-      <ExploreItemCarousel
-        navigation={navigation}
-        items={carouselData}
-        collectionName={carouselCollectionName}
-        isFavourite={isFavourite}
-      />
+      {carouselData.length > 0 && (
+        <ExploreItemCarousel
+          navigation={navigation}
+          items={carouselData}
+          collectionName={carouselCollectionName}
+          isFavourite={isFavourite}
+        />
+      )}
     </View>
   );
 };
